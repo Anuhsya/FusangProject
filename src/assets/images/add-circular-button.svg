@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="62" height="61" viewBox="0 0 62 61">
+    <defs>
+        <filter id="a" width="187.5%" height="187.5%" x="-38.8%" y="-38.8%" filterUnits="objectBoundingBox">
+            <feOffset dx="2" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="5.5"/>
+            <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0.290196078 0 0 0 0 0.290196078 0 0 0 0 0.290196078 0 0 0 0.24 0"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="nonzero" filter="url(#a)" transform="translate(9 9)">
+        <path fill="#4A90E2" d="M19.805 39.457C8.884 39.457 0 30.607 0 19.73 0 8.852 8.884 0 19.805 0c10.92 0 19.804 8.85 19.804 19.73 0 10.879-8.885 19.727-19.804 19.727z"/>
+        <path fill="#FFF" d="M28.145 20.398h-16.68a.67.67 0 0 1-.671-.67c0-.368.3-.668.671-.668h16.68a.67.67 0 0 1 0 1.338z"/>
+        <path fill="#FFF" d="M19.805 28.705a.67.67 0 0 1-.672-.669V11.422a.67.67 0 0 1 1.343 0v16.613c0 .37-.3.67-.671.67z"/>
+    </g>
+</svg>

@@ -1,0 +1,91 @@
+
+<div class="wholeTableSection1">
+  <!-- <div class="row tableRow tablerowtop">
+    <div class="col-lg-3 col-md-3 col-sm-3 paddingZero">
+      <h1 class="headingList" *ngIf="workflowData==='customer'">Fusang Customers</h1>
+      <h4 class="tableHeading" *ngIf="workflowData==='customer'">List of all Fusang Customer</h4>
+      <h1 class="headingList" *ngIf="workflowData==='user'">Fusang Users</h1>
+      <h4 class="tableHeading" *ngIf="workflowData==='user'">List of all Fusang Users</h4>
+      <h1 class="headingList" *ngIf="workflowData==='ticket'">Tickets</h1>
+      <h4 class="tableHeading" *ngIf="workflowData==='ticket'">List of all Tickets</h4>
+     
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-9 paddingZero">
+      <div class="row filterDiv">
+        <span class="search" *ngIf="showSearch">
+        <input placeholder="Search" class="search-input" [(ngModel)]="searchValue" (focusout)="statusChange('search',searchValue)" (keydown.enter)="statusChange('search',searchValue)">
+        <img class="searchImg" src="./assets/images/search.svg">
+        <img class="searchImg searchImg1" src="./assets/images/search-close.svg" (click)="searchClick()">
+      </span>
+      <img src="./assets/images/search-icon.svg" class="searchIcon" *ngIf="!showSearch" (click)="searchClick()">
+
+      
+      <span class="search" *ngIf="workflowData==='ticket'">
+      <p-calendar #calendar [(ngModel)]="rangeDates" selectionMode="range" (onClose)="datePickerClose(rangeDates)" (onSelect)="selectDate(rangeDates)" [readonlyInput]="true" placeholder="Select date range"></p-calendar>
+      <img class="calImg" src="./assets/images/calendar.svg">
+    </span>
+    <select class="select-dropdown" [(ngModel)]="typeValue" (change)="statusChange('type',$event.target.value)" *ngIf="workflowData==='ticket'">
+      <option disabled value='null'>Select Type</option>
+    <option *ngFor="let typeList of typelist" value="{{typeList}}">{{typeList}}</option>
+    </select>
+      <select class="select-dropdown" [(ngModel)]="statusValue" (change)="statusChange('status',$event.target.value)">
+              <option disabled value='null'>Select Status</option>
+            <option *ngFor="let StatusList of statuslist" value="{{StatusList}}">{{StatusList}}</option>
+            </select>
+        <select class="select-dropdown" [(ngModel)]="roleValue" *ngIf="workflowData==='user'" (change)="statusChange('role',$event.target.value)">
+            <option disabled value='null'>Select Role</option>
+            <option *ngFor="let roleList of rolelist" value="{{roleList}}">{{roleList}}</option>
+          </select>
+          <button class="commonButton" (click)="clear()">Clear Filter</button>
+        <button class="commonButton invite" (click)="inviteCustomer()" *ngIf="workflowData==='customer' || workflowData==='user'">Invite</button>
+      
+      </div>
+      </div>
+  </div> -->
+  <div class="tableSection">
+    <table mat-table [dataSource]="data" matSort class="mat-elevation-z8">
+        <ng-container *ngFor="let column of tableColumns;" matColumnDef="{{column.value}}">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.name}} </th>
+          <td mat-cell *matCellDef="let element;let i=index" (click)="showOnboarding(i,element)" (mouseleave)="showleave()"> 
+              <span *ngIf="column.value === 'profilePic'"  style="width:15px"><img class="ap-userImage" src="{{element[column.value]}}" alt=""></span> 
+             <span *ngIf="column.value!== 'status' && column.value !== 'role' && column.value!== 'createdDate' && column.value !== 'profilePic'">{{element[column.value]}}</span>
+
+             <span *ngIf="column.value === 'role'" class="role-wrapper">
+
+                <span *ngFor="let item of getProperRole(element[column.value]);let j= index">
+                      <span class="dep-box" *ngIf="j === 0  && item.department != undefined" title="{{item.department}}">{{item.department}}</span>
+                      <span  class="role-box {{item.role_type?.toLowerCase()}}" *ngIf="j === 0 && item.role_type != undefined">{{item.role_type}}</span>
+                </span>
+                <!-- (mouseleave)="showleave()" -->
+                <span class="more-data"  (mouseenter)="showTool(i)" *ngIf="getProperRole(element[column.value]).length >1 && getProperRole(element[column.value]).length !== ''"><span class="more-data1">+{{getProperRole(element[column.value]).length - 1}}</span></span>
+                <span class="tool" *ngIf="getProperRole(element[column.value]).length !== 1 && i == current">
+                    <span *ngFor="let item of getProperRole(element[column.value]);let j= index" style="border-bottom: solid 1px #e6ecf3;padding: 5px 0px;display: block; margin-left: 5px;">
+                        <span *ngIf="j != 0 && item.department === undefined">                            
+                            {{item.role_type}}
+                           </span> 
+                      <span *ngIf="j != 0 && item.department != undefined">
+                          {{item.department}}/{{item.role_type}}
+                        </span>
+                       
+                    </span>
+                </span>
+              </span>
+
+              <span *ngIf="column.value === 'createdDate'">{{element[column.value] | date :'yyyy-MM-dd HH:mm:ss'}}</span>
+              <span class="tableStatus {{element[column.value].toLowerCase()}}1" *ngIf="column.value === 'status'">{{element[column.value]}}</span> 
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!-- <pagination *ngIf="tabData.length!==0" [boundaryLinks]="true" [totalItems]="resultsLength" [itemsPerPage]="10" (pageChanged)="pageChanged($event)"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination> -->
+    </div>
+  </div>
+
+<!-- start of invite popup -->
+
+
+
+<!-- end of invite popup -->

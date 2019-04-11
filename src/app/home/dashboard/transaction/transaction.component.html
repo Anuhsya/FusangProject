@@ -1,0 +1,271 @@
+
+<div class="onboardflow">
+  <!-- <p class="hdr_text">
+    Transaction
+  </p> -->
+  <div id="mySidebar" class="sidebar" *ngIf="opened" [@changeDivSize]="opened">
+    <div class="sidebarbody">
+      <div class="closediv">
+         <img class="close" src="../../../assets/images/cancel-4.svg" alt="" title="close" (click)="closeNav()">
+      </div>
+      <div >
+        <h1 class="ftitle">Filters</h1>
+      </div>
+      <div class="seleinfo">
+        <select class="select-dropdown filtr_styl" name="transtype" [(ngModel)]="transtype" (change)="Selecttranction(transtype)">
+          <option value='null'[selected] = "true">All-Transaction Type</option>
+          <option *ngFor="let item of transactionType" value="{{item}}">{{item}}</option>
+        </select>
+        <select class="select-dropdown filtr_styl" name="waltype" [(ngModel)]="waltype" (change)="Selectwallettype(waltype)">
+          <option value='null' [selected] = "true">All-Type</option>
+          <option *ngFor="let item of walletType" value="{{item}}">{{item}}</option>
+        </select>
+       
+        <select class="select-dropdown filtr_styl" name="status" [(ngModel)]="status" (change)="statusChange(status)">
+          <option value='null' [selected] = "true">All-Status</option>
+          <option *ngFor="let item of statusList" value="{{item}}">{{item}}</option>
+        </select>
+        <div class="inputdiv">
+            <input class="select-dropdown filtr_styl" type="text" 
+               ngxDaterangepickerMd 
+               timePicker="true" 
+               timePicker24Hour="true"
+               startKey="start" endKey="end"
+               autocomplete="off" 
+               opens = "right"
+               [ranges]="ranges" 
+               [showCustomRangeLabel]="true" 
+               [(ngModel)]="selected" 
+               placeholder="Select Date Range" 
+               name="selected"  
+               (datesUpdated)="SelectdatarangePick($event)">
+             
+             <!-- <img class="calImg" src="../../../assets/images/calendar.svg" alt=""> -->
+           </div> 
+      </div>
+      <div class="butto">
+          <div><button id="userPopup" (click)="applyFilter()" class="commonButton fltr_btn">APPLY FILTER</button></div>
+          <div><button class="clear_btn" (click)="cleareFilter()">Clear</button></div>
+        </div>
+    </div>
+  </div>
+
+  <div class="row ">
+    <div class="col-lg-9 col-sm-9 col-xl-9 col-md-9 "> 
+        <p class="hdr_text">
+          Transaction
+        </p>
+    </div>
+
+    <div class="col-lg-3 col-sm-3 col-xl-3 col-md-3 "> 
+      
+        <select class="select-dropdown filtr_styl1" *ngIf="this.fusanguser === true" name="typeValue" [(ngModel)]="typeValue" (change)="SelectClient(typeValue)">
+          <option value='null' [selected] = "true">All Client</option>
+          <option *ngFor="let role of clientList" value="{{role.id}}">{{role.clientName}}</option>
+        </select>
+        <select *ngIf="this.fusanguser === false" class="select-dropdown filtr_styl1" name="userlst" [(ngModel)]="userlst" (change)="SelectClientuser(userlst)">
+          <option value= 'null' [selected] = "true">All-User</option>
+          <option *ngFor="let user of walletUserLlist" value="{{user.id}}">{{user.name}}</option>
+        </select>
+          
+        <img class="ac-sideclick" src="../../../assets/images/group-14.svg" alt="" title="Filter" (click)="openNav()">
+    
+    </div>
+  </div>
+  <!-- <p class="sub_hdr_text">List of all transaction irrespective of wallets and {{listType}}. Use the filter to view the transactions that is required</p> -->
+  <!-- <section class="sctin_styl">
+    <select *ngIf="this.fusanguser === true" class="select-dropdown filtr_styl" name="typeValue" [(ngModel)]="typeValue" (change)="SelectClient(typeValue)">
+      <option value= 'null' [selected] = "true">All-Client</option>
+      <option *ngFor="let role of clientList" value="{{role.id}}">{{role.clientName}}</option>
+    </select>
+    <select *ngIf="this.fusanguser === false" class="select-dropdown filtr_styl" name="userlst" [(ngModel)]="userlst" (change)="SelectClientuser(userlst)">
+      <option value= 'null' [selected] = "true">All-User</option>
+      <option *ngFor="let user of walletUserLlist" value="{{user.id}}">{{user.name}}</option>
+    </select>
+    <select class="select-dropdown filtr_styl" name="transtype" [(ngModel)]="transtype" (change)="Selecttranction(transtype)">
+      <option value='null'[selected] = "true">All-Transaction Type</option>
+      <option *ngFor="let item of transactionType" value="{{item}}">{{item}}</option>
+    </select>
+    <select class="select-dropdown filtr_styl" name="waltype" [(ngModel)]="waltype" (change)="Selectwallettype(waltype)">
+      <option value='null' [selected] = "true">All-Type</option>
+      <option *ngFor="let item of walletType" value="{{item}}">{{item}}</option>
+    </select>
+   
+    <select class="select-dropdown filtr_styl" name="status" [(ngModel)]="status" (change)="statusChange(status)">
+      <option value='null' [selected] = "true">All-Status</option>
+      <option *ngFor="let item of statusList" value="{{item}}">{{item}}</option>
+    </select>
+    <span>
+      <input type="text" class="rangePicker"
+                  ngxDaterangepickerMd 
+                  timePicker="true" 
+                  timePicker24Hour="true"
+                  startKey="start" endKey="end"
+                  autocomplete="off" 
+                  opens = "left"
+                  [ranges]="ranges" 
+                  [showCustomRangeLabel]="true" 
+                  [(ngModel)]="selected" 
+                  placeholder="Select Date Range" 
+                  name="selected" (datesUpdated)="SelectdatarangePick($event)"/>
+      
+      <img class="calImg" src="../../../assets/images/calendar.svg" alt="">
+      </span>
+     
+
+    <button id="userPopup" (click)="applyFilter()" class="commonButton fltr_btn">APPLY FILTER</button>
+    <img class="ac-clearFilter" (click)="cleareFilter()" src="../../../assets/images/clear.svg" title="clear filter">
+    
+  </section> -->
+  <div [hidden]="isHidden && NoDataFound === true" >  
+    <!-- <app-table-component></app-table-component> -->
+    <div class="tableSection">
+      <table mat-table [dataSource]="transActionList" matSort class="mat-elevation-z8">
+        <ng-container *ngFor="let column of activeColums;" matColumnDef="{{column.value}}">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.name}} </th>
+          <td mat-cell *matCellDef="let element;let i=index" (click)="showTransactionDetails(element, transactionDetails)">
+            <span *ngIf="column.value!== 'transactionStatus' && column.value!== 'createdDate'">{{element[column.value]}}</span>
+            
+            <span *ngIf="column.value === 'createdDate'">{{element[column.value] | date :'yyyy-MM-dd HH:mm:ss'}}</span>
+            <span class="tableStatus {{element[column.value].toLowerCase()}}1" *ngIf="column.value === 'transactionStatus'">{{element[column.value]}}</span> 
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <button *ngIf = "totalItem !== 0" class="exportexcl" (click)="exporttoExcel()"><img class="dwnlod" src="../../../assets/images/excel.svg" alt="">Export Excel</button>
+    <pagination *ngIf = "totalItem !== 0" [boundaryLinks]="true" [totalItems]="totalItem"  [(ngModel)]="currentPage" [itemsPerPage]="20" (pageChanged)="pageChanged($event)"
+    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+    </pagination>
+  </div>
+  <div class=" wellcome-msg" *ngIf="NoDataFound === true"> 
+    <h4 class="khulaLite" >No results found </h4>      
+</div>
+</div>
+<ng-template #transactionDetails>
+  <!-- <div class="modalBorder"> -->
+  <div class="modal-header transactionModel">
+    <h4 class="modal-title pull-left transactionHeader">Transaction Details</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeTransaction()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- <div class="">` -->
+  <div class="transactionIDRow row">
+    <!-- *ngIf="showtransactiondetails.transactionId !== undefined && showtransactiondetails.transactionId !== null" -->
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+      <h6 class="Transaction-ID ">Transaction ID</h6>
+    </div>
+    <!-- <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"> <p class="transValueId"><a href="https://vault-node.fusang.co/tx/{{showtransactiondetails.transactionId}}" target="_blank">{{showtransactiondetails.transactionId}}</a></p></div> -->
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"> <p class="transValueId"><a href="http://vault-staging-node.fusang.co/tx/{{showtransactiondetails.transactionId}}" target="_blank">{{showtransactiondetails.transactionId}}</a></p></div>
+    <!-- <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"> <p class="transValueId"><a href="http://testnet-node.fusang.co/tx/{{showtransactiondetails.transactionId}}" target="_blank">{{showtransactiondetails.transactionId}}</a></p></div> -->
+
+  </div>
+
+  <div class="row transactionRow">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 frm_walt_div">
+      <div class="circle"><img src="/assets/images/personalwallet/rightarrow.svg" alt="" class="rightarow"></div>
+      <label class="frm_walt">From Wallet</label>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h6 class="transTitle">From Wallet Address</h6>
+        <p class="transValue">{{showtransactiondetails.fromWalletAddress}}</p>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h6 class="transTitle">From Wallet Name</h6>
+        <p class="transValue">{{showtransactiondetails.fromWalletName}}</p>
+      </div>
+
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 to_walt_div">
+      <label class="to_walt">To Wallet</label>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h6 class="transTitle">To Wallet Address</h6>
+        <p class="transValue">{{showtransactiondetails.toAddress}}</p>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h6 class="transTitle">To Wallet Name</h6>
+        <p class="transValue">{{showtransactiondetails.toWalletName}}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row transactionRow">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+      <h6 class="Transaction-Amount1">test</h6>
+      <h6 class="Transaction-Amount">Transaction Amount</h6>
+      <h6 class="Transaction-Amount" *ngIf="showtransactiondetails.type === 'Sent'">Network Fee</h6>
+      <h6 class="Transaction-Amount" *ngIf="showtransactiondetails.type === 'Sent'">Fusang Fee (
+        {{showtransactiondetails.transactionPercentage}}% )</h6>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <div class="seconddiv" *ngIf="showtransactiondetails.type === 'Sent'"><img src="/assets/images/personalwallet/twowayarrow.svg" alt=""
+          class="righlefttarow"></div>
+      <div class="recived_arrow" *ngIf="showtransactiondetails.type !== 'Sent'"><img src="/assets/images/personalwallet/twowayarrow.svg" alt=""
+          class="righlefttarow"></div>
+      <h6 class="BTC_header">BTC</h6>
+      <h6 class="value_disply1">{{showtransactiondetails.amount}}</h6>
+      <h6 class="value_disply1" *ngIf="showtransactiondetails.type === 'Sent'">{{showtransactiondetails.transactionFee}}</h6>
+      <h6 class="value_disply1" *ngIf="showtransactiondetails.type === 'Sent'">{{showtransactiondetails.serviceCharge}}</h6>
+
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <h6 class="BTC_header">USD</h6>
+      <h6 class="value_disply">{{showtransactiondetails.toUsd}}</h6>
+      <h6 class="value_disply" *ngIf="showtransactiondetails.type === 'Sent'">{{showtransactiondetails.transactionFeeUsd}}</h6>
+
+      <h6 class="value_disply" *ngIf="showtransactiondetails.type === 'Sent'">{{showtransactiondetails.serviceChargeUsd}}</h6>
+      
+    </div>
+  </div>
+  <div class="row transactionIDRow" *ngIf="showtransactiondetails.type === 'Sent'">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <h6 class="Transaction-Amount">Total Amount</h6>
+
+
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <h6 class="Transaction-Amount22">{{showtransactiondetails.netAmount}}</h6>
+
+
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <h6 class="Transaction-Amount22">${{showtransactiondetails.netUsd}}</h6>
+
+
+    </div>
+  </div>
+ 
+  <div class="verifier-box signatory-bg1" *ngIf="!InitiatedBy && showtransactiondetails.type === 'Sent'">
+    <label class="Signature-Status">Initiated By</label>
+    <div>
+      <label class="userclas">
+             {{showtransactiondetails.emailId}}
+      </label><br>
+      <label class="Few-of-the-violation"><img *ngIf="showtransactiondetails.note" class="ststuscls" src="assets/images/userpolicy/codes.png" alt="">&nbsp;&nbsp;
+        {{showtransactiondetails.note}}</label>
+    </div>
+
+  </div>
+  <div class="verifier-box signatory-bg1" *ngIf="showtransactiondetails.type === 'Sent'">
+    <label class="Signature-Status">Signature Status</label>
+    <label style="float: right" class="Approved-text_trns"><span class="txtstlye"> {{closedsts.length}}</span> out of
+      {{showtransactiondetails.signatory.length}} Approved <span class="createdata_sty_trns">{{showtransactiondetails.createdDate
+        | date :'dd-MMM-yyyy'}}</span></label>
+    <div *ngFor="let item of showtransactiondetails.signatory">
+      <label class="userclas" [class.activecls]="item.ticketStatus !== 'Close'">{{item.emailId}}
+        <img *ngIf="item.ticketStatus === 'Close'" class="ststuscls"
+          src="assets/images/userpolicy/success.png" alt="">
+        <img *ngIf="item.ticketStatus === 'Reject'" class="ststuscls" src="assets/images/userpolicy/reject.png" alt="">
+        <span class="Intiated" *ngIf="showtransactiondetails.emailId === item.emailId">Initiated</span>
+      </label><br>
+      <label class="Few-of-the-violation"><img *ngIf="item.note" class="ststuscls" src="assets/images/userpolicy/codes.png" alt="" >&nbsp;&nbsp;
+        {{item.note}}</label>
+    </div>
+
+  </div>
+  
+  <!-- </div> -->
+</ng-template>

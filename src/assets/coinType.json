@@ -1,0 +1,12 @@
+{
+    "coinType": [
+      {
+        "name": "Bit Coin",
+        "value": "bit_coin"
+      },
+      {
+        "name": "Ethureem",
+        "value": "ethreem"
+      }
+    ]
+  }

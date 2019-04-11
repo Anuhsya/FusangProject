@@ -1,0 +1,70 @@
+<div class="bg-image">
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="row">
+				<div class = "col-md-12 ">
+					<div class="logo-container-box">
+						<img src="assets/images/logo.png" class="logo" alt="">
+					</div>
+				</div>
+		</div>
+		<div class="row">
+      <div class = "col-md-7 side-box-content">
+        <app-onboarding-text [title]="title"></app-onboarding-text>
+      </div>
+			<div class="col-md-5">
+          <div class="get_form_inner">
+              <p></p>
+              <form name="registerForm" method=""  class="notmaterial" action="">
+                <div class="form-group">
+                  <div class="yubikey-form-content">
+                      <p>
+                          Your yubikey is required for allowing you to 
+                          procced to your dashboard
+                      </p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="yubikey-wrapper">
+                    <button type="button" class="btn yubikey-btn-info" (click)="yubiResponse();"></button>
+                    <div class="yubi-msg-outre">
+                      <p class="yubi-msg">waiting for yubikey</p>
+                    </div>
+                    <div class="yubi-issues-link">
+                        <a class="">Any issues?</a>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+        <div class="get_form_inner">
+            <p></p>
+            <form name="registerForm" method="post"  class="notmaterial" action="">
+              <div class="form-group">
+                <div class="yubikey-form-content">
+                    <p>
+                        Your yubikey is required for allowing you to 
+                        procced to your dashboard
+                    </p>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="yubikey-wrapper">
+                  <div class="after-key">
+                    <div class="green-sign">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn yubikey-btn-info">Go to dashboard</button>
+                  <div class="yubi-msg-outre">
+                  </div>
+                  <div class="yubi-issues-link">
+                      <a class="">Any issues?</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+			</div>
+		</div>
+	</div>
+</div>

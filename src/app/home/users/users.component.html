@@ -1,0 +1,404 @@
+<!-- <div class="dashboard">
+  <div class="dtopMenu">
+    <div class="dHeading">
+      Users
+      <div class="subHeading">
+        List of all users
+
+      </div>
+    </div>
+    <div class="dfilter">
+      <div class="search-cont">
+
+        <input class="workbench_project_input" type="text" placeholder="search" (keyup)="searchKeyword($event, searchText)" [(ngModel)]="searchText">
+        <span>
+          <img src="assets/images/dashboard/search.png">
+        </span>
+      </div>
+
+
+
+
+      <div class="btn-group appFiltersList" dropdown>
+        <div id="button-basic" dropdownToggle class="dropdown-toggle" aria-controls="dropdown-basic">
+          {{selectedRole}}
+          <img src="assets/images/dashboard/shape.png">
+        </div>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+          <li role="menuitem" (click)="getRole('All')">
+            <a class="dropdown-item">ALL</a>
+          </li>
+          <li role="menuitem" (click)="getRole('User')">
+            <a class="dropdown-item">USER</a>
+          </li>
+          <li role="menuitem" (click)="getRole('Admin')">
+            <a class="dropdown-item">ADMIN</a>
+          </li>
+         
+
+        </ul>
+      </div>
+      <div class="btn inviteBtn" (click)="openModalWithClass(template)">
+        Invite
+      </div>
+    </div>
+  </div>
+  <div class="userList">
+    <ng2-smart-table [settings]="settings" [source]="listUserData" ></ng2-smart-table>
+  </div>
+
+
+
+  <ng-template #template class="dashbard">
+    <div class="modal-header ">
+      <div class="modal-title dashbard">Invite Users</div>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body dashbard">
+      <div class="form-container">
+        <form name="form" (ngSubmit)="f.form.valid && inviteUser(successtemplate,template) " #f="ngForm"  class="notmaterial" novalidate>
+          <div class="group" [ngClass]="{ 'has-error': f.submitted && !userName.valid}">
+            <label [class.activeLabel]="focusedElement=='userName'" [class.lableTop]="(itemValue.userName!='') && (userName.touched==true || userName.valid==true|| userName.valid==false)"
+              [class.inputSuccess]="userName.valid==true" [class.inputError1]="userName.valid==false && userName.touched==true"
+              [class.inputError]="focusedElement!=='userName' && userName.valid==false && userName.touched==true" for="userName">Name
+              <span class="mandatory">*</span>
+            </label>
+            <input type="text" class="form-control" (focusout)="focusFunction('')" (focus)="focusFunction('userName')" name="userName" [(ngModel)]="itemValue.userName"
+              placeholder="" #userName="ngModel"  required>
+            <div *ngIf="!userName.valid && userName.touched==true" class="help-block caution">User name is required</div>
+           
+          </div>
+          <div class="group" [ngClass]="{ 'has-error': f.submitted && !userEmailid.valid}">
+            <label [class.activeLabel]="focusedElement=='userEmailid'" [class.lableTop]="(itemValue.userEmailid!='') && (userEmailid.touched==true || userEmailid.valid==true|| userEmailid.valid==false)"
+              [class.inputSuccess]="userEmailid.valid==true" [class.inputError1]="userEmailid.valid==false && userEmailid.touched==true"
+              [class.inputError]="focusedElement!=='userEmailid' && userEmailid.valid==false && userEmailid.touched==true"
+              for="userEmailid">Email ID
+              <span class="mandatory">*</span>
+            </label>
+            <input type="email" class="form-control" (focusout)="focusFunction('')" (focus)="focusFunction('userEmailid')" name="userEmailid" [(ngModel)]="itemValue.userEmailid"
+              #userEmailid="ngModel" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" required>
+            <div *ngIf="!userEmailid.valid && userEmailid.touched==true" class="help-block caution">Email id is required</div>
+
+          </div>
+          <div class="group" [ngClass]="{ 'has-error': f.submitted && !userrole.valid}">
+            <label [class.activeLabel]="focusedElement=='userrole'" [class.lableTop]="(itemValue.userrole!='') && (userrole.touched==true || userrole.valid==true|| userrole.valid==false)"
+              [class.inputSuccess]="userrole.valid==true" [class.inputError1]="userrole.valid==false && userrole.touched==true"
+              [class.inputError]="focusedElement!=='userrole' && userrole.valid==false && userrole.touched==true" for="userrole">Role
+              <span class="mandatory">*</span>
+            </label>
+            <select class="form-control" name="application" (focusout)="focusFunction('')" (focus)="focusFunction('userrole')" [(ngModel)]="itemValue.userrole" (change)="changeroleType(itemValue.userrole);"
+              #userrole="ngModel" required>
+              <option [value]="undefined" [attr.selected]="true" disabled>Select Role</option>
+              <option [value]=2>User</option>
+            </select>
+            <div  *ngIf="!userrole.valid && userrole.touched==true" class="help-block caution errclass" >Role is required</div>
+          
+          </div>
+
+          <div class="invitbtncls">
+
+            <button class="btn btn-default cmn-btn" [disabled]="!f.form.valid">Invite</button>
+          </div>
+
+
+        </form>
+
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #successtemplate class="dashbard ">
+    <div class="successpoup">
+      <div class="modal-header">
+
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalrefrence.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body dashbard succesmodal">
+        <div>
+          <div class="form-container">
+            <img src="./assets/images/sidebar/success.png" class="successimg">
+          </div>
+          <div style="text-align:  center">
+            <label class="User-invited-succesf">User Invited Successfully</label>
+          </div>
+          <div>
+            <button type="submit" class="invitemoreBtn" (click)="modalrefrence.hide();openModalWithClass(template)">Invite More</button>
+            <button class="successBtn" aria-label="Close" (click)="modalrefrence.hide()">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+
+</div> -->
+<div class="wholeTableSection">
+  <!-- <div class="row tableRow">
+    <div class="col-lg-3 col-md-3 col-sm-3 paddingZero">
+      <h1 class="headingList" >Users</h1>
+      <h4 class="tableHeading">List of all Fusang Users</h4>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-9 paddingZero">
+        <div class="tab-btn khulaSemiBold"><button class="user-btn" [class.tabbackground]="tabValue=='Completed'" (click)="tabClick('Completed')">Completed</button><button class="user-btn" [class.tabbackground]="tabValue=='Onboarding'" (click)="tabClick('Onboarding')">Onboarding</button></div>
+      <div class="row filterDiv">
+        <span class="search" *ngIf="showSearch">
+        <input placeholder="Search" class="search-input" [(ngModel)]="searchValue" (focusout)="statusChange('search',searchValue)" (keydown.enter)="statusChange('search',searchValue)">
+        <img class="searchImg" src="./assets/images/search.svg">
+        <img class="searchImg searchImg1" src="./assets/images/search-close.svg" (click)="searchClick()">
+      </span>
+      <img src="./assets/images/search-icon.svg" class="searchIcon" *ngIf="!showSearch" (click)="searchClick()">
+
+      
+      <span class="search" *ngIf="workflowData==='ticket'">
+      <p-calendar #calendar [(ngModel)]="rangeDates" selectionMode="range" (onClose)="datePickerClose(rangeDates)" (onSelect)="selectDate(rangeDates)" [readonlyInput]="true" placeholder="Select date range"></p-calendar>
+      <img class="calImg" src="./assets/images/calendar.svg">
+    </span>
+    <select class="select-dropdown" [(ngModel)]="typeValue" (change)="statusChange('type',$event.target.value)" *ngIf="workflowData==='ticket'">
+      <option disabled value='null'>Select Type</option>
+    <option *ngFor="let typeList of typelist" value="{{typeList}}">{{typeList}}</option>
+    </select>
+      <select class="select-dropdown" [(ngModel)]="statusValue" (change)="statusChange('status',$event.target.value)">
+              <option disabled value='null'>Select Status</option>
+            <option *ngFor="let StatusList of statuslist" value="{{StatusList}}">{{StatusList}}</option>
+            </select>
+        <select class="select-dropdown" [(ngModel)]="roleValue" *ngIf="workflowData==='user'" (change)="statusChange('role',$event.target.value)">
+            <option disabled value='null'>Select Role</option>
+            <option *ngFor="let roleList of rolelist" value="{{roleList}}">{{roleList}}</option>
+          </select>
+          <button class="commonButton" (click)="clear()">Clear Filter</button>
+        <button id="userPopup" (click)="inviteCustomer(invitetemplate)" class="commonButton invite">Invite</button>
+      
+      </div>
+      </div>
+  </div> -->
+  <div>
+    <app-table-component *ngIf="tabValue=='Completed'" [workflowData]="userValue" [userStatus]="userValueSatus"></app-table-component>
+    <app-table-component *ngIf="tabValue=='Onboarding'" [workflowData]="userValue"></app-table-component>
+  </div>
+  <!-- <div class="tableSection">
+    <table mat-table [dataSource]="data" matSort class="mat-elevation-z8">
+        <ng-container *ngFor="let column of tableColumns;" matColumnDef="{{column.value}}">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.name}} </th>
+          <td mat-cell *matCellDef="let element;let i=index" (click)="showOnboarding(i,element)">  
+             <span *ngIf="column.value!== 'status' && column.value!== 'createdDate'">{{element[column.value]}}</span>
+              <span *ngIf="column.value === 'createdDate'">{{element[column.value] | date :'dd-MMM-yyyy h:mm:ss '}}</span>
+             <span class="tableStatus {{element[column.value].toLowerCase()}}1" *ngIf="column.value === 'status'">{{element[column.value]}}</span>
+          </td>
+        </ng-container>
+    </table>
+    <pagination *ngIf="tabData.length!==0" [boundaryLinks]="true" [totalItems]="resultsLength" [itemsPerPage]="10" (pageChanged)="pageChanged($event)"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+  </pagination>
+    </div> -->
+    <!-- <div>
+      <app-table-component *ngIf="tabValue=='Completed'" [workflowData]="userValue" [userStatus]="tabValue"></app-table-component>
+      <app-table-component *ngIf="tabValue=='Onboarding'" [workflowData]="userValue" [userStatus]="Onboarding"></app-table-component>
+    </div> -->
+    
+</div>
+
+<!-- invite user starts-->
+<!-- <button id="userPopup" (click)="inviteCustomer(invitetemplate)" style="display: none;" class="btn-orange">Invite</button> -->
+<ng-template #invitetemplate class="invite succesmodal">
+  <div class="invitepopup">
+    <div class="modal-header">
+      <div class="modal-header-wrapper">
+          <div class="modal-header-box font24 khulaSemiBold">Invite Fusang User</div>
+          <button type="button" class="close font24 pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    </div>
+    <div class="modal-body invite">
+      <div class="invite-tabs">
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="basic" (click)="showbasic()">Basic Information</div>
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="assignroles" (click)="showassignroles()" [class.tabDesabled]="!basicForm.valid">Roles</div>
+    </div>
+    <div class="basic-info-wrapper" *ngIf="basic">
+      <div class="form-wrapper">
+          <form class="example-form" [formGroup]="basicForm" (ngSubmit)="nexttab()" #f="ngForm" novalidate>
+            <div class="inner-form">
+                <mat-form-field class="example-half-width">
+                    <input matInput placeholder="First Name" required formControlName="firstName"  name="firstName" autocomplete="off" >
+                    <mat-error *ngIf="basicForm.get('firstName').touched && basicForm.get('firstName').invalid">
+                        First Name is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="Last Name" required formControlName="lastName"   name="laststName" autocomplete="off">
+                      <mat-error *ngIf="basicForm.get('lastName').touched && basicForm.get('lastName').invalid">
+                          Last Name is <strong>required</strong>
+                      </mat-error>
+                  </mat-form-field>
+                  <!-- <div class="flex-wrap"> -->
+                    <mat-form-field class="example-half-width">
+                      <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput  [matAutocomplete]="auto" formControlName="country"><span></span>
+                      <mat-error *ngIf="basicForm.get('country').touched && basicForm.get('country').invalid">
+                          Country is <strong>required</strong>
+                      </mat-error>
+                      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                        <mat-option *ngFor="let item of filteredOptions| async" [value]="item" >
+                            {{item}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="example-half-width country-code">
+                        <!-- <span>{{code}}</span> -->
+                          <input matInput placeholder="Code" name="code" autocomplete="off" [value]="code||''" disabled>
+                      </mat-form-field>
+                    <mat-form-field class="example-half-width phone-number">
+                      <!-- <span>{{code}}</span> -->
+                        <input matInput placeholder="Phone Number" type="number" required name="phoneNo" max="{{countryPhonelen}}"  maxLength="{{countryPhonelen}}" autocomplete="off" formControlName="phoneNumber"
+                        oninput="this.value=this.value.slice(0,this.maxLength)" [(ngModel)]="phoneNumber" (ngModelChange)="onChange(phoneNumber)">
+                        <mat-error *ngIf="basicForm.get('phoneNumber').errors?.required">
+                           Phone Number is <strong>required</strong>
+                        </mat-error>
+                        <!-- <mat-error *ngIf="basicForm.get('phoneNumber').errors?.pattern">
+                            Phone Number should be {{countryPhonelen}} <strong>length</strong>
+                         </mat-error> -->
+                         <div *ngIf="invalidphone && phoneNumber!=''" class="help-block1 caution">Please enter {{countryPhonelen}} digit number</div>
+                    </mat-form-field>
+                  <!-- </div> -->
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Email ID" required name="email" autocomplete="off" formControlName="username">
+                        <mat-error *ngIf="basicForm.get('username').errors?.required">
+                            Username is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="basicForm.get('username').errors?.email">
+                            Please enter username as <strong>email format</strong>
+                        </mat-error>
+                    </mat-form-field>
+            </div>
+            <div class="linebottom"></div>
+            <button class="btn btn-orange" [disabled]="!basicForm.valid || invalidphone">Next</button>
+            </form>
+      </div>
+    </div>
+    <div class="basic-info-wrapper" *ngIf="assignroles">
+      <div class="form-wrapper">
+        <form class="example-form" (ngSubmit)="f.form.valid && inviteUser(signupsuccess)" #f="ngForm">
+          <div class="inner-form">
+            <div class="wro-wrapper" *ngFor="let dl of depList;let i =index">
+              <div class="dep-col-wrapper">
+                <img src="assets/images/inviteuser/{{dl.name.split(' ')[0].toLowerCase()}}.svg" alt="" class="acc-image">
+                <span>{{dl.name}}</span>
+              </div>
+              <div class="role-checkbox">
+                  <mat-radio-group class="example-radio-group" [(ngModel)]="model[dl.name.toUpperCase()]" [name]="dl.name.toLowerCase()" (ngModelChange)="callfunc($event)" >
+                      <mat-radio-button class="example-radio-button" *ngFor="let rdl of dl.role;let j =index" [value]="rdl">
+                        {{rdl}}
+                      </mat-radio-button>
+                    </mat-radio-group>
+              <!-- <mat-checkbox class="margin-check"
+               *ngFor="let rdl of dl.role;let j =index" 
+               (change)="test(dl.name,rdl,$event)" [checked]="dl.name == roleDepartmentDetails[i]?.department && rdl == roleDepartmentDetails[i]?.userRole"> {{rdl}}
+              </mat-checkbox> -->
+              </div>
+            </div>
+            <!-- <div class="row-wrapper" *ngFor="let rLD of roleDepartmentDetails;let i =index">
+              {{rLD}}
+              <mat-form-field class="example-half-width user-tab-width">
+                <input type="text" class="arrow" required placeholder="Department" aria-label="String" matInput
+                  [(ngModel)]="rLD.department" [name]="rLD.department" [matAutocomplete]="auto5"
+                  (ngModelChange)="onDepSearch(rLD.department)" (focus)="onDepFocus()"><span></span>
+                  <mat-error *ngIf="'department'">
+                      Department is <strong>required</strong>
+                   </mat-error>
+                <mat-autocomplete #auto5="matAutocomplete" class="autocomplete">
+                  <mat-option class="autocomplete" *ngFor="let list of userDetailsList" [value]="list">
+                    {{list}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <mat-form-field class=" example-half-width user-tab-width">
+                <input type="text" class="arrow" required placeholder="Role" aria-label="String" matInput
+                  [matAutocomplete]="auto6" [(ngModel)]="rLD.userRole" [name]="rLD.userRole"><span></span>
+                  <mat-error *ngIf="'userRole'">
+                      Role is <strong>required</strong>
+                   </mat-error>
+                <mat-autocomplete #auto6="matAutocomplete" class="autocomplete">
+                  <mat-option *ngFor="let roleData of roleInformationList" [value]="roleData">
+                    {{roleData}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <button class="adduser-btn" (click)="deleteDepartment(i)"><img class="bin-box" src="assets/images/inviteuser/bin.svg"></button>
+            </div> -->
+            <!-- <div class="example-form">
+              <div class="row-wrapper"  *ngIf="addDept">
+                <mat-form-field class="example-half-width user-tab-width">
+                  <input type="text" class="arrow" required placeholder="Department" aria-label="String" matInput
+                    [(ngModel)]="roleDepartmentObj['department']" [name]="'department'" [matAutocomplete]="auto3"
+                    (ngModelChange)="onDepSearch(roleDepartmentObj['department'])" (focus)="onDepFocus()"><span></span>
+                    <mat-error *ngIf="'department'">
+                        Department is <strong>required</strong>
+                     </mat-error>
+                  <mat-autocomplete #auto3="matAutocomplete" class="autocomplete">
+                    <mat-option class="autocomplete" *ngFor="let list of userDetailsList" [value]="list">
+                      {{list}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field class=" example-half-width user-tab-width">
+                  <input type="text" class="arrow" required placeholder="Role" aria-label="String" matInput
+                    [matAutocomplete]="auto4" [(ngModel)]="roleDepartmentObj['userRole']" [name]="'userRole'"><span></span>
+                    <mat-error *ngIf="'userRole'">
+                        Role is <strong>required</strong>
+                     </mat-error>
+                  <mat-autocomplete #auto4="matAutocomplete" class="autocomplete">
+                    <mat-option *ngFor="let role of roleInformationList" [value]="role">
+                      {{role}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <span class="adduser-btn" (click)="clearDepartment()"><img class="bin-box" src="assets/images/inviteuser/bin.svg"></span>
+              </div>
+              <div class="add-img-wrapper">
+                <button class="adduser-btn" (click)="addDepartment()">
+                  <img src="assets/images/inviteuser/addrole.svg"><span class="font14 khulaSemiBold add-role-text">Add
+                    Role</span>
+                </button>
+              </div>
+            </div> -->
+          </div>
+          <div class="linebottom"></div>
+          <button class="btn btn-orange btn-left" type="submit" [disabled]="!f.form.valid || !isenableform">Submit</button>
+        </form>
+      </div>
+    </div>
+    </div>
+    </div>
+  </ng-template>
+
+  <!-- invite user ends -->
+  <!-- signupsuccess successtemplate template starts-->
+<!-- <button (click)="signupSuccess(signupsuccess) " class="btn-orange">signup Success</button> -->
+<ng-template #signupsuccess class="invite succesmodal">
+    <div class=" successpopup">
+      <div class="modal-header no-line">
+        <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold"></div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="invitesuccessRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      </div>
+      <div class="modal-body center-box">
+        <img src="assets/images/inviteuser/success.svg" alt="">
+        <div class="sus-contant-box">
+          <p class="font24 khulaSemiBold success-message">User Invited <span class="c-orange"> Successfully !</span></p>
+          <p class=" khulaRegular c-s-text">Please wait for your account verification from Fusang Team</p>
+          <div>
+             <button class="btn-orange khulaSemiBold" (click)="invitesuccessRef.hide()">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</ng-template>
+<!-- signupsuccess successtemplate template end-->
+

@@ -1,0 +1,197 @@
+.genarateReport{
+    font-family:  Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4a4a4a;
+}
+.onboardflow {
+    background: #f1f5f9;
+    padding-top: 90px;
+    padding-bottom: 32px;
+    padding-left: 31px;
+    padding-right: 43px;
+    min-height: 100vh;
+}
+.genarateReportDiv{
+    /* height: calc(100vh - 180px); */
+    border-radius: 3px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    background-color: #ffffff;
+}
+.select-dropdown{
+    border-radius: 4px;
+    border: solid 0.5px #cccccc;
+    padding: 3px 40px 2px 9px;
+    color: #687178;
+    font-size: 14px;
+    margin-right: 12px;
+    font-family:  Khula-SemiBold , Arial, Helvetica, sans-serif;
+    background-color: transparent;
+    appearance: none;
+    background-image: url('/assets/images/filled-dropdown.svg');
+    background-repeat: no-repeat;
+    background-position: 90% 7px;
+    height: 30px;
+    width: 200px;
+  }
+  .genbtn{
+    width: 120px;
+    height: 30px;
+    border-radius: 4px;
+    background-color: #f39233;
+    font-family:  Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+  }
+  .InvoiceDiv{
+    background-color: #fff;
+    padding: 24px;
+   }
+   .row-padding{
+    /* padding: 10px; */
+    /* border: 1px solid #ccc;   */
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #ebebeb;
+   }
+   .InvoiceDivInner {
+        padding: 42px;
+        border: 1px solid #ccc;
+        padding-top: 0px;
+    }
+    .rowhead{
+        font-size: 16px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.38;
+        letter-spacing: normal;
+        color: #5c5c5c;
+        padding-bottom: 24px;
+    }
+    .invoiceData{
+        font-size: 14px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        padding-top: 25px;
+        color: #5c5c5c;
+    }
+    .invoiceData1{
+        color: #ea1c49;
+    }
+   .invoiceAmmount{
+        font-size: 28px;
+        font-weight: 300;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 0.75;
+        letter-spacing: normal;
+        color: #3a3a3a;
+        padding-top: 25px;
+        padding-bottom: 10px;
+    }
+    .ASwalletCount{
+        padding-top: 20px;
+        padding-bottom: 20px;
+        box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.23);
+        /* background-color: #455964; */
+        color: #fff;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .count{
+        font-size: 28px;
+    }
+    .ASwalletDetail{
+        background-color: #f7faf7;
+    }
+    .downloadpdfBtn{
+        width: 40px;
+        float: right;
+        cursor: pointer;
+    }
+    .WTrow{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ebebeb;
+    }
+    .WTSrow{
+        padding-top: 5px;
+    }
+    .tablemainHead{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        /* background-color: #333; */
+        color: #fff;
+        /* background-size: cover; */
+        background-repeat: repeat;
+    }
+    .textRight{
+        text-align: right;
+    }
+    .wdinfo{
+        border: 1px solid #ebebeb;
+        margin-top: 25px;
+    }
+    .WTTSrow{
+        padding-top:5px;
+        padding-bottom: 5px;
+    }
+    .WTTSSrow{
+        padding-top:5px;
+        padding-bottom: 10px;
+    }
+    .noOfTransaction{
+        background-color: #f7faf7;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    table {
+        width: 100%;
+    }
+    .walletType{
+        margin-left: 10px;
+    }
+    .walletTypeCount{
+        margin-left: 10px;
+    }
+    .summaryDiv{
+        margin-bottom: 20px;
+    }
+    .transactiondiv{
+        margin-bottom: 40px;
+    }
+    .deepstorage{
+        background-image: url(/assets/images/onbording/ds.svg);
+    }
+    .secure{
+        background-image: url(/assets/images/onbording/ss.svg);
+    }
+    .highFrequency{
+        background-image: url(/assets/images/onbording/hf.svg);
+    }
+    button.genbtn.ng-star-inserted:disabled {
+        pointer-events: none;
+        background-color: #e6a05b;
+    }
+    .mainData{
+        margin-bottom: 10px;
+    }
+    .breacktext{
+        word-break: break-all;
+    }

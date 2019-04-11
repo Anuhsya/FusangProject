@@ -1,0 +1,121 @@
+<div class="googleMain-auth">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="header">
+					<div class="logo-wraper">
+						<img src="assets/images/logoblue/logoblue.jpg" class="logo" alt="">
+					</div>
+					<div class="user-wraper">
+						<img id="loggedInImage" src="assets/images/sidebar/profile.svg" class="user-picture" alt="">
+						<label>{{userName}}
+							<span class="fa fa-angle-down"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12" *ngIf="firstLoginn==1">
+				<div class="top-text-box">
+					<p > Add a strong layer of security</p>
+					<div class="auth-board">
+						<div class="comment1">
+							
+							<h6 class="text_decor">Please provide the secret codes to securely login to the system
+							</h6>
+							<div>
+								<button class="auth-btn" (click)="yubikeyauth(!googleauth, 2);">google auth</button>
+							</div>
+							<div class="google-auth-box" *ngIf="googleauth">
+								<div class="innner-box">
+									<h6>Google Authenticator</h6>
+								</div>
+								<div class="auth-content">
+									<div class="group">
+										
+											<qrcode [qrdata]="angularxQrCode" [size]="256" [level]="'L'"></qrcode>
+										<!-- <img *ngIf="firstLoginn==1" src="{{url}}" alt="">
+										<img  *ngIf="firstLoginn==2" src="{{secondurl}}" alt=""> -->
+
+										<!-- <label class="inputSuccess">Use google authenticator app to scan</label> -->
+									</div>
+
+									<form name="form" (ngSubmit)="f.form.valid && validate()" #f="ngForm"  class="notmaterial" novalidate>
+										<div class="group">
+											<input *ngIf="firstLoginn==1" type="text" [disabled]="true" [(ngModel)]="model.secretKey" #secretKey="ngModel" name="secretKey" readonly>
+											<input *ngIf="firstLoginn==2" type="text" [disabled]="true" [(ngModel)]="scretKey" #secretKey="ngModel" name="secretKey" readonly>
+											<label *ngIf="firstLoginn==1" class="inputSuccess">Paste and save the code below</label>
+											<label *ngIf="firstLoginn==2">Paste and save Your secretKey below </label>
+										</div>
+										<div class="group"> 
+                      <input type="text" (keypress)="numberOnly($event)" maxlength="6" pattern="([0-9]{6})+" (ngModelChange)="vcValidation($event)" (focusout)="focusFunction('')" (focus)="focusFunction('verificationCode')" class="form-control" name="verificationCode" [(ngModel)]="model.verificationCode" #verificationCode="ngModel" required>
+											<label [class.activeLabel]="focusedElement=='verificationCode'" [class.lableTop]="(model.verificationCode!='') && (verificationCode.touched==true || verificationCode.valid==true|| verificationCode.valid==false)" [class.inputSuccess]="verificationCode.valid==true"  [class.inputError1]="verificationCode.valid==false && verificationCode.touched==true" [class.inputError]="focusedElement!=='verificationCode' && verificationCode.valid==false && verificationCode.touched==true" for="verificationCode">Enter your Code</label>
+                      <div class="help-block" *ngIf="(!verificationCode.valid && verificationCode.touched) || (verificationCodeValid && verificationCode.touched)">Please type your 6 digits Google Authenticator Code</div>
+                    </div>
+										<button [disabled]="!f.form.valid || verificationCodeValid" style="margin-top: 33px; float: left;" class="btn sub-btn-info">SUBMIT</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+      </div>
+      <!-- second time login -->
+      <div class="col-md-12" *ngIf="firstLoginn==2">
+          <div class="top-text-box">
+
+            <p> Login Securely...</p>
+            <div class="auth-board">
+              <div class="pro-google-auth">
+                <h6>Please provide the secret codes to securely login to the system
+								</h6>
+                <div>
+                  <button class="auth-btn" (click)="yubikeyauth(!googleauth, 2);">google auth</button>
+                </div>
+                <div class="google-auth-box_secondlogin" *ngIf="googleauth">
+                  <div class="innner-box_secondlogin">
+                    <h6>Google Authenticator</h6>
+                  </div>
+                  <div class="auth-content">
+                    
+
+                    <form name="secondlogin" (ngSubmit)="secondlogin.form.valid && validate()" #secondlogin="ngForm"  class="notmaterial" novalidate autocomplete="off">
+
+                      <div class="group">
+                        <input type="text" (keypress)="numberOnly($event)" maxlength="6" pattern="([0-9]{6})+" (ngModelChange)="vcValidation($event)" (focusout)="focusFunction('')" (focus)="focusFunction('verificationCode')" class="form-control" name="verificationCode" [(ngModel)]="model.verificationCode" #verificationCode="ngModel" required>
+                       
+                        <label [class.activeLabel]="focusedElement=='verificationCode'" [class.lableTop]="(model.verificationCode!='') && (verificationCode.touched==true || verificationCode.valid==true|| verificationCode.valid==false)" [class.inputSuccess]="verificationCode.valid==true"  [class.inputError1]="verificationCode.valid==false && verificationCode.touched==true" [class.inputError]="focusedElement!=='verificationCode' && verificationCode.valid==false && verificationCode.touched==true" for="verificationCode">Enter your Code</label>
+                        <div class="help-block" *ngIf="(!verificationCode.valid && verificationCode.touched) || (verificationCodeValid && verificationCode.touched)">Please type your 6 digits Google Authenticator Code</div>
+                       
+                      </div>
+                      <button [disabled]="!secondlogin.form.valid || verificationCodeValid" style="margin-top: 33px" class="btn sub-btn-info">SUBMIT</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="comment">
+                <h6 class = "text">Please provide the secret codes to securely login to the system
+								</h6>
+                <div class="yubikey-auth-box" *ngIf="!googleauth">
+                  <div class="innner-box">
+                    <h6>Yubikey</h6>
+                  </div>
+                  <div class="auth-content">
+                    <div class="group">
+                      <input type="password" name="password" required="required">
+                      <label>Yubikey label</label>
+                    </div>
+                    <div class="group">
+                      <input type="password" name="password" required="required">
+                      <label>Yubikey code</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+		</div>
+	</div>

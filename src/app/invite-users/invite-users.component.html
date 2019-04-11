@@ -1,0 +1,63 @@
+<ng-template  #template class="dashbard">
+  <div class="modal-header ">
+    <div class="modal-title dashbard">Invite Users</div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body dashbard">
+    <div class="form-container">
+      <form name="form"   #f="ngForm" (ngSubmit)="f.form.valid && inviteUser(successtemplate,template); modalRef.hide()"  class="notmaterial">
+        <div class="form-group">
+          <label [class.lableTop]="(model.userName!='') && (userName.touched==true || userName.valid==true|| userName.valid==false)" [class.inputSuccess]="userName.valid==true"  [class.inputError1]="userName.valid==false && userName.touched==true" [class.inputError]="focusedElement!=='userName' && userName.valid==false && userName.touched==true" class="credential-label">Name</label>
+          <input type="text" (focus)="focusFunction('userName')" class="form-control inputTxt" name="userName" [(ngModel)]="itemValue.userName" placeholder="User Name">
+        </div>
+        <div class="form-group">
+          <label [class.lableTop]="(model.userEmailid!='') && (userEmailid.touched==true || userEmailid.valid==true|| userEmailid.valid==false)" [class.inputSuccess]="userEmailid.valid==true"  [class.inputError1]="userEmailid.valid==false && userEmailid.touched==true" [class.inputError]="focusedElement!=='userEmailid' && userEmailid.valid==false && userEmailid.touched==true" class="credential-label">Email ID</label>
+          <input type="email" (focus)="focusFunction('userEmailid')" class="form-control inputTxt" name="userEmailid" [(ngModel)]="itemValue.userEmailid" placeholder="Email Id" email>
+        </div>
+        <div class="form-group">
+          <label [class.lableTop]="(model.userrole!=undefined) && (userrole.touched==true || userrole.valid==true|| userrole.valid==false)" [class.inputSuccess]="userrole.valid==true"  [class.inputError1]="userrole.valid==false && userrole.touched==true" [class.inputError]="focusedElement!=='userrole' && userrole.valid==false && userrole.touched==true" class="credential-label">Role</label><br>
+          <select  class="selectboxstyle" (focus)="focusFunction('userrole')" name="application" [(ngModel)]="itemValue.userrole" (change)="changeroleType(itemValue.userrole);" >
+              <option [value]="undefined" [attr.selected]="true" disabled>Select Role</option>
+              <option  value=2>User</option>
+        </select>
+        </div>
+        
+        <div class=" " >
+          
+          <button class="btn btn-default cmn-btn">Invite</button>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<!-- sucess template -->
+<ng-template #successtemplate class="dashbard succesmodal">
+  
+    <!-- <ng-template  #template class="dashbard"> -->
+        <div class="successpoup">
+    <div class="modal-header">
+      
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalrefrence.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body dashbard">
+      <div>
+      <div class="form-container">
+        <img src="./assets/images/sidebar/success.png" alt="" class="successimg">
+      </div>
+      <div style="text-align:  center">
+        <label class="User-invited-succesf">User invited succesfully</label>
+      </div>
+      <div>
+        <button type="submit" class="invitemoreBtn" (click)="openModal(template)">Invite More</button>
+        <button  class="successBtn" aria-label="Close" (click)="modalrefrence.hide()">Done</button>
+      </div>
+    </div>
+    </div>
+        </div>
+  </ng-template>

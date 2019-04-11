@@ -1,0 +1,92 @@
+<div class="row header_css">
+
+  <!-- <div class="col-md-2 hdrdiv">
+  </div>
+  <div class="col-md-4"></div>
+  <div class="col-md-2">
+  </div> -->
+
+  <div class="col-md-12 header-wrapper">
+    <span class="header-text khulaSemibold">Custodian Service Platform</span>
+    <div class="inner-header-box">
+    <!-- <div class="btn-group currency-positioin displayInline" dropdown> -->
+      <!-- <button id="button-basic" dropdownToggle type="button" class=" dropdown-toggle select-coin currencydp" aria-controls="dropdown-basic">Currency -->
+      <!-- </button> -->
+      <!-- <ul id="dropdown-basic" name="Currency" *dropdownMenu class="dropdown-menu form-control " role="menu" aria-labelledby="button-basic"> -->
+        <!-- <li role="menuitem" *ngFor="let item of countrylist" (click)="countrySelected(item.name,item.dial_code)">{{item.name}}</li> -->
+        <!-- <li>United States Dollar</li> -->
+        <!-- <li>Hong Kong Dollar</li> -->
+      <!-- </ul> -->
+    <!-- </div> -->
+
+    <!-- Notification block -->
+    <!-- <div class="displayInline">
+      <span>
+        <img class="header_img notification" src="./assets/images/sidebar/notification.png">
+      </span>
+      <span class="notification-count">02</span>
+    </div> -->
+     <!-- Notification block -->
+
+
+    <div class="btn-group currency-positioin displayInline" dropdown>
+        <button id="button-basic" dropdownToggle type="button" class=" dropdown-toggle select-profile currencydp" aria-controls="dropdown-basic">
+            <img id="loggedInImage" src="{{imageUrl}}" alt="" class="header_img profilePic"><span class="userNameSpan">{{userName}}</span><sub class="subrole">{{role}}</sub>
+        </button>
+        <ul id="dropdown-basicprofile" name="Profile" *dropdownMenu class="dropdown-menu form-control " role="menu" aria-labelledby="button-basic">
+          <li id="profile">
+            <a [routerLink]="['/fusang/userProfile']">
+            <!-- <i class="fa fas fa-user" aria-hidden="true"></i> -->
+            Profile
+            </a>
+          </li>
+          <li (click)="confirmChecking(confirmchecking)">
+              <!-- <i class="fa fas fa-user" aria-hidden="true"></i> -->
+              Support
+            </li>
+          <li id="logout" (click)="logOut()">
+            <!-- <i class="fa fa-sign-out" aria-hidden="true"></i> -->
+            Logout</li>
+        </ul>
+      </div>
+
+  </div>
+    <!-- <span style="float: right;">
+      <img  style="float: right;" class="header_img" src="./assets/images/sidebar/toolbar1.png">
+    </span> -->
+  </div>
+  <ng-template #confirmchecking class="invite succesmodal">
+      <div class="modal-header">
+        <div class="modal-header-wrapper">
+          <button type="button" class="close font24 pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body helpdeskModel">
+        <div>  <div class="form-container">
+            <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+            <img src="/assets/images/helpdesk.svg" alt="" class="successimg">
+          </div>
+        </div>
+        <div class="helpDeskQuery">
+            For any assistance please contact support team
+        </div>
+          <div class="row helpDesk">
+              <div class="col-md-6">
+                  <div class="row mainData mainDataphone">
+                    <span class="infoPhoneImg"><img src="/assets/images/envelope-1.png" alt=""></span>
+                    <span class="infotext">support@fusang.co </span>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                    <div class="row mainData">
+                        <span><img src="/assets/images/telephone-handle-silhouette-1.png" alt=""></span>
+                        <span class="infotext infotextmail">+852 3703 3322 </span>
+                      </div>
+                </div>
+          </div>
+        </div>
+
+      </ng-template>
+</div>

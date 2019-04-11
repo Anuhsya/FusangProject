@@ -1,0 +1,247 @@
+<div class="onboardflow">
+      <div>
+        <label class="genarateReport">Generate Reports</label>
+      </div>
+      <div class="genarateReportDiv">
+              <mat-card class="matCard-border">
+                <mat-tab-group>
+                    <mat-tab label="Invoice">
+                        <select class="select-dropdown" name="customerName" [(ngModel)]="customerName" (ngModelChange)="chageFilter()">
+                          <option [value]="0" [selected] = "true" disabled>Select Client</option>
+                          <option *ngFor="let role of clientList;let i = index" value="{{role.id}}">{{role.clientName}}</option>
+                        </select>
+                        <select class="select-dropdown" name="MonthName" [(ngModel)]="Month" (ngModelChange)="chageFilter()">
+                            <option [value]="0" [selected] = "true" disabled>Select Month</option>
+                            <option *ngFor="let monthValue of MonthLIst;let i = index" value="{{monthValue.code}}">{{monthValue.name}}</option>
+                        </select>
+                         <select class="select-dropdown" name="yearName" [(ngModel)]="Year" (ngModelChange)="chageFilter()">
+                            <option [value]="0" [selected] = "true" disabled>Select Year</option>
+                            <option *ngFor="let yearValue of yearList;let i = index" value="{{yearValue}}">{{yearValue}}</option>
+                        </select>
+                        <button class="genbtn" (click)="generateReport()" [disabled]="disableGenarateBtn">GENERATE</button>
+                        <img class="downloadpdfBtn" *ngIf="showReport" src="/assets/images/report/pdf.png" alt="" title="download" (click)="download()">
+                    </mat-tab>
+                    <!-- <mat-tab label="Client">
+                    </mat-tab>
+                    <mat-tab label="Admin ">
+                    </mat-tab>
+                    <mat-tab label="Role ">
+                    </mat-tab> -->
+                </mat-tab-group>
+              </mat-card>
+              <div class="InvoiceDiv" id="htmlform" *ngIf="showReport">
+                <div class="InvoiceDivInner">
+                  <div class="row row-padding">
+                        <div class="col-md-9"> 
+                           <img src="/assets/images/report/bitmap.png" alt="">
+                        </div>
+                        <div class="col-md-3 opensanRegular font14"> 
+                             <div class="row mainData">
+                                 <!-- <span></span>
+                                 <span>1-800-222-0123</span> -->
+                                 <div class="col-md-2">
+                                        <img src="/assets/images/report/phone@2x.png" alt="">
+                                 </div>
+                                 <div class="col-md-10">
+                                        +852 3703 3322
+                                 </div>
+                             </div>
+                             <div class="row mainData">
+                                <!-- <span><img src="/assets/images/report/phone@2x.png"></span>
+                                <span>fusangcustomercare@gmail.com</span> -->
+                                <div class="col-md-2">
+                                        <img src="/assets/images/report/mail@2x.png" alt="">
+                                 </div>
+                                 <div class="col-md-10">
+                                        info@fusang.co
+                                 </div>
+                            </div>
+                            <div class="row mainData">
+                                <!-- <span><img src="/assets/images/report/phone@2x.png"></span>
+                                <span>13/F, BOCG Life Assurance Tower
+                                    136 Des Voeux Road Central
+                                    Hong Kong</span> -->
+                                    <div class="col-md-2">
+                                            <img src="/assets/images/report/Location.png" alt="">
+                                     </div>
+                                     <div class="col-md-10">
+                                            13/F, BOCG Life Assurance Tower
+
+                                           136 Des Voeux Road Central
+
+                                            Hong Kong
+                                     </div>
+                            </div>
+                         </div>
+                  </div>
+                    <div class="row-padding">
+                        <div class="row rowhead font22 opensanBold">
+                            Fusang Customer Invoice
+                        </div>
+                        <div class="row opensanRegular">
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6 invoiceData">
+                                        Invoice Number
+                                    </div>
+                                    <div class="col-md-1 invoiceData">
+                                        : </div>
+                                    <div class="col-md-5 invoiceData">
+                                        {{data.clientDetails?.invoiceNumber}}
+                                    </div>
+                                  </div>
+                                  <!-- <div class="row">
+                                     <div class="col-md-6 invoiceData">
+                                        Invoice Date
+                                    </div>
+                                    <div class="col-md-1 invoiceData">
+                                        : </div>
+                                    <div class="col-md-5 invoiceData">
+                                            {{data.clientDetails.invoiceDate}}
+                                    </div>
+                                    </div> -->
+                                    <div class="row">
+                                      <div class="col-md-6 invoiceData">
+                                          Generated Time
+                                      </div>
+                                      <div class="col-md-1 invoiceData">
+                                          : </div>
+                                      <div class="col-md-5 invoiceData">
+                                            {{data.clientDetails.generatedDate | date }}
+                                      </div>
+                                  </div>
+                                  <!-- <div class="row">
+                                      <div class="col-md-6 invoiceData">
+                                          Client ID
+                                      </div>
+                                      <div class="col-md-1 invoiceData">
+                                          : </div>
+                                      <div class="col-md-5 invoiceData">
+                                            {{data.clientDeatils.invoiceDate}}
+                                      </div>
+                                    </div> -->
+                                    <div class="row">
+                                    <div class="col-md-6 invoiceData">
+                                        Client Name
+                                    </div>
+                                    <div class="col-md-1 invoiceData">
+                                        : </div>
+                                    <div class="col-md-5 invoiceData">
+                                        {{data.clientDetails.clientName}}
+                                    </div>
+                                  </div>
+                                <div class="row">
+                                    <div class="col-md-6 invoiceData">
+                                        Client address
+                                    </div> 
+                                    <div class="col-md-1 invoiceData">
+                                        : </div>
+                                    <div class="col-md-5 invoiceData">
+                                        {{data.clientDetails.clientAddress}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                    <div class="invoiceData">
+                                        Amount Payable
+                                    </div>
+                                    <div class="invoiceAmmount">
+                                         {{data.clientDetails.totalAmount}} BTC
+                                    </div>
+                                    <!-- <div class="invoiceData invoiceData1">
+                                        Due on : 28th Oct 2018
+                                    </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row-padding">
+                        <div class="row rowhead font22 opensanBold">
+                            Account Summary
+                        </div>
+                        <div class="row opensanRegular summaryDiv" *ngFor="let summary of data.summary;">
+                             <div class="col-md-2 text-center ASwalletCount" [class.highFrequency]="summary.typeOfWallet === 'HighFrequency'" [class.secure]="summary.typeOfWallet === 'SecureStorage'" [class.deepstorage]="summary.typeOfWallet === 'DeepStorage'">
+                                   <div class="count">
+                                      {{summary.numberOfWallets}}
+                                   </div>
+                                   <div class="font14">
+                                      Wallets
+                                    </div>
+                             </div>
+                             <div class="col-md-10 ASwalletDetail">
+                                   <div class="row WTrow">
+                                         <div class="col-md-9 font14"><span *ngIf="summary.typeOfWallet === 'SecureStorage'">Secure Storage</span>
+                                            <span *ngIf="summary.typeOfWallet === 'HighFrequency'">High Frequency</span>
+                                            <span *ngIf="summary.typeOfWallet === 'DeepStorage'">Deep Storage</span> </div>
+                                         <div class="col-md-3 textRight font14"> {{summary.totalCharge}} BTC</div>
+                                   </div>
+                                   <div class="row WTSrow">
+                                      <div class="col-md-9 font14">Holding Fee</div>
+                                      <div class="col-md-3 textRight font14 colorBlue"> {{summary.subcriptionFee}} BTC</div>
+                                    </div>
+                                    <div class="row WTSrow">
+                                        <div class="col-md-9 font14">Fusang Fee</div>
+                                        <div class="col-md-3 textRight font14 colorBlue"> {{summary.serviceCharge}} BTC</div>
+                                    </div>
+                              </div>
+                        </div>
+                      </div>
+                      <div class="row-padding" *ngIf="data?.transactionDetails != null">
+                          <div class="row rowhead font22 opensanBold">
+                              Transaction Details
+                          </div>
+                          <div *ngFor="let transactionDetail of data?.transactionDetails;" class="transactiondiv">
+                          <div class="opensanRegular">
+                            <span><img src="/assets/images/report/deep-storage.png" alt=""></span>
+                            <span class="walletType font14" *ngIf="transactionDetail.typeOfWallet === 'HighFrequency'">High Frequency</span>
+                            <span class="walletType font14" *ngIf="transactionDetail.typeOfWallet === 'SecureStorage'">Secure Storage</span>
+                            <span class="walletType font14" *ngIf="transactionDetail.typeOfWallet === 'DeepStorage'">Deep Storage</span>
+                            <span class="walletTypeCount font14">{{transactionDetail.numberOfWallets}}</span>
+                          </div>
+                          <div class="wdinfo opensanRegular" *ngFor="let walletsInfo of transactionDetail.wallets;">
+                              <div class="row tablemainHead" [class.highFrequency]="transactionDetail.typeOfWallet === 'HighFrequency'" [class.secure]="transactionDetail.typeOfWallet === 'SecureStorage'" [class.deepstorage]="transactionDetail.typeOfWallet === 'DeepStorage'">
+                                  <div class="col-md-6 font14">
+                                       {{walletsInfo.walletName}}
+                                  </div>
+                                  <div class="col-md-6 textRight font14">
+                                       {{walletsInfo.totalCharge}} BTC
+                                  </div>
+                                  
+                              </div>
+                              <div class="row WTTSrow">
+                                  <div class="col-md-9 font14">Holding Fee</div>
+                                  <div class="col-md-3 textRight font14 colorBlue"> {{walletsInfo.subcriptionFee}} BTC</div>
+                                </div>
+                                <div class="row WTTSSrow">
+                                    <div class="col-md-9 font14">Fusang Fee</div>
+                                    <div class="col-md-3 textRight font14 colorBlue"> {{walletsInfo.serviceCharge}} BTC</div>
+                                </div>
+                              <div class="row noOfTransaction">
+                                    <div class="col-md-3 font14">
+                                        No of Transactions : {{walletsInfo.transactions.length}}
+                                    </div>
+                                    <div class="col-md-9 font14 breacktext">
+                                        Users : {{walletsInfo.users}}
+                                    </div>
+                              </div>
+                              <table id="reportId" mat-table [dataSource]="walletsInfo.transactions" class="mat-elevation-z8 opensanRegular">
+                                  <ng-container *ngFor="let column of displayedColumnsTitle;" matColumnDef="{{column.Value}}" >
+                                      <th mat-header-cell *matHeaderCellDef> {{column.Name}} </th>
+                                      <td mat-cell *matCellDef="let element"> {{element[column.Value]}} </td>
+                                  </ng-container>
+                                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                              </table>
+                              <div class="row noOfTransaction">
+                                  <div class="col-md-9">Total Fusang Fee</div>
+                                  <div class="col-md-3 textRight colorBlue"> {{walletsInfo.serviceCharge}} BTC</div>
+                              </div>
+
+                          </div>
+                          </div>
+                      </div>
+                  </div>
+               </div>
+
+      </div>
+</div>

@@ -1,0 +1,487 @@
+
+<div class="wallets-wrapper bgColor10">
+    <div class="tabDiv" *ngIf="role === 'SuperUser'">
+        <button class="user-btn" [class.tabbackground]="tabValue == 'All Wallets'" (click)="tabclick('All Wallets')">All wallets</button>
+        <button class="user-btn" [class.tabbackground]="tabValue == 'My Wallets'" (click)="tabclick('My Wallets')">My wallets</button>
+    </div>
+  <!-- <div class="row">
+    <div class="col-md-6 col-sm-6 user-details-wrapper">
+      <div class="user-picture">
+
+        <img id="loggedInImage" src="{{imageUrl}}" alt="" class="img-circle">
+      </div>
+      <div class="user-details">
+        <div class="user-name khulaRegular">
+          {{username}}
+        </div>
+        <div class="user-status khulaSemiBold">
+          Last Logged In : {{lastlogin | date: 'dd-MM-yyyy HH:mm:ss' }}
+        </div>
+
+      </div>
+      <div class="user-status khulaSemiBold right-align">
+        <label class="usdstyle">1 BTC ~ {{oneUsdvalue | number:'3.1-5'}} USD</label>
+
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6 wallets-details-wrapper">
+      <div class="wallets-details-box">
+        <ul class="currency-list">
+          <li class="khulaSemiBold">
+            <span class="khulaLite"> {{walletsummaryinfo.totalBtc}} </span>
+            BTC
+          </li>
+          <li class="khulaSemiBold">
+            <span class="khulaLite">{{walletsummaryinfo.totalUsd}}</span>USD
+          </li>
+          <li class="khulaSemiBold">
+            <span class="khulaLite">{{walletsummaryinfo.totalWallet}}</span>
+            Wallets</li>
+        </ul>
+      </div>
+    </div>
+  </div> -->
+  <div class="row all-wallets khulaLite">
+    <div class="col-md-4 col-sm-4 walletheader">
+      Wallets
+    </div>
+    <div class="col-md-8 col-sm-8" >
+      
+              <div class="dropdown-wraper" *ngIf="role === 'SuperUser'">
+                  <span><img class="rfresh" src="./assets/images/Refresh.svg" alt="" title="Refresh" (click)="clear()"></span> 
+                  <select class="select-dropdown"  *ngIf="tabValue === 'All Wallets'" name="walletUserId" [(ngModel)]="walletUserId" (change)="userChange(walletUserId)">
+                      <option [value]=null [selected] = "true" >All-User</option>
+                      <option *ngFor="let user of walletUserLlist;let i = index" value="{{user.id}}">{{user.name}}</option>
+                    </select>
+                  <select class="select-dropdown" name="walletstatusType" [(ngModel)]="walletstatusType" (change)="walletstatusChange(walletstatusType)">
+                      <option [value]=null [selected] = "true">All-Status</option>
+                      <!-- <option value="Invited">Invited</option>
+                        <option value="Completed">Completed </option>
+                        <option value="Incomplete">Incomplete</option>
+                       <option value="Freezed">Freezed</option> -->
+                       <option *ngFor="let walletStatus of walletsummaryinfo.userWalletStatus;let i = index" >{{walletStatus}}</option>
+                    </select>
+                    <select class="select-dropdown" name="walletType" [(ngModel)]="WalletType" (change)="typeChange(WalletType)">
+                        <option [value]=null [selected] = "true" >All-Type</option>
+                        <option value="HighFrequency">High Frequency</option>
+                        <option value="SecureStorage">Secure Storage </option>
+                        <option value="DeepStorage">Deep Storage </option>
+                      </select>
+                      <select class="select-dropdown" name="coinType" [(ngModel)]="coinType" (change)="coinTypeChange(coinType)">
+                          <option [value]=null [selected] = "true">All-Coin</option>
+                          <option *ngFor="let coinType of walletsummaryinfo.coinType;let i = index" >{{coinType}}</option>
+                          <!-- <option *ngFor="let role of filterData;let i = index" >{{role}}</option> -->
+                        </select>
+                  <span><img class="rfresh" src="./assets/images/clear.svg" alt="" title="Refresh" (click)="refresh()"></span> 
+        <!-- <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle select-coin khulaRegular font14"
+            aria-controls="dropdown-basic">
+            <img src="./assets/images/personalwallet/{{model.symbol||default.symbol}}" alt="" />{{model.type||default.type}}
+          </button>
+          
+          <ul name="country" *dropdownMenu class="dropdown-menu form-control" role="menu" aria-labelledby="button-basic">
+
+            <li role="menuitem" *ngFor="let item of coinlist" (click)="coinSelected(item.name,item.dial_code)">{{item.name}}</li>
+            <li class="font12 khulaRegular" *ngFor="let item of coinlist" (click)="coinSelected(item.type,item.symbol)">
+              <img src="./assets/images/personalwallet/{{item.symbol}}" alt="" class="coin-image"> {{item.type}}</li>
+          </ul>
+        </div> -->
+
+      </div>
+    </div>
+  </div>
+  <div class="row allwalletsLabel font12"> 
+    <span>{{tabValue}}</span>
+  </div>
+  <div class="personal-wallets-wrapper">
+    <div class="row">  
+      <div class="col-md-4 col-sm-6 col-lg-3 margin-bottom" *ngIf="role === 'SuperUser'">
+        <!-- <div class=""> -->
+            <a class="marBtm" [routerLink]="['/fusang/createwalletinfo']">
+            <div class="center center-add create-wallets-btn">
+              <!-- <div> -->
+              
+                <!-- [routerLink]="['/fusang/createvalletinfo']" -->
+                <img class="imgcls" src="./assets/images/add-circular-button.svg" alt="" >
+            
+              <!-- (click)="createwallet(invitetemplate)" -->
+              <!-- </div> -->
+              <!-- <div> -->
+              <p>Create wallet</p>
+              <!-- </div> -->
+              <!-- </div> -->
+            </div>
+      </a>
+      </div>
+
+      <div class="col-md-4 col-sm-6 col-lg-3 walletList margin-bottom" *ngFor='let wallet of walletsummaryinfo.walletList'>
+        <div [class.walletDisabled]="wallet.status === 'Invited'" (click)="redirect(wallet)">
+          <div class="create-wallets-btn" [ngStyle]="{'border-top':wallet.status === 'Invited' ? '3px solid #4a90e2' : wallet.status === 'Completed' ? '3px solid #56ac17' : 
+          wallet.status === 'Freezed' ? '3px solid #adb0aa'  :'3px solid #e6c10b'  }">
+            <button class="btn status-btn" [class.statusInvited]="wallet.status === 'Invited'" [class.statusCompleted]="wallet.status === 'Completed'"
+              [class.statusIncompleted]="wallet.status === 'Incomplete'"  [class.statusFreezed]="wallet.status === 'Freezed'" >{{wallet.status}}</button>
+              <span class="example-header-bg" *ngIf="wallet.walletType === 'HighFrequency'">
+                  <img src="./assets/images/userpolicy/highfrequency.png" alt="" class="statusimg">
+                  
+                </span>
+                <span class="securestorage-bg" *ngIf="wallet.walletType === 'SecureStorage'"><img src="./assets/images/userpolicy/securestorage.png" alt="" class="statusimg"></span>
+             
+              <span class="deepstorage-bg" *ngIf="wallet.walletType === 'DeepStorage'"><img src="./assets/images/userpolicy/deep-storage.png"  alt="" class="statusimg"></span>
+            <div class="center khulaSemiBold">
+              <p class="wallet-title-box"> {{wallet.walletName}}</p>
+              <div>
+
+
+                <!-- <i class="fa fa-list fa-2x"></i> -->
+                <img class="imgcls" src="./assets/images/bitcoin_new.svg" alt="">
+
+
+              </div>
+              <p class="wallet-id-box"></p>
+              <p class="wallet-id-box"> {{wallet.clientName}}</p>
+              <p class="wallet-member-box khulaSemiBold">{{wallet.users}}
+                <span>{{(wallet.users==1)?'Member':'Members'}}</span>
+                <div class="wallet-table" *ngIf="wallet.status!=='Invited'">
+                  <!-- <div class="wallet-col">
+                <p class="khulaSemiBold">{{wallet.users}}</p>
+                <p class="khulaRegular">Member</p>
+              </div> -->
+                  <div class="wallet-col">
+                    <p class="khulaSemiBold">{{wallet.balanceBtc}}</p>
+                    <p class="khulaRegular">{{wallet.coinType}}</p>
+                  </div>
+                  <div class="wallet-col">
+                    <p class="khulaSemiBold">{{wallet.balanceUsd}}</p>
+                    <!-- .toLocaleString() -->
+                    <p class="khulaRegular">USD</p>
+                  </div>
+                </div>
+                <div class="wallet-table" *ngIf="wallet.status ==='Invited' && tabValue === 'My Wallets'">
+
+                  <div class="wallet-col">
+                    <button class="btn  join-btn sub-btn-info" (click)=joinwallet(wallet.walletId)>JOIN WALLET</button>
+                  </div>
+                  <!-- <div class="wallet-col">
+                <button class="btn  cancel-btn" (click)="cancelRequesyt(wallet.walletId)" disabled>CANCEL</button>
+              </div> -->
+                </div>
+            </div>
+
+          </div>
+        </div>
+      </div>     
+    </div>
+        <div class="row" *ngIf="walletsummaryinfo.totalWallet > 0">
+            <div class="col-md-12">
+            <pagination [boundaryLinks]="true" [totalItems]="walletsummaryinfo.totalWallet" class="pagination-xs"
+              [itemsPerPage]="10" [(ngModel)]="pageValue" (pageChanged)="pageChangewallet($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+              lastText="&raquo;" [rotate]="false">
+            </pagination>
+        </div>
+        </div>
+    <div class="wellcome-msg" *ngIf="walletsummaryinfo.totalWallet === 0 && !noData">
+      <h4 class="khulaLite" >This place looks deserted.</h4>
+      <p class="khulaSemiBold" >No wallets created yet</p>
+  </div>
+  <div class="wellcome-msg" *ngIf="walletsummaryinfo.totalWallet === 0 && noData">
+      <h4 class="khulaLite" >No results found</h4>
+      <!-- <p class="khulaSemiBold" >No Data Found</p> -->
+  </div>
+  
+  </div>
+</div>
+<ng-template #invitetemplate class="invite succesmodal">
+  <div class="invitepopup">
+    <div class="modal-header">
+      <div class="modal-header-wrapper">
+        <div class="modal-header-box font24 khulaSemiBold">Create Wallet
+          <button type="button" class="close font24 pull-right" aria-label="Close" (click)="walletmodalRef.hide()">
+            <img class="closeimg" src="/assets/images/close.png" alt="" >
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body invite">
+      <div class="invite-tabs">
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="basic" (click)="showbasic()">Wallet Type
+        </div>
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="approver" (click)="showapprover()"
+          [class.tabDesabled]="!basicForm.valid">Wallet Info</div>
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="assignroles" (click)="showassignroles()">Add
+          User</div>
+      </div>
+      <div class="basic-info-wrapper" *ngIf="basic">
+        <div class="form-wrapper">
+          <form class="example-form" [formGroup]="basicForm" (ngSubmit)="nexttab()" #f="ngForm" novalidate>
+            <div class="row">
+             
+              <div class="col-md-4 cardstlye" [class.disabled]="secureStorageedit">
+                <div class="col-md-12 row securestorage-image">
+                  <!-- <div class="col-md-12 row">
+                        <div class="col-md-10 headertext row">
+                          SECURE STORAGE
+                        </div>
+                         </div> -->
+                  <div class="col-md-12 row">
+                    <img src="./assets/images/userpolicy/securestorage.png" alt="" (click)="editpolicy(slsecurestorageId)" class="database">
+                  </div>
+                  <span class="headertext"> SECURE STORAGE</span>
+                </div>
+              </div>
+              <div class="col-md-4 cardstlye" [class.disabled]="deepStorageedit">
+                <div class="col-md-12 row  deepstorage-image">
+                  <!-- <div class="col-md-12 row">
+                        <div class="col-md-10 headertext row">
+                          DEEP STORAGE
+                        </div>
+                        
+                      </div> -->
+                  <div class="col-md-12 row">
+                    <img src="./assets/images/userpolicy/deep-storage.png" alt="" (click)="editpolicy(slsecurestorageId)" class="database">
+                  </div>
+                  <span class="headertext">DEEP STORAGE</span>
+                </div>
+
+              </div>
+              <div class="col-md-4 cardstlye" [class.disabled]="highFrequencyedit">
+                <div class=" col-md-12 row example-header-image">
+                  <!-- <div class="col-md-12 row">
+                        <div class="col-md-10 headertext row" >
+                          HIGH FREQUENCY
+                        </div>
+                        
+                      </div> -->
+                  <div class="col-md-12 row">
+                    <img src="./assets/images/userpolicy/highfrequency.png" alt="" (click)="editpolicy(slsecurestorageId)" class="database">
+                  </div>
+                  <span class="headertext"> HIGH FREQUENCY</span>
+                </div>
+              </div>
+
+            </div>
+            <div class="inner-form">
+              <mat-form-field class="example-half-width">
+                <input matInput placeholder="Transaction Hours Limit" required formControlName="transactionLimit" name="transactionLimit"
+                  autocomplete="off">
+              </mat-form-field>
+
+              <mat-form-field class="example-half-width">
+                <input matInput placeholder="Transaction Volume Cap" required formControlName="transactionCap" name="transactionCap"
+                  autocomplete="off">
+              </mat-form-field>
+              <mat-form-field class="example-half-width">
+                <input matInput placeholder="Frequency Cap" required formControlName="frequencyCap" name="frequencyCap"
+                  autocomplete="off">
+              </mat-form-field>
+              <mat-form-field class="example-half-width">
+                <input matInput placeholder="Wallet Address Configuration" required formControlName="walletAddress" name="walletAddress"
+                  autocomplete="off">
+              </mat-form-field>
+              <!-- <mat-form-field class="example-full-width">
+                        <input matInput placeholder="IP Address Config" required name="ipConfig" autocomplete="off" formControlName="ipConfig">
+                    </mat-form-field> -->
+            </div>
+            <div class="linebottom"></div>
+            <button class="btn-orange" [disabled]="!basicForm.valid">Next</button>
+          </form>
+        </div>
+      </div>
+      <div class="approver-info-wrapper" *ngIf="approver">
+        <div class="form-wrapper">
+          <form name="form" (ngSubmit)="f.form.valid && createWallet(addUserForm)" #f="ngForm"  class="notmaterial" novalidate>
+              <div class="wallet-info-wrapper">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="user-name khulaRegular fus-name">
+                        <!-- <div class="fus-name"> -->
+                          <div class="group" [ngClass]="{ 'has-error': f.submitted && !walletName.valid}">
+                            <input class="form-control" type="text" (focusout)="focusFunction('')" (focus)="focusFunction('walletName')" name="walletName"
+                              [(ngModel)]="wDetails.walletName" #walletName="ngModel" required />
+                            <label [class.activeLabel]="focusedElement=='walletName'" [class.lableTop]="(wDetails.walletName!=='') && (walletName.touched==true || walletName.valid==true|| walletName.valid==false)"
+                              [class.inputSuccess]="walletName.valid==true" [class.inputError1]="walletName.valid==false && walletName.touched==true"
+                              [class.inputError]="focusedElement!=='walletName' && walletName.valid==false && walletName.touched==true"
+                              for="walletName">Wallet Name &nbsp;
+                              <span class="mandatory">*</span>
+                            </label>
+            
+                            <div *ngIf="!walletName.valid && walletName.touched === true" class="help-block caution">wallet name required</div>
+                            <!-- <div *ngIf="!f.submitted && !walletName.valid && walletName.touched === true" class="help-block caution">wallet name required</div> -->
+                          </div>
+                          <div class="group" [ngClass]="{ 'has-error': f.submitted && !ownerName.valid}">
+                            <input class="form-control" type="text" name="ownerName" (focusout)="focusFunction('')" (focus)="focusFunction('ownerName')"
+                              [(ngModel)]="wDetails.ownerName" #ownerName="ngModel" required/>
+                            <label [class.activeLabel]="focusedElement=='ownerName'" [class.lableTop]="(wDetails.ownerName !== '') && (ownerName.touched === true || ownerName.valid==true|| ownerName.valid === false)"
+                              [class.inputSuccess]="ownerName.valid === true" [class.inputError1]="ownerName.valid === false && ownerName.touched === true"
+                              [class.inputError]="focusedElement!=='ownerName' && ownerName.valid === false && ownerName.touched === true"
+                              for="ownerName">Your Name &nbsp;
+                              <span class="mandatory">*</span>
+                            </label>
+                            <div *ngIf="!ownerName.valid && ownerName.touched === true" class="help-block caution">owner name required</div>
+                            <!-- <div *ngIf="!f.submitted && !ownerName.valid && ownerName.touched === true" class="help-block caution">owner name required</div> -->
+                          </div>
+                        <!-- </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="user-name khulaRegular fus-name">
+                        <!-- <div class="fus-name"> -->
+                        <div class="group" [ngClass]="{ 'has-error': f.submitted && !noOfUsers.valid}">
+                          <input class="form-control" type="number" name="noOfUsers" (focusout)="focusFunction('')" (focus)="focusFunction('noOfUsers')"
+                            [(ngModel)]="wDetails.noOfUsers" #noOfUsers="ngModel" (ngModelChange)="onuserChange($event)" required />
+                          <label [class.activeLabel]="focusedElement=='noOfUsers'" [class.lableTop]="(wDetails.noOfUsers !== '') && (noOfUsers.touched === true || noOfUsers.valid==true|| noOfUsers.valid === false)"
+                            [class.inputSuccess]="noOfUsers.valid === true" [class.inputError1]="noOfUsers.valid === false && noOfUsers.touched === true"
+                            [class.inputError]="focusedElement!=='noOfUsers' && noOfUsers.valid === false && noOfUsers.touched === true"
+                            for="noOfUsers">Number of user/s &nbsp;
+                            <span class="mandatory">*</span>
+                          </label>
+                          <!-- <div *ngIf="noOfUsersAvail">Enter users more than 0</div> -->
+                          <div *ngIf="wDetails.noOfUsers === '' && noOfUsers.touched === true" class="help-block caution">number of users required</div>
+                          <!-- <div *ngIf="!f.submitted && !noOfUsers.valid && noOfUsers.touched === true" class="help-block caution">number of users required</div> -->
+            
+                          </div>
+                          <div class="group" [ngClass]="{ 'has-error': f.submitted && !noOfSignatures.valid}">
+                            <input class="form-control"  step="1" min="1" type="number" name="noOfSignatures" (focusout)="focusFunction('')" (focus)="focusFunction('noOfSignatures')"
+                              [(ngModel)]="wDetails.noOfSignatures" #noOfSignatures="ngModel" (ngModelChange)="onsignatureChange($event)"
+                              required />
+                            <label [class.activeLabel]="focusedElement=='noOfSignatures'" [class.lableTop]="(wDetails.noOfSignatures !== '') && (noOfSignatures.touched === true || noOfSignatures.valid==true|| noOfSignatures.valid === false)"
+                              [class.inputSuccess]="noOfSignatures.valid === true" [class.inputError1]="noOfSignatures.valid === false && noOfSignatures.touched === true"
+                              [class.inputError]="focusedElement!=='noOfSignatures' && noOfSignatures.valid === false && noOfSignatures.touched === true"
+                              for="noOfSignatures">Required Number of Signature/s &nbsp;
+                              <span class="mandatory">*</span>
+                            </label>
+                            <!-- <div *ngIf="noOfUsersAvail && !wDetails.noOfSignatures)||!noOfSignatures.valid && noOfSignatures.touched === true" class="help-block caution">signatures required</div> -->
+                            <!-- <div *ngIf="!f.submitted && !noOfSignatures.valid && noOfSignatures.touched === true" class="help-block caution">signatures required</div> -->
+                            <div *ngIf="erroinsignsture" class="help-block caution">Signatures can not be more than number of user</div>
+                            <div *ngIf="(noOfUsersAvail && !wDetails.noOfSignatures)||!noOfSignatures.valid && noOfSignatures.touched === true"  class="help-block caution">signatures required</div>
+                          </div>
+                        <!-- </div> -->
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="user-name khulaRegular fus-name">
+                        <!-- <div class="fus-name"> -->
+                          <div class="group" [ngClass]="{ 'has-error': f.submitted && !coinType.valid}">
+                            <label [class.activeLabel]="focusedElement=='coinType'" [class.lableTop]="(coinValue.coinType!='') && (coinType.touched==true || coinType.valid==true|| coinType.valid==false)"
+                              [class.inputSuccess]="coinType.valid==true" [class.inputError1]="coinType.valid==false && coinType.touched==true"
+                              [class.inputError]="focusedElement!=='coinType' && coinType.valid==false && coinType.touched==true" for="coinType">Coin
+                              <span class="mandatory">*</span>
+                            </label>
+                            <select class="form-control" name="coinType" (focusout)="focusFunction('')" (focus)="focusFunction('coinType')" [(ngModel)]="coinValue.coinType"
+                              (change)="coinSelected(coinValue.coinType);" #coinType="ngModel" required>
+                              <option [value]="undefined" [attr.selected]="true" disabled>Select Coin</option>
+                              <option *ngFor="let item of coinlist;let i= index">{{item}}</option>
+            
+                            </select>
+                            <div *ngIf="!coinType.valid && coinType.touched==true" class="help-block caution errclass">Coin is required</div>
+            
+                          </div>
+                        <!-- </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+           
+            <button class="btn-orange btn-left">Submit</button>
+          </form>
+        </div>
+      </div>
+      <div class="basic-info-wrapper" *ngIf="assignroles">
+        <div class="form-wrapper">
+          <form name="addUserForm" #addUserForm="ngForm" class="notmaterial" novalidate>
+            <div class="user-name khulaRegular">
+              <div class="fus-name col-md-12 row" *ngFor="let user of userList;let userindex = index">
+                <div class="group">
+                  <input type="text" name="userId" [value]="user.username" required readonly />
+                  <label class="inputSuccess">User Name</label>
+                </div>
+                <div class="group" dropdown>
+                  <!-- dropdown -->
+                  <input type="text" name="roleId" [value]="user.roleName" dropdownToggle readonly />
+                  <!-- dropdownToggle  -->
+                  <label class="inputSuccess">Role</label>
+
+
+                  <ul id="dropdown-role" [hidden]="userindex == 0" name="userrole" *dropdownMenu class="dropdown-menu  form-control"
+                    role="menu" aria-labelledby="dropdown-role">
+
+                    <li #id role="menuitem" [ngClass]="{'active': selectedItem == item.name}" *ngFor="let item of roleList;let i= index"
+                      (click)="userroleSelected(item,userindex)">{{item.name}}</li>
+
+                  </ul>
+                  <em [hidden]="userindex == 0" class="fa fa-caret-down arrowclass"></em>
+
+
+                </div>
+                <span [hidden]="userindex == 0" class="deleteimg-outer">
+                  <img class="deleteimg" src="./assets/images/personalwallet/smalldelete.png" alt="" (click)="deleterow(userindex)">
+                </span>
+              </div>
+              <div class="fus-name col-md-12 row" *ngIf="initialfslde">
+                <div class="group" dropdown [ngClass]="{ 'has-error': !username.valid}">
+
+
+                  <!-- <ng-select [(ngModel)]="model.username" placeholder="User Name" (ngModelChange)="userSelected($event)" [closeOnSelect]="true"
+                  [clearable]="true" [hideSelected]="false" name="serchValue" #username="ngModel"  required>
+                  <ng-option *ngFor="let item of autosearchresult;let i= index" [value]="item">{{item.username}}</ng-option>
+                 </ng-select> -->
+
+
+
+                  <input type="text" name="username" [(ngModel)]="model.username" (focus)="focusFunction('username')"
+                    (ngModelChange)="onChange($event)" dropdownToggle #username="ngModel" required autocomplete="off" />
+                  <!-- inputkey [componentRef]="compRef" -->
+                  <!-- <ul id="dropdown-basic" name="role" *dropdownMenu class="dropdown-menu form-control  " role="menu" aria-labelledby="button-basic">
+                  <li #id role="menuitem" *ngFor="let item of autosearchresult;let i= index" (click)="userSelected(item)">{{item.username}}</li>
+                </ul> -->
+                  <label [class.activeLabel]="focusedElement=='username'" [class.lableTop]="(model.username!=='') && (username.touched==true || username.valid==true|| username.valid==false)"
+                    [class.inputSuccess]="username.valid==true" [class.inputError1]="username.valid==false && username.touched==true"
+                    [class.inputError]="focusedElement!=='username' && username.valid==false && username.touched==true"
+                    for="username">User Name</label>
+                  <!-- <div *ngIf="!username.valid" class="help-block caution">user name required</div> -->
+                  <div *ngIf="!username.valid && username.touched === true" class="help-block caution">user name
+                    required</div>
+                  <!-- <div *ngIf="errorUserInfo" class="caution">Added user list does not matches with no of user</div> -->
+                  <!-- <div *ngIf="existinguser" class="caution" >User Already Exist</div> -->
+                </div>
+
+                <div class="group" [ngClass]="{ 'has-error': !role.valid}">
+                  <label [class.activeLabel]="focusedElement=='role'" [class.lableTop]="(model.role!='' || model.role !== null) && (role.touched==true || role.valid==true || role.valid==false)"
+                    [class.inputSuccess]="role.valid==true" [class.inputError1]="role.valid==false && role.touched==true"
+                    [class.inputError]="focusedElement!=='role' && role.valid==false && role.touched==true" for="role">Role
+                    &nbsp;
+                    <span class="mandatory">*</span>
+                  </label>
+                  <select class="form-control" name="application" (focusout)="focusFunction('')" (focus)="focusFunction('role')"
+                    [(ngModel)]="model.role" (change)="roleSelected($event.target.value)" #role="ngModel" required>
+                    <option *ngFor="let item of roleList;let i= index;" [value]="item.value">{{item.name}}</option>
+
+                  </select>
+                  <div *ngIf="!role.valid && role.touched==true" class="help-block caution errclass">Role is required</div>
+
+                </div>
+                <span class="deleteimg-outer">
+                  <img class="deleteimg" src="./assets/images/personalwallet/smalldelete.png" alt="" (click)="deleteextrarow()">
+                </span>
+
+              </div>
+            </div>
+            <div class="add-more-user" *ngIf="(userList.length < wDetails.noOfUsers) && adduserStatus" (click)="addUserForm.form.valid && addUser(addUserForm);">
+              <img class="imgcls" src="./assets/images/add-user.svg" alt="">
+            </div>
+            <div>
+              <!-- <span class="caution errorclass" *ngIf="moreAdmins"> Admin role of the added user should  be equal to  no of signatures.</span> -->
+              <span *ngIf="errorUserInfo" class="caution ">Number of users added does not match with count</span>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!--customer invite popup end -->

@@ -1,0 +1,195 @@
+
+
+<div class="area">
+
+
+    
+  <nav class="main-menu shadow p-3 mb-5 bg-white">
+  <ul >
+
+<li class="center" >
+        <a >
+          <span  class="display-contents"><img src="./assets/images/sidebar/bitmap@2x.png" alt="" class="imagestyle imagecenter"></span>
+
+
+        </a>
+
+    </li>
+    <!-- <li class="has-subnav" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+        <a >
+
+          <span  class="fa-2x"><img src="./assets/images/sidebar/dash.svg" class="imagestyle"></span>
+
+            <span class="block">
+                Dashboard
+            </span>
+        </a>
+
+    </li> -->
+    
+
+    <li class="has-subnav" *ngIf="role === 'User' || role === 'superUser'" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+        <a [routerLink]="['/fusang/walletcreate']">
+          <span class="fa-2x">
+              <img src="./assets/images/sidebar/wallet.svg" class="imagestyle" alt="">
+          </span>
+
+            <span class="block">
+                Wallet
+            </span>
+        </a>
+
+    </li>
+    <li class="has-subnav" *ngIf="role === 'Admin' || role === 'Fusang User'" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+            <a [routerLink]="['/fusang/ticket']">
+              <span class="fa-2x">
+                  <img src="./assets/images/sidebar/ticket.svg" class="imagestyle" alt="">
+              </span>
+        
+                <span class="block">
+                    Tickets
+                </span>
+            </a>
+        
+        </li>
+    <li class="has-subnav" *ngIf="role === 'Admin' || superAdmin" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+      <a [routerLink]="['/fusang/admins']">
+        <span class="fa-2x">
+            <img src="./assets/images/sidebar/users.svg" class="imagestyle" alt="">
+        </span>
+
+          <span class="block">
+            Admins
+          </span>
+      </a>
+
+  </li>
+  <li class="has-subnav" *ngIf="role === 'Admin' || role === 'Fusang User'" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+        <a [routerLink]="['/fusang/clients']">
+          <span class="fa-2x">
+              <img src="./assets/images/sidebar/client.svg" class="imagestyle" alt="">
+          </span>
+  
+            <span class="block">
+              Clients
+            </span>
+        </a>
+  
+    </li>
+    <!-- <li class="has-subnav" *ngIf="role === 'Admin' || role === 'Fusang User'" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+            <a [routerLink]="['/fusang/clientProfile']">
+              <span class="fa-2x">
+                  <img src="./assets/images/sidebar/client.svg" class="imagestyle">
+              </span>
+      
+                <span class="block">
+                  Clients
+                </span>
+            </a>
+      
+        </li> -->
+
+    <li class="has-subnav" *ngIf="role !== 'User'" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: false}">
+        <a routerLink="/fusang/User">
+          <span class="fa-2x">
+              <img src="./assets/images/sidebar/user.svg" class="imagestyle" alt="">
+          </span>
+  
+            <span class="block">
+              Users
+            </span>
+        </a>
+  
+    </li>
+  <!-- <li class="has-subnav" *ngIf="role !== 'Customer'" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+    <a [routerLink]="['/fusang/customers']">
+      <span class="fa-2x">
+          <img src="./assets/images/sidebar/customer.svg" class="imagestyle">
+      </span>
+
+        <span class="block">
+            Customers
+        </span>
+    </a>
+
+</li> -->
+    <!-- <li class="has-subnav" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+        <a [routerLink]="['/suggestions']">
+            <i class="fa fa-list fa-2x"></i>
+           <span class="fa-2x"><img src="./assets/images/sidebar/suggestion.png" class="imagestyle"></span>
+
+            <span class=">
+              Suggestions
+            </span>
+        </a>
+
+    </li> -->
+    <li class="has-subnav" *ngIf="role === 'Admin' || role === 'Fusang User'"  routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: true}">
+          
+        <a [routerLink]="['/fusang/policy']">
+
+      <span class="fa-2x"><img src="./assets/images/sidebar/stting.svg" class="imagestyle" alt=""></span>
+
+            <span class="block">
+                Configure
+            </span>
+        </a>
+
+    </li>
+    <li class="has-subnav" *ngIf="role === 'Admin' || role === 'Fusang User'"  routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: false}">
+          
+            <a [routerLink]="['/fusang/Report']">
+    
+          <span class="fa-2x"><img src="./assets/images/sidebar/report.svg" class="imagestyle" alt=""></span>
+    
+                <span class="block">
+                        Billing
+                </span>
+            </a>
+                
+    </li>
+    <li *ngIf="this.role !== 'User'" class="has-subnav companymenuli" routerLinkActive="listActive" [routerLinkActiveOptions]="{exact: false}">
+        <a [routerLink]="['/fusang/Dashboard/transactions']">
+
+      <span class="fa-2x"><img src="./assets/images/sidebar/main.svg" class="imagestyle"></span>
+
+            <span class="block">
+               Dashboard
+            </span>
+        </a>
+        <ul class="submenu">
+            <li class="li_stle" routerLinkActive="listActive_sub" >
+                    <a [routerLink]="['/fusang/Dashboard/transactions']">
+                        <span class="txt_diply">
+                                Transaction
+                             </span>
+                    </a>
+                
+            </li>
+            <li class="li_stle" *ngIf="role === 'Admin' || role === 'Fusang User'" routerLinkActive="listActive_sub" >
+                <a [routerLink]="['/fusang/Dashboard/Violation']">
+                    <span class="txt_diply">
+                            Violation
+                         </span>
+                </a>
+            
+            </li>
+            <!-- <li class="li_stle" routerLinkActive="listActive_sub" >
+                    <a [routerLink]="['/fusang/Dashboard/reportandbilling']">
+                        <span class="txt_diply">
+                                Reports and Billing
+                             </span>
+                    </a>
+                
+            </li> -->
+            
+            
+        </ul>
+
+    </li>
+    
+
+</ul>
+</nav>
+
+</div>

@@ -1,0 +1,153 @@
+
+ <app-table-component [workflowData]="customerValue" ></app-table-component>
+ 
+ <button class="commonButton" id="invitPopups" style="display: none;" (click)="inviteCustomer(invitetemplate)">invite</button>
+ 
+ <ng-template #invitetemplate class="invite succesmodal">
+    <div class="invitepopup">
+      <div class="modal-header">
+        <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold">Invite Fusang Customers</div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="modalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      </div>
+      <div class="modal-body invite">
+        <div class="invite-tabs">
+          <div class="Information-box font14 khulaRegular" [class.activeTab]="basic" (click)="showbasic()">Basic Information</div>
+          <div class="Information-box font14 khulaRegular" [class.activeTab]="approver" (click)="showapprover()" [class.tabDesabled]="!basicForm.valid">Approver Information</div>
+      </div>
+      <div class="basic-info-wrapper" *ngIf="basic">
+        <div class="form-wrapper">
+            <form class="example-form" [formGroup]="basicForm" (ngSubmit)="nexttab()" #f="ngForm" novalidate>
+              <div class="inner-form">
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="First Name" required formControlName="firstName"  name="firstName" autocomplete="off" >
+                      <mat-error *ngIf="basicForm.get('firstName').touched && basicForm.get('firstName').invalid">
+                          First Name is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  
+                    <mat-form-field class="example-half-width">
+                        <input matInput placeholder="Last Name" required formControlName="lastName"   name="laststName" autocomplete="off">
+                        <mat-error *ngIf="basicForm.get('lastName').touched && basicForm.get('lastName').invalid">
+                            Last Name is <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- <div class="flex-wrap"> -->
+                      <mat-form-field class="example-half-width">
+                        <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput  [matAutocomplete]="auto" formControlName="country"><span></span>
+                        <mat-error *ngIf="basicForm.get('country').touched && basicForm.get('country').invalid">
+                            Country is <strong>required</strong>
+                        </mat-error>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                          <mat-option *ngFor="let item of filteredOptions| async" [value]="item" >
+                              {{item}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field class="example-half-width country-code">
+                          <!-- <span>{{code}}</span> -->
+                            <input matInput placeholder="Code" name="code" autocomplete="off" [value]="code||''" disabled>
+                        </mat-form-field>
+                      <mat-form-field class="example-half-width phone-number">
+                        <!-- <span>{{code}}</span> -->
+                          <input matInput placeholder="Phone Number" type="number" required name="phoneNo" max="{{countryPhonelen}}"  maxLength="{{countryPhonelen}}"  autocomplete="off" formControlName="phoneNumber"
+                          oninput="this.value=this.value.slice(0,this.maxLength)" [(ngModel)]="phoneNumber" (ngModelChange)="onChange(phoneNumber)">
+                          <mat-error *ngIf="basicForm.get('phoneNumber').errors?.required">
+                             Phone Number is <strong>required</strong>
+                          </mat-error>
+                          <!-- <mat-error *ngIf="basicForm.get('phoneNumber').errors?.pattern">
+                              Phone Number should not start with 0
+                           </mat-error> -->
+                           <div *ngIf="invalidphone && phoneNumber!=''" class="help-block1 caution">Please enter {{countryPhonelen}} digit number</div>
+                      </mat-form-field>
+                    <!-- </div> -->
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Email ID" required name="email" autocomplete="off" formControlName="username">
+                          <mat-error *ngIf="basicForm.get('username').errors?.required">
+                              Username is <strong>required</strong>
+                          </mat-error>
+                          <mat-error *ngIf="basicForm.get('username').errors?.email">
+                              Please enter username as <strong>email format</strong>
+                          </mat-error>
+                      </mat-form-field>
+              </div>
+              <div class="linebottom"></div>
+              <button class=" btn btn-orange" [disabled]="!basicForm.valid || invalidphone">Next</button>
+              </form>
+        </div>
+      </div>
+      <div class="approver-info-wrapper" *ngIf="approver">
+        <div class="form-wrapper">
+          <!-- <form class="example-form" (ngSubmit)="invitedSuccessfull(successtemplate)" #f="ngForm"> -->
+          <form class="example-form" (ngSubmit)="f.form.valid && invitedSuccessfull(successtemplate)" #f="ngForm">
+            <mat-accordion>
+              <mat-expansion-panel *ngFor="let item of x;let i=index" (opened)="item.visible=true" (closed)="item.visible=false" [class.expPannel]="item.visible">
+                <mat-expansion-panel-header class="panal-layout" [class.openHeader]="item.visible" (click)="onDeptSelect(item)">
+                  <mat-panel-title class="khulaSemiBold" [class.khulaBold]="item.visible">
+                    <img src="assets/images/inviteuser/{{item.name.split(' ')[0].toLowerCase()}}.svg" alt="" class="acc-image">{{item.name}}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box" *ngFor="let role of item.role; let j=index">
+                  <div class="verifier-text example-third-width">{{role}}</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                      <input matInput class="arrow" placeholder="Primary {{role}}"  aria-label="String" [(ngModel)]="model['primary_' + item.id + '_' + role.toUpperCase()]" [name]="'primary_' + item.id + '_' + role.toUpperCase()"  [matAutocomplete]="auto" (focus)="onFocus(role.toLowerCase())" (ngModelChange)="onValChange(model['primary_' + item.id + '_' + role.toUpperCase()], 'primary_' + item.id + '_' + role.toUpperCase())" required ><span></span>
+                      <mat-error *ngIf="'primary_' + item.id + '_' + role.toUpperCase()">
+                         {{'primary' +' ' + role.toUpperCase()}} is <strong>required</strong>
+                      </mat-error>
+                    <!-- <input type="text" class="arrow" placeholder="Primary {{role}}" aria-label="String" matInput [matAutocomplete]="auto"> -->
+                    <mat-autocomplete #auto="matAutocomplete" class="autocomplete" [displayWith]="displayFn">
+                      <mat-option class="autocomplete" *ngFor="let list of filteredValues" [value]="list">
+                        {{list.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+    
+                  <mat-form-field class="example-half-width example-third-width">
+                      <input matInput class="arrow" placeholder="Backup {{role}}"  aria-label="String" [(ngModel)]="model['backup_' + item.id + '_' + role.toUpperCase()]" [name]="'backup_' + item.id + '_' + role.toUpperCase()"  [matAutocomplete]="auto2" (focus)="onFocus(role.toLowerCase())" (ngModelChange)="onValChange(model['backup_' + item.id + '_' + role.toUpperCase()], 'backup_' + item.id + '_' + role.toUpperCase())" required ><span></span>
+                      <mat-error *ngIf="'backup_' + item.id + '_' + role.toUpperCase()">
+                          {{'backup' +' '+ role.toLowerCase()}} is <strong>required</strong>
+                       </mat-error>
+                      <mat-autocomplete #auto2="matAutocomplete" class="autocomplete" [displayWith]="displayFn">
+                        <mat-option class="autocomplete" *ngFor="let list of filteredValues" [value]="list">
+                          {{list.name}}
+                        </mat-option>
+                      </mat-autocomplete>
+                  </mat-form-field>
+                </div>
+          
+              </mat-expansion-panel>
+            </mat-accordion>
+            <!-- <div class="linebottom"></div> -->
+            <button class=" btn btn-orange btn-left" [disabled]="!f.form.valid">SUBMIT</button>
+          </form>
+        </div>
+      </div>
+      </div>
+      </div>
+    </ng-template>
+    
+    <ng-template #successtemplate class="invite succesmodal">
+        <div class=" successpopup">
+          <div class="modal-header no-line">
+            <div class="modal-header-wrapper">
+                <div class="modal-header-box font24 khulaSemiBold"></div>
+                <button type="button" class="close font24 pull-right" aria-label="Close" (click)="successRef.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+          </div>
+          <div class="modal-body center-box">
+            <img src="assets/images/inviteuser/success.svg" alt="">
+            <div class="sus-contant-box">
+              <p class="font24 khulaSemiBold success-message">{{this.msg}}</p>
+              <div>
+                <button class="invitemore khulaSemiBold" (click)="successRef.hide();inviteCustomer(invitetemplate)">INVITE MORE</button>
+                 <button class="btn-orange khulaSemiBold" (click)="closeTab()">DONE</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>

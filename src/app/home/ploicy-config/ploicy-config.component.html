@@ -1,0 +1,204 @@
+<div class="col-md-12 row topdivcls " *ngIf = "role !=='Admin'">
+        
+    <div class="col-md-9" *ngIf="policyType === 'HighFrequency' " >
+            
+        <label class="Configurations">Configurations</label>
+        <br>
+        <span>
+            <img class="configimg" src="./assets/images/config/highfrequency.png" alt="">
+            <label class="typetext">High Frequency</label>
+            <br>
+            <sub class="subtext">List of all Configurations</sub>
+        </span>
+    </div>
+    <div class="col-md-9" *ngIf="policyType === 'DeepStorage'">
+        <label class="Configurations">Configurations</label>
+        <br>
+        <span>
+            <img class="configimgsecure" src="./assets/images/userpolicy/deep-storage.png" alt="">
+            <label class="typetext">Deep Storage</label>
+            <br>
+            <sub class="subtext">List of all Configurations</sub>
+        </span>
+    </div>
+    <div class="col-md-9" *ngIf="policyType === 'SecureStorage'">
+        <label class="Configurations">Configurations</label>
+        <br>
+        <span>
+            <img class="configimgsecure" src="./assets/images/userpolicy/securestorage.png" alt="">
+            <label class="typetext">Secure Storage</label>
+            <br>
+            <sub class="subtext">List of all Configurations</sub>
+        </span>
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="cancelbtn" (click)="cancelrequest()">CANCEL</button>
+        <button type="submit" class="sendbtn" (click)="updatedetails()" >SEND</button>
+    </div>
+</div>
+<div class="col-md-12 row mainclss" *ngIf="role !=='Admin'">
+    <div class="invite-tabs">
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="policy" (click)="showpolicyconfig()">Policy Configuration</div>
+        <!-- <div class="Information-box font14 khulaRegular" [class.activeTab]="compilance" (click)="showacompilance()">Compilance Configurations</div> -->
+    </div>
+</div>
+<div class="col-md-12 row mainclss" *ngIf="role !=='Admin'">
+
+    <form class="example-form">
+        <mat-accordion>
+            <mat-expansion-panel class="expPannel">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold">
+                        Transaction Hours Limit
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                    <div class="verifier-text  example-third-width ">Transaction Hours Limit</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Minimum" autocomplete="off" name="transactionTimeStart" [(ngModel)]="policylist.transactionTimeStart" #transactionTimeStart="ngModel" >
+                    </mat-form-field>
+
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Maximum" autocomplete="off" name="transactionTimeEnd" [(ngModel)]="policylist.transactionTimeEnd" #transactionTimeEnd="ngModel">
+                    </mat-form-field>
+                </div>
+            </mat-expansion-panel>
+
+            <!-- <mat-expansion-panel class="expPannel">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold">
+                        IP Address Config
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box">
+                    <div class="verifier-text example-third-width">Max Allowed IPs</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Enter Max Allowed IPs" autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <div class="verifier-box">
+                    <div class="verifier-text example-third-width">IP Address Whitelist</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="IP Address" autocomplete="off">
+                        
+                    </mat-form-field>
+                    <img class="remove" (click)="removeipaddress()" src="./assets/images/config/remove.png">
+
+                    
+                    <div class="verifier-box" *ngIf="showipaddress">
+                        <div class="verifier-text example-third-width"></div>
+                        <mat-form-field class="example-half-width example-third-width">
+                            <input matInput placeholder="IP Address" autocomplete="off">
+                            
+                        </mat-form-field>
+                        <img class="remove" (click)="removeipaddress()" src="./assets/images/config/remove.png">
+                    </div>
+                </div>
+                <div class="verifier-text example-third-width"><button matButton type="submit" class="ADD" (click)="addipaddress()" >+ ADD</button></div>
+            </mat-expansion-panel> -->
+            <mat-expansion-panel class="expPannel">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold">
+                        Wallet Address Config
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box">
+                    <div class="verifier-text example-third-width">Max Wallet Allowed</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Enter Max Allowed Wallets" autocomplete="off" name="Maxnumberofwallet" [(ngModel)]="policylist.Maxnumberofwallet" #Maxnumberofwallet="ngModel">
+                        
+                    </mat-form-field>
+                </div>
+                <div class="verifier-box" *ngFor="let item of WalletAddressWhitelist;let addressindex = index">
+                    <div class="verifier-text example-third-width">Wallet Address</div>
+                    <mat-form-field class="example-half-width example-third-width" >
+                        <input matInput placeholder="Wallet Address" autocomplete="off" [value]="item" >
+                        
+                    </mat-form-field>
+                    <img class="remove" (click)="removewalletaddress(addressindex)" src="./assets/images/config/remove.png" alt="">
+                </div>
+                <div class="verifier-box" *ngIf="showwalletfield">
+                    <div class="verifier-text example-third-width"></div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Wallet Address" autocomplete="off" name="walletaddress" [(ngModel)]="itemvalue.walletaddress" #walletaddress="ngModel" >
+                       
+                    </mat-form-field>
+                    <!-- <img class="remove" (click)="removewalletaddress1()" src="./assets/images/config/remove.png"> -->
+                </div>
+                <div class="verifier-text example-third-width"><button matButton type="submit" class="ADD" (click)="addwalletaddress()" >+ ADD</button>
+                         </div>
+                
+            </mat-expansion-panel>
+
+            <mat-expansion-panel class="expPannel">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold">
+                        Transactiom Volume Cap
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box">
+                    <div class="verifier-text example-third-width">Max Allowed Trans Volume Cap</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Enter Max Allowed trans Vol cap(in %)" autocomplete="off" name="transactionVolumeCap" [(ngModel)]="policylist.transactionVolumeCap" #transactionVolumeCap="ngModel">
+                        
+                    </mat-form-field>
+                </div>
+                <div class="verifier-box">
+                    <div class="verifier-text example-third-width">Trans Unit of Measure</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Unit of Measure(min's)" autocomplete="off" name="transactionUnitOfMeasure" [(ngModel)]="policylist.transactionUnitOfMeasure" #transactionUnitOfMeasure="ngModel">
+                        
+                    </mat-form-field>
+                </div>
+            </mat-expansion-panel>
+            <mat-expansion-panel class="expPannel">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold">
+                        Frequency Cap
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box">
+                    <div class="verifier-text example-third-width">Max Allowed Freq Cap</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Enter Max Allowed Freq cap" autocomplete="off" name="transactionLimit" [(ngModel)]="policylist.transactionLimit" #transactionLimit="ngModel">
+                        
+                    </mat-form-field>
+                </div>
+                <div class="verifier-box">
+                    <div class="verifier-text example-third-width">Trans Unit of Measure</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Unit of Measure" autocomplete="off" [value]="Daily" >
+                        <!-- name="TransactionLimit" [(ngModel)]="policylist.TransactionLimit" #TransactionLimit="ngModel" -->
+                    </mat-form-field>
+                </div>
+            </mat-expansion-panel>
+            <!-- <mat-expansion-panel class="expPannel">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold">
+                        New Device Access
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box ">
+                    <div class="verifier-text example-third-width">Trans Unit of Measure</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Enter Max Allowed Devices" autocomplete="off">
+                        
+                    </mat-form-field>
+                </div>
+                <div class="verifier-box">
+                    <div class=" verifier-text example-third-width">Type of Devices</div>
+                    
+                    <button matButton type="submit" class="laptopbtn">Laptop</button>
+                        <button matButton type="submit" class="Desktopbtn">Desktop</button>
+                    
+                </div>
+            </mat-expansion-panel> -->
+
+        </mat-accordion>
+    </form>
+
+
+</div>
+<div *ngIf = "role ==='Admin'" class="maintab" >
+    <app-global-policy></app-global-policy>
+</div>

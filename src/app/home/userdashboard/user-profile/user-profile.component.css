@@ -1,0 +1,310 @@
+.wallets-wrapper{
+    background: #f1f5f9;
+    padding-top: 75px;
+    padding-bottom: 15px;
+    height: 100vh;
+    padding-left: 38px;
+}
+.all-wallets-info {
+    margin-top: 20px;
+    font-size: 24px;
+}
+.wallet-info-wrapper,.wallet-user-wrapper{
+    margin: 24px 30px;
+    background: #ffffff;
+    border-radius: 2px;
+    background-color: #ffffff;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px 60px;
+}
+.btn.btn-primary.dropdown-toggle{
+    margin-top: 10px !important;
+}
+
+.wallet-info-wrapper .khulaRegular {
+    font-size: 20px;
+    color: #4a4a4a;
+}
+.user-action-box{
+    margin: 0px 30px;
+}
+.user-action-box input {
+    border: none;
+    padding: 4px 10px;
+    font-size: 14px;
+    border-radius: 4px;
+    /* margin-top: 20px; */
+}
+input[type="reset"].khulaSemiBold {
+    background: none;
+    color: #de792f;
+}
+.wallets-heading{
+    color: #4a4a4a;
+    font-size: 24px;
+}
+.term-condtion{
+    color: #b3b3b3;
+    font-size: 12px;
+    margin: 30px 0px 0px 0px;
+    padding: 2px 18px;
+}
+.help-box{
+    text-align: right;
+}
+.btn-group> .btn:first-child {
+    margin-left: 0;
+    background: #ffffff;
+    outline: none;
+    border: none;
+    color: #4a4a4a !important;
+    font-size: 14px;
+    font-family: khula-Regular , Arial, Helvetica, sans-serif;
+    width: 100%;
+    border-radius: 0px;
+    height: 35px;
+    padding-left: 4px;
+}
+.underline{
+    width:100%;
+    border-bottom: 2px solid #cccccc;
+}
+.dropdown-toggle::after {
+
+    right: 12px;
+    top: 15px;
+    position: absolute;
+}
+.btn-group > .btn:first-child {
+    text-align: left;
+}
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: none;
+}
+.btn-primary.focus, .btn-primary:focus {
+    box-shadow: none;
+}
+.add-more-user {
+    height: 30px;
+    width: 30px;
+    margin-top: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: -15px;
+}
+/* .add-more-user  i.fa.fa-plus{
+    font-size: 18px;
+    color: #00416a;
+    position: relative;
+    top: 16%;
+    left: 25%;
+
+} */
+/*
+.group input:focus ~ .bar:before, button:focus ~ .bar:after {
+    width: 50%;
+}
+.group .bar:before {
+    left: 50%;
+}
+.group .bar:before, .bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #cccccc;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+} */
+.user-name.khulaRegular {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+.caution {
+  text-align: left;
+  color: #c41b1f;
+  font-size: 12px;
+  font-family: khula-Regular , Arial, Helvetica, sans-serif;
+}
+
+.fus-name_dalate {
+  display: inline-block;
+  width: 100%;
+}
+.fus-name_dalate .group:nth-child(2) {
+  margin-left: 10%;
+}
+.fus-name_dalate .group {
+  float: left;
+  margin-left: 0px;
+  z-index: 1;
+  width: 44%;
+}
+.deleteimg{
+    margin-top: 39px;
+    width: 15px;
+    height: 18px;
+    margin-left: 10px
+}
+.dropdown-menu {
+    top: 93%;
+    width: 100%;
+    height: auto;
+    overflow: auto;
+  }
+  .dropdown-toggle::after {
+    right: 0;
+    margin-right: 10px;
+    top: 10;
+    position: absolute;
+  }
+
+  .dropdown-toggle {
+    color: #222 !important;
+    text-align: left;
+  }
+  .errclass{
+    margin-top: -44px !important;
+  }
+  .errorclass{
+    margin-top: 8px;
+    margin-left: -18px;
+  }
+  input[type="file"] {
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    position: static;
+    opacity: 0;
+    cursor: pointer;
+}
+.profileImage{
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  position: relative;
+}
+.profileImageChange{
+  overflow: hidden;
+  transform: rotate(180deg);
+  width: 80px;
+  height: 40px;
+  position: absolute;
+  top: 70%;
+  cursor: pointer;
+}
+.profileImageChange:before {
+  content: "";
+  height: 80px;
+  width: 79px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.57);
+  top: 42%;
+}
+.changeText{
+  position: absolute;
+  left: 19px;
+  bottom: 5px;
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.roles-outer-box {
+    margin-top: 4px;
+    text-align: center;
+    border-right: 1px solid gray;
+}
+
+.font12.roles-outer-box:last-child {
+    border-right: none!important;
+}
+
+.phoneNumberSett{
+    width: 34% !important;
+    margin-left: 15px;
+}
+
+.codeSettings{
+    width: 10% !important;
+}
+
+/*user profile changes- added new css below */
+.matCard-border{
+    border-top: 3px solid blue;
+    margin-left:15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+  .example-half-width {
+    width: 32%;
+    /* margin-left: 2.5%; */
+    margin-right: 2.5%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  }
+  .flex-wrap {
+    display: flex;
+    align-items: flex-end;
+}
+  .example-full-width {
+    width: 95%;
+    /* margin-left: 2.5%; */
+    margin-right: 2.5%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  }
+  .example-third-width {
+     width: 7%;
+     margin-right: 35px;
+     font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  }
+  .example-phone-width {
+     width: 22%;
+     margin-right: 3px;
+     font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  }
+
+  .example-half-width input[matInput],.example-full-width input[matInput]{
+  font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #4a4a4a;
+    }   
+
+    .up-user-section{
+      margin-left: 15px;
+      margin-right: 15px;
+      padding-bottom: 15px;
+      padding-left:5px;
+      padding-right:5px;
+      padding-top:5px;
+    }
+
+    input[type=submit]:disabled{
+        pointer-events: none !important;
+    }
+
+    .help-block1{
+        color: #f44336;
+        font-size: 12px;
+        top: 37px;
+        left: 4px;
+        position: absolute;
+    }
+
+    .arrowclass{
+        float: right;
+          margin-top: -16px;
+          /*Remove the below(color) line if we are making the fields editable - we have applied this color
+           as we are fields are disabled*/
+          color: rgba(0, 0, 0, 0.38) !important;
+      }

@@ -1,0 +1,25 @@
+
+.divstyle{
+    /* padding-left: 99px; */
+    width: 100%;
+}
+.padding-rl{
+  padding-left:0 !important;
+  padding-right:0 !important;
+  }
+.fixed-sidebar{
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  z-index: 9992;
+  width: 92px;
+}
+.margin-sidebar{
+  /* margin-left: 120px; */
+  padding-left: 92px!important;
+}
+@media screen and (max-width: 1024px) {
+  /* .margin-sidebar{
+    margin-left: 87px;
+  } */
+}

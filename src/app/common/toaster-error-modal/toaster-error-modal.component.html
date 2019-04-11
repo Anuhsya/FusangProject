@@ -1,0 +1,21 @@
+  <ng-template #errorMessage>
+      <div class="modal-header Popup errorPopup">
+          <div class="toasterImg toasterImg1">
+            <img src="./assets/images/error.png" alt="">
+          </div>
+          <div>
+          <h4 class="modal-title pull-left">{{message}}</h4>
+        </div>
+        <div>
+          <button type="button" id="modalButton1close" class="close pull-right" aria-label="Close" (click)="closeWindow()">
+           <img src="./assets/images/close.png" alt="">
+          </button>
+        </div>
+        </div>
+      <!-- <div class="modal-footer footermessage">
+          <button class="btn btn-default" type="button" (click)="modalRef.hide()">OK</button>
+      </div> -->
+
+
+    </ng-template>
+    <button type="button" id="modalButton1" class="btn btn-primary" (click)="openModal(errorMessage)"></button>

@@ -1,0 +1,42 @@
+<div class="bg-image">
+  <div class="row">
+      <div class="col-md-6 leftcol">
+                  <app-onboarding-text [title]="title"></app-onboarding-text>
+              <!-- </div> -->
+        </div>
+        <div class="col-md-6 signRight">
+            <!-- <div class="signRight"> -->
+              <div class="get_form_inner">
+                <form name="form" (ngSubmit)="f.form.valid && signIn()" #f="ngForm" novalidate  class="notmaterial">
+                  <div class="group" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+
+                    <label [class.activeLabel]="focusedElement=='username'" [class.lableTop]="(model.username!=='') && (username.touched==true || username.valid==true|| username.valid==false)" [class.inputSuccess]="username.valid==true"  [class.inputError1]="username.valid==false && username.touched==true" [class.inputError]="focusedElement!=='username' && username.valid==false && username.touched==true" for="username">Email ID</label>
+                    <input type="email" (focusout)="focusFunction('')" (focus)="focusFunction('username')" class="form-control" name="username" [(ngModel)]="model.username" #username="ngModel" pattern="(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}))" required />
+                    <div *ngIf="model.username == '' && username.touched== true" class="help-block">Email ID is required</div>
+                    <div *ngIf="!username.valid  && model.username != '' && username.touched== true"  class="help-block" >Please type your Email ID in the format <strong>yourname@example.com</strong></div>
+                   <!-- <div *ngIf="f.submitted && !username.valid" class="help-block">UserName is required</div> -->
+                  </div>
+                  <div class="group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+                    <label [class.activeLabel]="focusedElement=='password'" [class.lableTop]="(model.password!='') && (password.touched==true || password.valid==true|| password.valid==false)" [class.inputSuccess]="password.valid==true"  [class.inputError1]="password.valid==false && password.touched==true" [class.inputError]="focusedElement!=='password' && password.valid==false && password.touched==true" for="password">Password</label>
+                    <input type="password" (focusout)="focusFunction('')" (focus)="focusFunction('password')" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+                    <div *ngIf="!password.valid && password.touched==true" class="help-block">Password is required</div>
+                    <!-- <div *ngIf="f.submitted && !password.valid" class="help-block">Password is required</div> -->
+
+                  </div>
+                  <div class="form-group khulaRegular">
+                  </div>
+                  <div class="form-group logbtn">
+                    <div style="margin-top: 45px">
+                      <button [disabled]="!f.form.valid" class="btn sub-btn-info" type="submit">
+                        SIGN IN</button> 
+                         <button type = "button" class="btn btn-white forget  khulaSemiBold" (click)="forgetPassLink()">
+                            FORGOT PASSWORD</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            <!-- </div> -->
+          </div>
+  </div>
+  </div>
+

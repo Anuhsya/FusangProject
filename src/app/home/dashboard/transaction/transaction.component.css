@@ -1,0 +1,468 @@
+.onboardflow {
+    background: #f7fafc;
+    padding-top: 90px;
+    padding-bottom: 32px;
+    padding-left: 31px;
+    padding-right: 43px;
+    min-height: 100vh;
+}
+.hdr_text {
+        font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+        color: #4a4a4a;
+}
+.sub_hdr_text {
+        font-family:  Khula-SemiBold , Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        color: #4a4a4a;
+}
+/* .filtr_styl {
+    width: 150px;
+    height: 35px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    background-color: #ffffff;
+    margin: 22px 10px;
+    font-size: 12px;
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+} */
+.rangePicker {
+  width: 330px;
+  font-size: 14px;
+}
+.fltr_btn {
+    margin: 22px 10px;
+}
+.sctin_styl {
+  height: 83px;
+  background-color: #eff5fc;
+}
+.calImg{
+    position: relative;
+    right: 30px;
+    top: 0px;
+    pointer-events: none;
+  }
+  /* popup css */
+  .transactionHeader{
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 24px;
+    text-align: center;
+    color: #3954e5;
+    flex-grow: 2;
+  }
+  .transactionModel{ 
+    border-bottom: solid 1px #e6ecf3;
+    padding: 16px 1rem;
+  
+  }
+  .transactionIDRow {
+    /* margin-bottom: 24px; */
+      background-color: #eef6ff;
+      height: 55px;
+  }
+  .frm_walt{
+      font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #f39233;
+      margin-left: 15px;
+  }
+  
+  .to_walt {
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #3954e5;
+    margin-left: 15px;
+    
+  }
+  .frm_walt_div {
+    background-color: #fffaf1;
+    border-top: 1px solid #f39233;
+    border-bottom: 2px solid lavender
+  }
+  .to_walt_div {
+    background-color: #eef6ff;
+    border-top: 1px solid #3954e5;
+    border-bottom: 2px solid lavender
+  }
+  
+  .circle {
+    height: 40px;
+    width: 40px;
+    /* background-color: blue; */
+    border-radius: 50%;
+    position: absolute;
+    /* display: flex; */
+    right: -24px;
+    z-index: 1;
+    top: 55px;
+  }
+  .rightarow {
+    width: 40px;
+    height: 40px;
+    -o-object-fit: contain;
+    object-fit: contain;
+    position: relative;
+    left: 1%;
+    /* bottom: 24.9px; */
+  }
+  
+  .Transaction-Amount {
+    
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #1f1c29;
+    margin: 18px 0px 0px 18px;
+  }
+  
+  .Transaction-Amount_total {
+    
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #1f1c29;
+    margin: 18px 0px 0px 18px;
+  }
+  .transactionRow {
+    margin-bottom: 24px;
+  }
+  .transTitle{
+    font-family: khula-Regular , Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #de792f;
+    position: relative;
+      top: 11px;
+  }
+  .transValue{
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #4a4a4a;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    bottom: 12px;
+  }
+  .Transaction-Amount1 {
+  
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: white;
+  }
+  .seconddiv {
+    position: absolute;
+      right: 64px;
+      z-index: 1;
+      top: 77px;
+  }
+  .righlefttarow{
+    width: 17px;
+      height: 18px;
+      -o-object-fit: contain;
+      object-fit: contain;
+      position: relative;
+      left: 13px;
+      background-color: white;
+  }
+  .recived_arrow {
+ 
+    position: absolute;
+    right: 64px;
+    z-index: 1;
+    top: 37px;
+
+}
+.BTC_header {
+    font-family:Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #f39233;
+  }
+  .value_disply1 {
+      height: 22px;
+      width: 71%;
+      font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #3954e5;
+      margin: 18px 0px;
+      border-right: 1px dotted #d7d7d7;
+    
+  }
+  .value_disply {
+    height: 22px;
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #3954e5;
+    margin: 18px 0px;
+  
+  }
+  .Transaction-Amount22 {
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #1f1c29;
+    margin: 18px 0px 0px 0px;
+  }
+  .signatory-bg1{
+    background-color: rgba(222, 121, 47, 0.05);
+    /* padding: 0px; */
+    margin: 10px 0px;
+    border-top: 1px solid #e6ecf3;
+    border-bottom: 1px solid #e6ecf3;
+  }
+  .Signature-Status {
+    font-family: khula-Regular , Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #de792f;
+    padding-left: 32px;
+  }
+  .signatory-bg{
+    background-color: rgba(222, 121, 47, 0.05);
+    /* padding: 0px; */
+    margin: 10px -15px;
+    border-top: 1px solid #e6ecf3;
+    border-bottom: 1px solid #e6ecf3;
+  }
+  .Approved-text_trns {
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-align: right;
+    color: #5a5a5a;
+    position: relative;
+    left: 67px;
+    /* right: 32px; */
+    top: 15px;
+  }
+  .txtstlye {
+    color: #ea1c49
+  }
+  .createdata_sty_trns {
+    position: relative;
+    top: 22px;
+    right: 79px;
+  }
+  .Intiated {
+    font-family: khula-Regular , Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    color: #de792f;
+    margin-left:6px;
+  }
+  .ststuscls{
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    margin-left: 10px
+  }
+  .Few-of-the-violation {
+    font-family: khula-Regular , Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  line-height: 1.42;
+  /* letter-spacing: normal; */
+  color: #9b9b9b;
+  position: relative;
+  /* left: 6%; */
+  /* word-wrap: break-word; */
+  word-break: break-all;
+  padding-left: 32px;
+  padding-right: 15px;
+  }
+  .userclas{
+    padding-left: 32px;
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #4a4a4a;
+  }
+  .transValueId{
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #de792f;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    bottom: 12px;
+  }
+  .exportexcl {
+    height: 23px;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 10,0,1,1o;
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    color: #4a4a4a;
+    background-color: white;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.18);
+
+  }
+  .dwnlod{
+    width: 11px;
+    height: 10px;
+    object-fit: contain;
+  }
+  .wellcome-msg{
+    /* display: flex; */
+    justify-content: center;
+    /* flex-direction: column; */
+    text-align: center;
+    align-self: center;
+    color: #4a4a4a;
+    min-height: 45vh;
+    padding-top: 20vh;
+  }
+  .ac-clearFilter{
+    cursor: pointer;
+  }
+
+  /* common css */
+  .ac-sideclick
+{ 
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    padding-left: 5px;
+    cursor: pointer;
+}
+.filtr_styl1
+ {
+    width: 133px;
+    border-radius: 4px;
+    border: solid 0.5px #cccccc;
+    font-size: 12px;
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    height: 30px;
+    background-color: #ffffff;
+    cursor: pointer;
+    margin-right: 16px;
+ }
+ .sidebar {
+    height: 100vh;
+    width: 342px;
+    position: fixed;
+    z-index: 10000;
+    top: 60px;
+    transition: 0.5s;
+    right:0;
+    display:block;
+
+    overflow: scroll;
+    box-shadow: -1px 0 9px 4px rgba(69, 131, 255, 0.1);
+    border: solid 1px #e2ebff;
+    background-color: #ffffff;
+
+}
+.sidebarbody
+{
+    padding: 15px;
+}
+.ftitle
+{
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  text-align: center;
+  letter-spacing: normal;
+  color: #4a4a4a;
+  padding: 5px;
+}
+.filtr_styl
+{
+    width: 100%;
+  height: 35px;
+  border-radius: 3px;
+  border: solid 1px #d4e5f9;
+  background-color: #ffffff;
+  cursor: pointer;
+  font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  margin-top: 16px ;
+}
+.seleinfo
+{
+height: 66vh;
+/* overflow-y: scroll; */
+}
+.butto
+{
+    text-align: center;
+    cursor: pointer;
+    padding: 12px;
+}
+.commonButton
+{
+    font-size: 12px;
+}
+.clear_btn
+{
+    width: 40px;
+  height: 14px;
+  font-family: NunitoSans;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  color: #f39233;
+  text-align: center;
+  background: none;
+    border: none;
+    cursor: pointer;
+}
+.inputdiv
+{
+    position: relative;
+}
+.select-dropdown{
+    appearance: none;
+    background-image: url('/assets/images/filled-dropdown.svg');
+    background-repeat: no-repeat;
+    background-position: 90% 7px;
+}

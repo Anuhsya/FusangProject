@@ -1,0 +1,1842 @@
+<div class="onboardflow">
+  <div class="ap-backArrow margin-btm">
+    <a [routerLink]="['/fusang/ticket']" *ngIf="tabShow === 'ticket'">
+      <img src="../../../assets/images/backArrow.svg" alt="">
+    </a>
+    <a [routerLink]="['/fusang/admins']" *ngIf="tabShow === 'user'">
+      <img src="../../../assets/images/backArrow.svg" alt="">
+    </a>
+    <a [routerLink]="['/fusang/clients']" *ngIf="tabShow === 'client'">
+      <img src="../../../assets/images/backArrow.svg" alt="">
+    </a>
+    <a [routerLink]="['/fusang/User/userlist']" *ngIf="tabShow === 'ClientUser'">
+      <img src="../../../assets/images/backArrow.svg" alt="">
+    </a>
+  </div>
+  <div class="flow">
+    <div class="flow__name">
+      <div>
+        <h2 class="khulaSemiBold font24 headingcolor">{{onbordingDetails.info}}</h2>
+        <div class="flow__name__stage">
+          <!-- <h5 class="khulaSemiBold font14 headingcolor">312036</h5> -->
+          <h6 style="background-color:#9e6efd;"></h6>
+          <h5 class="khulaSemiBold font14" style="color:#9e6efd;">{{workflowbtn}} Stage</h5>
+        </div>
+      </div>
+      <div>
+        <button class="btn-white" *ngIf="workflowbtn === 'Check' && workflowObject.ticketStatus === 'Claimed' && (workflowType == 'AdminInvite' || workflowType =='AdminReactivate' || workflowType == 'UserInvite' || workflowType == 'UserReactivate' || workflowType == 'ClientInvite' || workflowType == 'AdminEdit' || workflowType == 'UserEdit' || workflowType == 'ClientInvite' || workflowType == 'ClientEdit' || workflowType === 'WalletCreation' || workflowType === 'WalletDetailsUpdate' || workflowType === 'UserPolicyChange' ||  workflowType=='GlobalPolicyChange')" (click)="authPublic(auth,2,confirmaction)">REASSIGN</button>
+        <button class="btn-white" (click)="authPublic(auth,1,confirmaction)" *ngIf="workflowObject.ticketStatus == 'Claimed'">REJECT</button>
+        <!-- <button class="btn-white" (click)="rejectVerification(rejectverification)" *ngIf="workflowObject.ticketStatus == 'Open'">Reject</button> -->
+        <button class="btn-orange btn-orange-cap" (click)="authPublic(auth,0,confirmaction)" *ngIf="workflowObject.ticketStatus == 'Claimed'">{{workflowbtn}}</button>
+        <!-- <button class="btn-orange" (click)="confirmChecking(confirmchecking) " *ngIf="workflowObject.ticketStatus == 'Open'">{{workflowbtn}}</button> -->
+        <button class="btn-orange " *ngIf="workflowObject.ticketStatus == 'Claim'" (click)='claim(successtemplate)'>CLAIM</button>
+      </div>
+    </div>
+    <div class="flow__diagram" id="flow__diagram">
+      <div *ngFor="let flowdata of workflow">
+        <div class="flow__complete" *ngIf="flowdata.isDone == true && flowdata.isRejected == false">
+          <!-- <p class="circle"></p> -->
+          <img class="flow-success" src="/assets/images/onbording/success.svg" alt="">
+          <h4 class="khulaSemiBold font12">{{flowdata.status}}</h4>
+        </div>
+        <div class="flow__inprocess" *ngIf="flowdata.isDone == false && flowdata.statusType == 'Active' && flowdata.isRejected == false">
+          <!-- <p class="circle inprogessCircle"></p> -->
+          <span class="outer circle inprogessOuterCircle shapeborder disblock">
+            <span class="inner inprogessInnerCircle shapeborder disblock">&nbsp;</span>
+          </span>
+          <h4 class="khulaSemiBold font12">{{flowdata.status}}</h4>
+        </div>
+        <div class="" *ngIf="flowdata.isDone == false && flowdata.statusType == 'notActive' && flowdata.isRejected == false">
+          <p class="circle"></p>
+          <h4 class="khulaSemiBold font12">{{flowdata.status}}</h4>
+        </div>
+        <div class="flow__complete" *ngIf="flowdata.isDone == true && flowdata.isRejected == true">
+          <!-- <p class="circle"></p> -->
+          <img class="flow-success" src="/assets/images/onbording/reject.svg" alt="">
+          <h4 class="khulaSemiBold font12" id="rejectTextColor">Rejected</h4>
+        </div>
+
+      </div>
+      <!-- <div class="">
+        <p class="circle"></p>
+        <h4 class="khulaSemiBold font12">Approver</h4>
+      </div> -->
+      <!-- <div class="">
+        <p class="circle"></p>
+        <h4 class="khulaSemiBold font12">Signup</h4>
+      </div> -->
+      <!-- <div class="">
+        <p class="circle"></p>
+        <h4 class="khulaSemiBold font12">Verifier</h4>
+      </div> -->
+      <!-- <div class="">
+        <p class="circle"></p>
+        <h4 class="khulaSemiBold font12">Checker</h4>
+      </div> -->
+      <!-- <div class="">
+        <p class="circle"></p>
+        <h4 class="khulaSemiBold font12">Approver</h4>
+      </div> -->
+      <!-- <div class="">
+        <p class="circle"></p>
+        <h4 class="khulaSemiBold font12">Signin</h4>
+      </div> -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div *ngIf="workflowType == 'AdminInvite' || workflowType == 'AdminDeactivate' || workflowType == 'AdminEdit' || workflowType == 'UserPolicyChange' || workflowType=='GlobalPolicyChange' || workflowType =='AdminReactivate'">
+        <form class="example-form"  #fCustomer="ngForm">
+      <div class="info__heading">
+        <h2 class="khulaSemiBold font18 headingcolor">Basic Information</h2>
+        <!-- <div *ngIf="workflowObject.ticketStatus == 'Claimed' && (workflowType == 'AdminInvite')">
+          <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="showEdit" (click)="editCustomerInfo()">Edit</span>
+          <span class="khulaBold font14 colorde792f margin-right onboardflowbtn" *ngIf="!showEdit" (click)="resetCustomerInfo()">Cancel</span>
+          <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="!showEdit" (click)="saveCustomerInfo(saveconfirmaction)"><button  class="khulaBold font14 colorde792f onboardflowbtn btncss" type="submit" [disabled]="!fCustomer.form.valid || invalidphone">Save</button> </span>
+        </div> -->
+        <div *ngIf="(workflowObject.ticketStatus == 'Claimed') && (workflowType == 'AdminInvite' || workflowType == 'AdminEdit' || workflowType == 'AdminReactivate')">
+          <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="showEdit1" (click)="edituserInfo()">Edit All</span>
+          <span class="khulaBold font14 colorde792f margin-right onboardflowbtn" *ngIf="!showEdit1" (click)="resetuserInfo()">Cancel</span>
+          <span class="khulaBold font14 colorde792f onboardflowbtn margin-right" *ngIf="!showEdit1" (click)="updateRoleModifications(saveconfirmaction)"><button  class="khulaBold font14 colorde792f onboardflowbtn btncss" type="submit" [disabled]="isenableform1 || !fCustomer.form.valid || invalidphone">Save</button> </span>
+        </div>
+      </div>
+      <div class="info__right__detail border-top3954e5">
+        <div class="verifier-box">
+          <mat-form-field class="example-half-width example-third-width">
+            <input matInput placeholder="First Name" autocomplete="off" name="firstName" [(ngModel)]="onbordingDetails.firstName"
+              #firstName="ngModel" [disabled]="editUserFL" required>
+              <mat-error *ngIf="'firstName'">
+                  First is <strong>required</strong>
+               </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-half-width example-third-width">
+            <input matInput placeholder="Last Name" autocomplete="off" name="lastName" [(ngModel)]="onbordingDetails.lastName"
+              #lastName="ngModel" [disabled]="editUserFL" required>
+              <mat-error *ngIf="'lastName'">
+                  LastName is <strong>required</strong>
+               </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="verifier-box">
+          <mat-form-field class="example-half-width example-third-width">
+            <input matInput placeholder="Country" class="arrow" name="country" [(ngModel)]="onbordingDetails.country"
+              #country="ngModel" [disabled]="editUser" [matAutocomplete]="auto" (ngModelChange)="getTheValue(onbordingDetails.country)" required>
+              <span></span>
+              <img *ngIf="onbordingDetails.country !== onbordingDetails.oldCountry && onbordingDetails.oldCountry !== undefined && onbordingDetails.oldCountry !== '' && onbordingDetails.oldCountry !== null && workflowType == 'AdminEdit'" class="remove_walt" alt=""  matTooltip ="Previous value: {{onbordingDetails.oldCountry}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png">
+              <mat-error *ngIf="'country'">
+                  Country is <strong>required</strong>
+               </mat-error>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                  <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item" >
+                      {{item}}
+                  </mat-option>
+              </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field class="country-code example-third-width">
+            <input matInput placeholder="Code" autocomplete="off" name="code" [(ngModel)]="code" [disabled]="true">
+ 
+          </mat-form-field>
+          <mat-form-field class="phone-number example-third-width">
+            <input matInput placeholder="Phone Number" (keypress)="numberOnly($event)" autocomplete="off" name="phoneNumber" [(ngModel)]="onbordingDetails.phoneNumber"
+              #phoneNumber="ngModel"  max="{{countryPhonelen}}"  maxLength="{{countryPhonelen}}" [disabled]="editUser" (ngModelChange)="onChange(onbordingDetails.phoneNumber)" required>
+              <img *ngIf="onbordingDetails.phoneNumber !== onbordingDetails.oldPhoneNumber && onbordingDetails.oldPhoneNumber !== undefined && onbordingDetails.oldPhoneNumber !== '' && onbordingDetails.oldPhoneNumber !== null && workflowType == 'AdminEdit'" class="remove_walt" alt=""  matTooltip ="Previous value: {{onbordingDetails.oldPhoneNumber}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png">
+              <mat-error *ngIf="onbordingDetails.phoneNumber === ''">
+                  PhoneNumber is <strong>required</strong>
+               </mat-error>
+               <div *ngIf="invalidphone && onbordingDetails.phoneNumber !== ''" class="help-block1 caution">Please enter {{countryPhonelen}} digit number</div>
+          </mat-form-field>
+        </div>
+        <div class="verifier-box">
+          <mat-form-field class="example-half-width example-third-width">
+            <input matInput placeholder="Email ID" type="email" autocomplete="off" name="username" [(ngModel)]="onbordingDetails.username"
+              #username="ngModel" [disabled]="editUserFL" pattern="(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}))" required>
+              <mat-error *ngIf="'username' && onbordingDetails.username == ''">
+                  Please type your Email ID in the format <strong>yourname@example.com</strong>
+               </mat-error>
+               <mat-error *ngIf="'username' && onbordingDetails.username != ''">
+                  Please type your Email ID in the format <strong>yourname@example.com</strong>
+               </mat-error>
+               <!-- <div *ngIf="invalidphone && onbordingDetails.phoneNumber !== ''" class="help-block1 caution">Please enter {{countryPhonelen}} digit number</div> -->
+               <!-- <div *ngIf="'username'"  class="help-block1 caution" >Please type your Email ID in the format <strong>yourname@example.com</strong></div> -->
+          </mat-form-field>
+          <!-- <mat-form-field *ngIf="workflowType == 'UserPolicyChange'" class="example-half-width example-third-width">
+            <input matInput placeholder="Customer Name" autocomplete="off" name="customerName" [(ngModel)]="onbordingDetails.clientName"
+              #customerName="ngModel" [disabled]="true" required>
+              <mat-error *ngIf="'customerName'">
+                  Customer Name is <strong>required</strong>
+               </mat-error>
+          </mat-form-field> -->
+          <mat-form-field class="example-half-width example-third-width" *ngIf="cType">
+            <input matInput placeholder="Customer Type" [matAutocomplete]="auto4" name="userType" [(ngModel)]="onbordingDetails.userType"
+              #userType="ngModel" [disabled]="editUser" (ngModelChange)="getuserTYpeValue()" required>
+              <mat-error *ngIf="'userType'">
+                  Customer type is <strong>required</strong>
+               </mat-error>
+          </mat-form-field>
+          <mat-autocomplete #auto4="matAutocomplete">
+              <mat-option class="autocomplete" *ngFor="let item of userTYpeOptions" [value]="item" >
+                  {{item}}
+              </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+    </form>
+      </div>
+
+      <div *ngIf="workflowType == 'AdminInvite' || workflowType == 'AdminDeactivate' || workflowType == 'AdminEdit' || workflowType =='AdminReactivate'">
+        <form class="example-form" (ngSubmit)="fadmin.form.valid" #fadmin="ngForm">
+          <div class="info__heading">
+            <h2 class="khulaSemiBold font18 headingcolor"><span>Role Management Information </span><span [popover]="myPopover" id="popover"><img *ngIf="workflowType == 'AdminEdit' && finalDataTwo.length > 0 && workflowObject.ticketStatus != 'Reject' && !onbordingDetails.roleEdit" class="RoleEditIcon" src="./assets/images/userpolicy/info.png" alt=""></span></h2>
+            <!-- <div *ngIf="(workflowObject.ticketStatus == 'Claimed') && (workflowType == 'AdminInvite' || workflowType == 'AdminEdit' || workflowType == 'AdminReactivate')">
+                <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="showEdit1" (click)="edituserInfo()">Edit</span>
+                <span class="khulaBold font14 colorde792f margin-right onboardflowbtn" *ngIf="!showEdit1" (click)="resetuserInfo()">Cancel</span>
+                <span class="khulaBold font14 colorde792f onboardflowbtn margin-right" *ngIf="!showEdit1" (click)="updateRoleModifications(saveconfirmaction)"><button  class="khulaBold font14 colorde792f onboardflowbtn btncss" type="submit" [disabled]="isenableform1">Save</button> </span>
+              </div> -->
+          </div>
+          <div class="info__right__detail border-top3954e5">
+            <div class="form-wrapper">
+                
+                  <div class="inner-form">
+                      <div class="wro-wrapper" *ngFor="let dl of finalData;let i =index">
+                          <div class="dep-col-wrapper">
+                            <img src="assets/images/inviteuser/{{dl.name.split(' ')[0].toLowerCase()}}.svg" alt="" class="acc-image">
+                            <span>{{dl.name}}</span>
+                          </div>
+                          <div class="role-checkbox">
+                          <mat-checkbox class="margin-check"
+                          *ngFor="let rdl of dl.role;let j =index" 
+                          (change)="updateAdminRole(dl,rdl,$event)" 
+                          [disabled]="isEditUser"
+                          [checked]="rdl.isEnable"
+                          >{{rdl.userRole}}</mat-checkbox>
+                          </div>
+                        </div>
+                  </div>
+              </div>
+          </div>
+        </form>
+        <popover-content #myPopover 
+                title="Previous Value" 
+                placement="top"
+                [animation]="true" 
+                [closeOnClickOutside]="false" class="main-popover">
+                <div class="widthOfRole">
+                  <span (click)="myPopover.hide()" id="closeId" class="closeIdVisible">Or click here to close it</span>
+                <div class="form-wrapper">
+                    <div class="inner-form">
+                        <div class="wro-wrapper" *ngFor="let dl of finalDataTwo;let i =index">
+                            <div class="dep-col-wrapper">
+                              <img src="assets/images/inviteuser/{{dl.name.split(' ')[0].toLowerCase()}}.svg" alt="" class="acc-image">
+                              <span>{{dl.name}}</span>
+                            </div>
+                            <div class="role-checkbox">
+                            <mat-checkbox class="margin-check"
+                            *ngFor="let rdl of dl.role;let j =index" 
+                            (change)="updateAdminRole(dl,rdl,$event)" 
+                            [disabled]="true"
+                            [checked]="rdl.isEnable"
+                            >{{rdl.userRole}}</mat-checkbox>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+              </div>
+    </popover-content>
+    <!-- <ng-template #popTemplate>
+         <div class="inner-form">
+                        <div class="wro-wrapper" *ngFor="let dl of finalData;let i =index">
+                            <div class="dep-col-wrapper">
+                              <img src="assets/images/inviteuser/{{dl.name.split(' ')[0].toLowerCase()}}.svg" class="acc-image">
+                              <span>{{dl.name}}</span>
+                            </div>
+                            <div class="role-checkbox">
+                            <mat-checkbox class="margin-check"
+                            *ngFor="let rdl of dl.role;let j =index" 
+                            (change)="updateAdminRole(dl,rdl,$event)" 
+                            [disabled]="isEditUser"
+                            [checked]="rdl.isEnable"
+                            >{{rdl.userRole}}</mat-checkbox>
+                            </div>
+                          </div>
+                    </div>
+    </ng-template> -->
+        </div>
+
+      <!-- client information starts -->
+      <div>
+          <form class="example-form"  #ClientUser="ngForm">
+      <div *ngIf="workflowType == 'ClientInvite' || workflowType == 'ClientDeactivate' || workflowType == 'ClientEdit'">
+       
+          
+          <div class="info__heading">
+              <h2 class="khulaSemiBold font18 headingcolor">Client Information</h2>
+              <div *ngIf="(workflowObject.ticketStatus == 'Claimed') && (workflowType == 'ClientInvite' || workflowType == 'ClientEdit')">
+                <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="showEdit1Client" (click)="ClentEdit()">Edit All</span>
+                <span class="khulaBold font14 colorde792f margin-right onboardflowbtn" *ngIf="!showEdit1Client" (click)="resetClentEdit()">Cancel</span>
+                <span class="khulaBold font14 colorde792f onboardflowbtn margin-right" *ngIf="!showEdit1Client" (click)="updateClentEdit()"><button  class="khulaBold font14 colorde792f onboardflowbtn btncss" type="submit" [disabled]="!ClientUser.form.valid || UserListPhone || invalidphone">Save</button> </span>
+              </div>
+          </div>
+          <div class="info__right__detail border-top3954e5">
+              <!-- <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Client Name" formControlName="clientName"  name="clientName" autocomplete="off" [disabled]="true" [(ngModel)]="clientDetails.clientName" #clientName="ngModel">
+                  
+                </mat-form-field> -->
+                <mat-form-field class="example-half-width">
+                    <input matInput placeholder="Client Name" autocomplete="off" name="clientName" #clientName="ngModel" [(ngModel)]="clientDetails.clientName"
+                      [disabled]="clientBasicInfoEditNW" required>
+                      <mat-error *ngIf="'clientName'">
+                          Client Name is <strong>required</strong>
+                       </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="Website" autocomplete="off" [(ngModel)]="clientDetails.domainName" name="Website" #Website="ngModel" 
+                        [disabled]="clientBasicInfoEdit" >
+                        <!-- <mat-error *ngIf="'Website'">
+                            Please enter Domain in specified format <strong>"www.example.com"</strong>
+                         </mat-error> -->
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width">
+                        <input type="text"  matInput placeholder="Country" name="Country" #Country="ngModel" [matAutocomplete]="auto" [(ngModel)]="clientDetails.country"  (ngModelChange)="getTheValue(clientDetails.country)" required aria-label="String"  [disabled]="clientBasicInfoEdit">
+                        <img *ngIf="clientDetails.country !== clientDetails.oldCountry && clientDetails.oldCountry !== undefined && clientDetails.oldCountry !== '' && clientDetails.oldCountry !== null && workflowType == 'ClientEdit'" class="remove_walt"  matTooltip ="Previous value: {{clientDetails.oldCountry}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                        <mat-error *ngIf="'Country'">
+                            Country is <strong>required</strong>
+                         </mat-error>
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item" >
+                                {{item}}
+                            </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Address" required name="address" #address="ngModel" autocomplete="off" [(ngModel)]="clientDetails.address" [disabled]="clientBasicInfoEdit">
+                          <img *ngIf="clientDetails.address !== clientDetails.oldAddress && clientDetails.oldAddress !== undefined && clientDetails.oldAddress !== '' && clientDetails.oldAddress !== null && workflowType == 'ClientEdit'" class="remove_walt"  matTooltip ="Previous value: {{clientDetails.oldAddress}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                          <mat-error *ngIf="'address'">
+                              Address is <strong>required</strong>
+                           </mat-error>
+                      </mat-form-field>
+                      <mat-form-field class="example-full-width">
+                          <input matInput placeholder="Note" required name="notes" #notes="ngModel" autocomplete="off" [(ngModel)]="clientDetails.notes" [disabled]="clientBasicInfoEdit">
+                          <img *ngIf="clientDetails.notes !== clientDetails.oldNotes && clientDetails.oldNotes !== undefined && clientDetails.oldNotes !== '' && clientDetails.oldNotes !== null && workflowType == 'ClientEdit'" class="remove_walt"  matTooltip ="Previous value: {{clientDetails.oldNotes}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                          <mat-error *ngIf="'address'">
+                              Note is <strong>required</strong>
+                           </mat-error>
+                      </mat-form-field>
+          </div>
+        <!-- </form> -->
+      </div>
+      <!-- client information Ends -->
+
+      <!-- client user detail starts -->
+      <div *ngIf="workflowType == 'ClientInvite' || workflowType == 'ClientDeactivate'">
+          <!-- <form class="example-form"  #ClientUser="ngForm"> -->
+              <div class="info__heading">
+                  <h2 class="khulaSemiBold font18 headingcolor">User Information</h2>
+              </div>
+              <div class="info__right__detail border-top3954e5">
+                  <mat-accordion *ngIf="TempclientDetails.length !== 0">
+                      <mat-expansion-panel *ngFor="let itemValue of TempclientDetails; let i = index" >
+                          <mat-expansion-panel-header >
+                              <mat-panel-title >
+                               <span>User Information {{i+1}}</span><span *ngIf="clientUserEdit"><img src="/assets/images/personalwallet/smalldelete.svg" alt="" class="deleteAccordian" (click)="deleteList($event,i)"></span>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <mat-form-field class="example-half-width">
+                                <input matInput placeholder="First Name" required  [(ngModel)]="itemValue.firstName"  [name]="'firstName'+i"  [disabled]="!clientUserEdit" autocomplete="off"  required>
+                                <mat-error *ngIf="'firstName'+i">
+                                  First Name is <strong>required</strong>
+                              </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="example-half-width">
+                                <input matInput placeholder="Last Name" required  [(ngModel)]="itemValue.lastName"  [name]="'lastName'+i"  [disabled]="!clientUserEdit" autocomplete="off"  required>
+                                <mat-error *ngIf="'lastName'+i">
+                                  Last Name is <strong>required</strong>
+                              </mat-error>
+                            </mat-form-field>
+                            
+                              <mat-form-field class="example-half-width">
+                                  <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput [name]="'countryValue'+i" [matAutocomplete]="countryArr" [disabled]="!clientUserEdit" [(ngModel)]="itemValue.country" (ngModelChange)="getSavedCountryList(itemValue.country)" (focus)="getSavedCountryList(itemValue.country)" required>
+                                  <mat-error *ngIf="'country'+i">
+                                    Country is <strong>required</strong>
+                                </mat-error>
+                                <mat-autocomplete #countryArr="matAutocomplete" (optionSelected)="onSelectionChangeduser($event,itemValue)">
+                                  <mat-option *ngFor="let item of filteredOptions1" [value]="item" >
+                                      {{item}}
+                                  </mat-option>
+                                 </mat-autocomplete>
+                                </mat-form-field>
+                                <mat-form-field class="example-half-width country-code">
+                                      <input matInput placeholder="Code" autocomplete="off" [value]="itemValue.code"  name="code{{i}}" disabled required>
+                                </mat-form-field>
+                                <mat-form-field class="example-half-width phone-number">
+                                    <input matInput placeholder="Phone Number" (keypress)="numberOnly($event)" required [name]="'phoneNo'+i" #phoneNo+{{i}}="ngModel"  autocomplete="off" 
+                                    [disabled]="!clientUserEdit" [(ngModel)]="itemValue.phoneNumber"  maxlength="{{itemValue.countryPhonelen}}"  maxLength="{{itemValue.countryPhonelen}}" (ngModelChange)="onChangeList(itemValue)" required>
+                                    <mat-error *ngIf="'phoneNo'+i">
+                                      Phone Number is <strong>required</strong>
+                                   </mat-error>
+                                   <div *ngIf="((itemValue.phoneNumber?.length != itemValue.countryPhonelen) && itemValue.phoneNumber != '')" class="help-block1 caution">Please enter {{itemValue.countryPhonelen}} digit number</div>
+                                </mat-form-field>
+                                <mat-form-field class="example-half-width">
+                                    <input matInput placeholder="Email ID" required  [name]="'emailId'+i" [(ngModel)]="itemValue.emailId" pattern="(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}))" [disabled]="!clientUserEdit" autocomplete="off" required>
+                                    <mat-error *ngIf="'emailId'+i">
+                                      Please type your Email ID in the format <strong>"yourname@example.com"</strong>
+                                  </mat-error>
+                                  <!-- <mat-error *ngIf="userFrom.get('emailId').errors?.pattern">
+                                    Please enter email as <strong>email format</strong>
+                                </mat-error> -->
+                                  </mat-form-field>
+                                <!-- <mat-form-field class="example-half-width">
+                                    <mat-select placeholder="Wallet Management" [disabled]="true" [(ngModel)]="itemValue.userRoles" [name]="'role'+i">
+                                          
+                                          <mat-option  value="USER_SIGNER" >Signer</mat-option>
+                                          <mat-option  value="USER_VIEWER" >Viewer</mat-option>
+                                        </mat-select>
+                                  </mat-form-field> -->
+                                  <div class="role-checkbox">
+                                      <!-- <input matInput type="checkbox" required formControlName="firstName"  name="firstName" autocomplete="off" >
+                                      < -->
+                                      <mat-checkbox class="chkbxstly" [checked]="itemValue.superAdmin" [(ngModel)]="itemValue.superAdmin"  [disabled]="!clientUserEdit" [name]="'superAdmin'+i" autocomplete="off">
+                                        Super User
+                                      </mat-checkbox>
+                                      
+                                      <!-- <mat-error *ngIf="userFrom.get('firstName').touched && userFrom.get('firstName').invalid">
+                                          Email is <strong>required</strong>
+                                      </mat-error> -->
+                                  </div>
+                      </mat-expansion-panel>
+                    
+                  </mat-accordion>
+                  <form *ngIf="clientUserEdit" class="example-form" [formGroup]="addUserFrom" (ngSubmit)="!validatetset && inviteclient()" #f="ngForm" novalidate>
+                    <mat-expansion-panel *ngIf="firstClick" [expanded]="true">
+                            <mat-expansion-panel-header >
+                                <mat-panel-title >
+                                 User Information
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <mat-form-field class="example-half-width">
+                                  <input matInput placeholder="First Name" required formControlName="firstName"  name="firstName" autocomplete="off" >
+                                <mat-error *ngIf="addUserFrom.get('firstName').touched && addUserFrom.get('firstName').invalid">
+                                    First Name is <strong>required</strong>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="example-half-width">
+                                    <input matInput placeholder="Last Name" required formControlName="lastName"  name="lastName" autocomplete="off" >
+                              <mat-error *ngIf="addUserFrom.get('lastName').touched && addUserFrom.get('lastName').invalid">
+                                  Last Name is <strong>required</strong>
+                              </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="example-half-width">
+                                    <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput  [matAutocomplete]="auto" formControlName="country">
+                                    <mat-error *ngIf="addUserFrom.get('country').touched && addUserFrom.get('country').invalid">
+                                        Country is <strong>required</strong>
+                                    </mat-error>
+                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChangednextuser($event)">
+                                      <mat-option *ngFor="let item of filteredOptions2| async" [value]="item" >
+                                          {{item}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                            </mat-form-field>
+                            <mat-form-field class="example-half-width country-code">
+                                    <input matInput placeholder="Code" name="countrycode" autocomplete="off" [value]="countrycode||''" disabled>
+                            </mat-form-field>
+                            <mat-form-field class="example-half-width phone-number">
+                                      <input matInput placeholder="Phone Number" (keypress)="numberOnly($event)" required name="phoneNo" max="{{countryPhonelen}}"  maxLength="{{countryPhonelen}}" autocomplete="off" formControlName="phoneNumber"
+                                      [(ngModel)]="phoneNumber" (ngModelChange)="onChange1(phoneNumber)">
+                                      <mat-error *ngIf="addUserFrom.get('phoneNumber').errors?.required">
+                                         Phone Number is <strong>required</strong>
+                                      </mat-error>
+                                       <div *ngIf="invalidphone && phoneNumber != ''" class="help-block1 caution">Please enter {{countryPhonelen}} digit number</div>
+                            </mat-form-field>
+                            <mat-form-field class="example-half-width">
+                                        <input matInput placeholder="Email ID" required formControlName="emailId" type="email"  name="emailId" autocomplete="off" >
+                                        <mat-error *ngIf="addUserFrom.get('emailId').errors?.required">
+                                            Email is <strong>required</strong>
+                                        </mat-error>
+                                        <mat-error *ngIf="addUserFrom.get('emailId').errors?.pattern">
+                                            Please type your Email ID in the format <strong>"yourname@example.com"</strong>
+                                      </mat-error>
+                            </mat-form-field>
+                            <div class="role-checkbox">
+                                        <mat-checkbox class="chkbxstly"  formControlName="superAdmin"  name="superAdmin" autocomplete="off">
+                                            Super User
+                                        </mat-checkbox>
+                            </div>
+                    </mat-expansion-panel>
+                    <mat-action-row>
+                        <button mat-button  [disabled]="!addUserFrom.valid && firstClick"  (click)="nextStep()"><img class="" src="./assets/images/add-circular-button.svg" alt="">Add User</button>
+                  
+                      </mat-action-row> 
+                      <!-- <button class="btn btn-orange btn-left"  type="submit" (click)="inviteclient()" [disabled]="!ClientUser.form.valid">Submit</button> -->
+                </form>
+              </div>
+              
+          <!-- </form> -->
+      </div>
+       <!-- client user detail Ends -->
+    </form>
+      </div>
+
+       <!-- Wallet create Info starts-->
+       <div>
+          <form  #walletCreate="ngForm">
+       <!-- wallet type info starts -->
+       <div *ngIf="workflowType === 'WalletCreation' || workflowType === 'WalletDetailsUpdate' || workflowType === 'WalletFreeze' || workflowType === 'WalletUnFreeze'">
+            <div class="info__heading">
+              <h2 class="khulaSemiBold font18 headingcolor">Wallet Type</h2>
+              <div *ngIf="workflowObject.ticketStatus == 'Claimed' && (this.workflowType === 'WalletCreation' || this.workflowType === 'WalletDetailsUpdate')">
+                <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="showEditwallet" (click)="editwallet()">Edit</span>
+                <span class="khulaBold font14 colorde792f margin-right onboardflowbtn" *ngIf="!showEditwallet" (click)="resetwalletInfo()">Cancel</span>
+                <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="!showEditwallet" (click)="savewalletInfo(addUserForm,saveconfirmaction)"><button  class="khulaBold font14 colorde792f onboardflowbtn btncss" type="submit" [disabled]="!walletCreate.form.valid || erroinsignsture === true">Save</button> </span>
+                <!-- [disabled]="!fCustomerUserInfo.form.valid || invalidphone" -->
+              </div>
+            </div>
+            <div class="row row-margin">
+               
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursr"  [class.editclss]="showEditwallet1" (click)="editpolicy(sldeepstorageId)">
+                    <div class="deepStorage-background">
+                        <img src="/assets/images/userpolicy/deep-storage.png" alt="" class="securityImg"> 
+                        <p class="securep">DEEP STORAGE</p>
+                     </div>
+                     
+                     <img  *ngIf="workflowwallrttype === 'DeepStorage'" class="secure-triangle" src="/assets/images/onbording/2.svg" alt="">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursr"  [class.editclss]="showEditwallet1" (click)="editpolicy(slsecurestorageId)">
+                  <div class="secure-background">
+                     <!-- <img src="/assets/images/onbording/securestorage.svg">  -->
+                     <img src="/assets/images/userpolicy/securestorage.png" alt="" class="securityImg"> 
+                     <p class="securep">SECURE STORAGE</p>
+                  </div>
+                  
+                  <img  *ngIf="workflowwallrttype === 'SecureStorage'" class="secure-triangle" src="/assets/images/onbording/3.svg" alt="">
+             </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 cursr"  [class.editclss]="showEditwallet1" (click)="editpolicy(slhighfrquencyId)">
+                    <div class="high-background">
+                          <img src="/assets/images/userpolicy/highfrequency.png" alt="" class="securityImg"> 
+                          <p class="securep">HIGH FREQUENCY</p> 
+                     </div>
+                     
+                     <img  *ngIf="workflowwallrttype === 'HighFrequency'" class="secure-triangle" src="/assets/images/onbording/1.svg" alt="">
+                </div>
+            </div>
+            <div class="info__right__detail border-top3954e5">
+              <!-- <form> -->
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="Transaction Time Start ( 24 hrs )" autocomplete="off"  [value]="policyDetails.transactionTimeStart"
+                        [disabled]="true" required>
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="Transaction Time End ( 24 hrs )" autocomplete="off"  [value]="policyDetails.transactionTimeEnd"
+                        [disabled]="true" required>
+                  </mat-form-field>
+                <mat-form-field class="example-half-width">
+                    <input matInput placeholder="Transaction Volume Cap (%)" autocomplete="off"  [value]="policyDetails.transactionVolumeCap"
+                      [disabled]="true" required>
+                </mat-form-field>
+                <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Transaction Unit Of Measure (Mins)" autocomplete="off"  [value]="policyDetails.transactionUnitOfMeasure"
+                    [disabled]="true" required>
+              </mat-form-field>
+              <mat-form-field class="example-half-width">
+                <input matInput placeholder="Maximum Allowed Frequency Cap" autocomplete="off"  [value]="policyDetails.transactionLimit"
+                  [disabled]="true" required>
+            </mat-form-field>
+                <mat-form-field class="example-half-width">
+                    <input matInput placeholder="Frequency Unit Of Measure" autocomplete="off" [value]="Daily"  [disabled]="true" required>
+                </mat-form-field>
+                <!-- <mat-form-field class="example-half-width">
+                    <input matInput placeholder="Maximum Allowed IP's" autocomplete="off" name="maximumAllowedIp" [value]="walletDetails.getWalletTypePolicyResponseDTO.maximumAllowedIp"
+                      [disabled]="true" required>
+                </mat-form-field> -->
+                <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Maximum Allowed Wallet Address" autocomplete="off"  [value]="policyDetails.maximumAllowedWallets"
+                    [disabled]="true" required>
+              </mat-form-field>
+                <mat-form-field class="example-half-width">
+                    <input matInput placeholder="Transaction Minimum Balance (%)" autocomplete="off"  [value]="policyDetails.minimumBalance"
+                      [disabled]="true" required>
+                </mat-form-field>
+                <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Fusang Fee (%)" autocomplete="off"  [value]="policyDetails.serviceCharge"
+                    [disabled]="true" required>
+              </mat-form-field>
+              <mat-form-field class="example-half-width">
+                <input matInput placeholder="Holding Fee (%)" autocomplete="off"  [value]="policyDetails.subcriptionCharge"
+                  [disabled]="true" required>
+            </mat-form-field>
+                <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Time Zone" autocomplete="off" [value]="policyDetails.walletTimeZone"
+                    [disabled]="true" required>
+              </mat-form-field>
+              
+              <!-- </form> -->
+            </div>
+            
+       </div>
+       <!-- wallet type info Ends -->
+
+        <!-- wallet Information starts -->
+        <div *ngIf="workflowType === 'WalletCreation' || workflowType === 'UserPolicyChange' || workflowType === 'WalletDetailsUpdate' || workflowType === 'WalletFreeze' || workflowType === 'WalletUnFreeze'">
+          <div class="info__heading">
+            <h2 class="khulaSemiBold font18 headingcolor">Wallet Information</h2>
+          </div>
+          
+          <div class="info__right__detail info__right__detailWallet border-top3954e5">
+             <!-- <form #walletbesicinfo> -->
+                <mat-form-field class="example-half-width">
+                    <input matInput placeholder="Wallet Name" autocomplete="off" name="walletName" [(ngModel)]="walletDetails.walletName"
+                    [disabled]="showEditwallet" #walletName = "ngModel" required>
+                    <img *ngIf="walletDetails.walletName !== walletDetails.oldWalletName && walletDetails.oldWalletName !== undefined && walletDetails.oldWalletName !== '' && walletDetails.oldWalletName !== null && workflowType === 'WalletDetailsUpdate'" class="remove_walt"  matTooltip ="Previous value: {{walletDetails.oldWalletName}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                    <mat-error *ngIf="'walletName'">
+                        Wallet Name is <strong>required</strong>
+                     </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="Number of User/s" autocomplete="off" name="numberOfUsers" [(ngModel)]="walletDetails.numberOfUsers"
+                      (ngModelChange)="onuserChange($event)" #numberOfUsers = "ngModel" [disabled]="showEditwallet" maxlength="2"  pattern="^[1-9]\d*$"  required>
+                      <img *ngIf="walletDetails.numberOfUsers !== walletDetails.oldNumberOfUsers && walletDetails.oldNumberOfUsers !== undefined && walletDetails.oldNumberOfUsers !== '' && walletDetails.oldNumberOfUsers !== null && workflowType === 'WalletDetailsUpdate'" class="remove_walt"  matTooltip ="Previous value: {{walletDetails.oldNumberOfUsers}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                      <mat-error *ngIf="'numberOfUsers'">
+                         Number of users required
+                      </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="Required number of Signature/s" autocomplete="off" name="requiredsign" [(ngModel)]="walletDetails.numberOfSign"
+                       (ngModelChange)="onsignatureChange($event)" #numberOfSign = "ngModel" [disabled]="showEditwallet"  maxlength="2"  pattern="^[1-9]\d*$" required>
+                       <img *ngIf="walletDetails.numberOfSign !== walletDetails.oldNumberOfSign && walletDetails.oldNumberOfSign !== undefined && walletDetails.oldNumberOfSign !== '' && walletDetails.oldNumberOfSign !== null && workflowType === 'WalletDetailsUpdate'" class="remove_walt"  matTooltip ="Previous value: {{walletDetails.oldNumberOfSign}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                      <mat-error *ngIf="'numberOfSign'">
+                          Signatures Required
+                      </mat-error>
+                  </mat-form-field>
+                  <span *ngIf="erroinsignsture && walletDetails.numberOfSign !== '' && workflowType === 'WalletCreation'" class="caution_poliy_sign">
+                    Signatures cannot be more than number of user/s</span>
+                    <span *ngIf="erroinsignsture && walletDetails.numberOfSign !== '' && workflowType === 'WalletDetailsUpdate'" class="caution_poliy_updt">
+                      Signatures cannot be more than number of user/s</span>
+                  <mat-form-field class="example-half-width">
+                        <mat-select placeholder="Coin" [(ngModel)]="walletDetails.coins" name="Coin" #Coin="ngModel" [disabled]="showEditwallet1" required>
+                          <mat-option  value="BTC" >BTC</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="'Coin'">
+                          Coin is Required
+                        </mat-error>
+                      </mat-form-field>
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="Client Name" autocomplete="off" name="clientName" [(ngModel)]="walletDetails.clientName"
+                        [disabled]="true" required>
+                  </mat-form-field>
+          </div>
+        </div>
+        <!-- wallet Information Ends -->
+
+         <!-- User Information starts -->
+         <div *ngIf="workflowType === 'WalletCreation' || workflowType === 'WalletDetailsUpdate' || workflowType === 'WalletFreeze' || workflowType === 'WalletUnFreeze'">
+          <div class="info__heading">
+            <h2 class="khulaSemiBold font18 headingcolor"><span>User Information</span>&nbsp; &nbsp; &nbsp; &nbsp;<span [popover]="myPopoverForWallet"><img *ngIf="workflowType == 'WalletDetailsUpdate' && walletOlduserList.length > 0 && !walletDetails.walletUserEdit" class="RoleEditIcon" src="./assets/images/userpolicy/info.png" alt=""></span></h2>
+          </div>
+          <div class="info__right__detail border-top3954e5">
+            <form name="addUserForm" #addUserForm="ngForm" class="notmaterial" novalidate>
+              <div class="verifier-box" *ngFor="let itemValue of walletuserList; let i = index">
+                <mat-form-field class="example-half-width" >
+                    <input matInput placeholder="Email ID" autocomplete="off" [name]="'emailId'+itemValue.userId" [(ngModel)]="itemValue.username"
+                      [disabled]="true" required><span></span>
+                </mat-form-field>
+                
+                <mat-form-field class="example-half-width" *ngIf="showEditwallet" >
+                    <input matInput placeholder="Role" autocomplete="off" [name]="'role'+itemValue.userId" [(ngModel)]="itemValue.role"
+                      [disabled]="showEditwallet" required>
+                </mat-form-field>
+                <mat-form-field class="example-half-width" *ngIf="!showEditwallet" >
+                  <mat-select placeholder="Role" [name]="'role'+itemValue.userId" [(ngModel)]="itemValue.role">
+                    <mat-option *ngFor="let item of roleList;let roleindex= index" [value]="item.value" (optionSelected)="roleuserSelected($event ,i)">
+                      {{item.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <span class="deleteimg-outer" *ngIf="!showEditwallet" >
+                  <img class="deleteimg_update" src="/assets/images/personalwallet/smalldelete.svg"
+                    alt="" (click)="deleterow(i)" title="Delete Row">
+                </span>
+               </div>
+               <div class="verifier-box" *ngIf="initialfslde">
+                  <!-- <div class="group"> -->
+                      <mat-form-field class="example-half-width material-half-width">
+                          <input type="text" class="arrow" required placeholder="Email ID" aria-label="String" matInput  name="username" [matAutocomplete]="auto" [(ngModel)]="modelvalue.username" (ngModelChange)="uiautoserach($event)" #username="ngModel" required><span></span>
+                          <mat-error *ngIf="'username'">
+                              Email ID is <strong>required</strong>
+                          </mat-error>
+                          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="userSelected($event)">
+                            <mat-option *ngFor="let item of autosearchresult1" [value]="item" >
+                                {{item}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field class="example-half-width"  >
+                            <mat-select placeholder="Role" name="role"  [(ngModel)]="modelvalue.role" #role="ngModel" (focusout)="focusFunction('')" (focus)="focusFunction('role')">
+                              <mat-option *ngFor="let item of roleList;let roleindex= index" [value]="item.value" (optionSelected)="roleSelected($event)">
+                                {{item.name}}
+                              </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="'role'">
+                                User role <strong>required</strong>
+                            </mat-error>
+                          </mat-form-field>
+                          <span class="deleteimg-outer" *ngIf="!showEditwallet" >
+                            <img class="deleteimg_update" src="/assets/images/personalwallet/smalldelete.svg"
+                              alt="" (click)="deleteextrarow()" title="Delete Row">
+                          </span>
+                      <!-- </div> -->
+                     
+               </div>
+               <div class="add-more-user" *ngIf="(walletuserList.length < walletDetails.numberOfUsers) && adduserStatus" (click)="addUser(addUserForm);">
+                <img class="imgcls" src="/assets/images/addUserNew.svg" alt="">
+              </div>
+            </form>
+          </div>
+        </div>
+      </form>
+      <popover-content #myPopoverForWallet 
+                title="Previous Value" 
+                placement="top"
+                [animation]="true" 
+                [closeOnClickOutside]="false" class="main-popover main-popoverWallet">
+                <span (click)="myPopoverForWallet.hide()" id="closeIdWallet" class="closeIdVisible">Or click here to close it</span>
+                <div class="pophoverWidth">
+                <div class="verifier-box" *ngFor="let itemValue of walletOlduserList; let i = index">
+                    <mat-form-field class="example-half-width" >
+                        <input matInput placeholder="Email ID" autocomplete="off" [(ngModel)]="itemValue.username"
+                          [disabled]="true" required><span></span>
+                    </mat-form-field>
+                     <mat-form-field class="example-half-width">
+                        <input matInput placeholder="Role" autocomplete="off" [(ngModel)]="itemValue.role"
+                          [disabled]="true" required>
+                    </mat-form-field>
+                </div>
+              </div>
+    </popover-content>
+        </div>
+        <!-- User Information Ends -->
+
+
+       <!--  Wallet create Info Ends -->
+
+
+
+
+        <!--User Details Profile - Basic info data start-->   
+        <div *ngIf="workflowType == 'UserInvite'|| workflowType == 'UserEdit' || workflowType == 'UserDeactivate' || workflowType == 'UserReactivate'">
+          <form class="example-form"  #fCustomerUserInfo="ngForm">
+        <div class="info__heading">
+          <h2 class="khulaSemiBold font18 headingcolor">User Information</h2>     
+          <div *ngIf="workflowObject.ticketStatus == 'Claimed' && (this.workflowType === 'UserInvite' || this.workflowType === 'UserEdit' || this.workflowType === 'UserReactivate')">
+              <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="showEditUB" (click)="edituserBasicInfo()">Edit</span>
+              <span class="khulaBold font14 colorde792f margin-right onboardflowbtn" *ngIf="!showEditUB" (click)="resetuserBasicInfo()">Cancel</span>
+              <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="!showEditUB" (click)="saveUserBasiInfo(saveconfirmaction)"><button  class="khulaBold font14 colorde792f onboardflowbtn btncss" type="submit" [disabled]="!fCustomerUserInfo.form.valid || invalidphone">Save</button> </span>
+            </div>
+        </div>
+        <div class="info__right__detail border-top3954e5">
+          <div class="verifier-box">
+            <mat-form-field class="example-half-width example-third-width">
+              <input matInput placeholder="First Name" required id="firstName" name="firstName" #firstName="ngModel"
+                      [(ngModel)]="clientUserDetails.firstName" autocomplete="off" [disabled]="EditBasic">
+                    <mat-error *ngIf="'firstName'">
+                      User Name is <strong>required</strong>
+                    </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-half-width example-third-width">
+                <input matInput placeholder="Last Name" required id="lastName" name="lastName" #lastName="ngModel"
+                        [(ngModel)]="clientUserDetails.lastName" autocomplete="off" [disabled]="EditBasic">
+                      <mat-error *ngIf="'lastName'">
+                        Last Name is <strong>required</strong>
+                      </mat-error>
+            </mat-form-field>
+           
+          </div>
+          <div class="verifier-box">
+            
+            <mat-form-field class="example-half-width example-third-width">
+              <input matInput placeholder="Country" class="arrow" name="country" [(ngModel)]="clientUserDetails.country"
+                #country="ngModel" [disabled]="EditBasicPC" [matAutocomplete]="auto1" (ngModelChange)="getTheValue(clientUserDetails.country)" required>
+                <img *ngIf="clientUserDetails.country !== clientUserDetails.oldCountry && clientUserDetails.oldCountry !== undefined && clientUserDetails.oldCountry !== '' && clientUserDetails.oldCountry !== null && workflowType == 'UserEdit'" class="remove_walt"  matTooltip ="Previous value: {{clientUserDetails.oldCountry}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                <span></span>
+                <mat-error *ngIf="'country'">
+                    Country is <strong>required</strong>
+                 </mat-error>
+                 <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                    <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item" >
+                        {{item}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field class="country-code example-third-width">
+                <input matInput placeholder="Code" autocomplete="off" name="userInfoCode" [(ngModel)]="userInfoCode" [disabled]="true">
+            </mat-form-field>
+            
+            <mat-form-field class="phone-number example-third-width">
+                <input matInput placeholder="Phone Number" (keypress)="numberOnly($event)" autocomplete="off" name="phoneNumber" [(ngModel)]="clientUserDetails.phoneNumber"
+                  #phoneNumber="ngModel" max="{{countryPhonelen}}"  maxLength="{{countryPhonelen}}" (ngModelChange)="onChange(clientUserDetails.phoneNumber)" [disabled]="EditBasicPC" required>
+                  <img *ngIf="clientUserDetails.phoneNumber !== clientUserDetails.oldPhoneNumber && clientUserDetails.oldPhoneNumber !== undefined && clientUserDetails.oldPhoneNumber !== '' && clientUserDetails.oldPhoneNumber !== null && workflowType == 'UserEdit'" class="remove_walt"  matTooltip ="Previous value: {{clientUserDetails.oldPhoneNumber}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                  <div *ngIf="invalidphone && clientUserDetails.phoneNumber !== ''" class="help-block1 caution">Please enter {{countryPhonelen}} digit number</div>
+              </mat-form-field>
+  
+             
+          </div>
+          <div class="verifier-box">
+              <mat-form-field class="example-half-width example-third-width">
+                  <input matInput required [disabled]="EditBasic" #username="ngModel" pattern="(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}))" autocomplete="off" placeholder="Email ID"
+                          name="username" [(ngModel)]="clientUserDetails.emailId" required>
+                        <mat-error *ngIf="'username'">
+                            Please type your Email ID in the format <strong>"yourname@example.com"</strong>
+                        </mat-error>
+                </mat-form-field>
+                <mat-form-field class="example-half-width example-third-width">
+                    <input matInput required [disabled]="true" #customerName="ngModel" autocomplete="off" placeholder="Client Name"
+                            name="customerName" [(ngModel)]="clientUserDetails.clientName">
+                          <!-- <mat-error *ngIf="'customerName'">
+                            <strong>email format</strong>
+                          </mat-error> -->
+                  </mat-form-field>
+          </div>
+          <div class="verifier-box">
+            <div class="role-checkbox">            
+              <mat-checkbox class="chkbxstly" [checked]="clientUserDetails.superAdmin" [(ngModel)]="clientUserDetails.superAdmin" (ngModelChange)="roleChange($event)" name="superAdmin"  #superAdmin="ngModel" [disabled]="editUserRole" autocomplete="off">
+                Super User
+                <img *ngIf="clientUserDetails.userRoles !== clientUserDetails.oldUserRole && workflowType == 'UserEdit' && clientUserDetails.oldUserRole !== undefined && clientUserDetails.oldUserRole !== null" class="UR-OldValue"  matTooltip ="Previous value: {{clientUserDetails.oldUserRole}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt=""> 
+              </mat-checkbox>  
+                          
+          </div>  
+          </div>
+        </div>
+      </form>
+      
+    </div>
+  <!--User Details Info- Basic info data End -->
+
+  
+
+      <div *ngIf="workflowType=='CustomerInvite'">
+          <form class="example-form" #f="ngForm">
+        <div class="info__heading">
+          <h2 class="khulaSemiBold font18 headingcolor">Role Management Information </h2>
+          <div *ngIf="workflowObject.ticketStatus == 'Claimed' && workflowType == 'CustomerInvite'">
+            <span class="khulaBold font14 colorde792f onboardflowbtn margin-right" *ngIf="showEditRoleManagement" (click)="editRoleManagemnet()">Edit</span>
+              <span class="khulaBold font14 colorde792f margin-right onboardflowbtn" *ngIf="!showEditRoleManagement" (click)="cancelRoleManagemnet()">Cancel</span>
+              <span class="khulaBold font14 colorde792f onboardflowbtn margin-right" *ngIf="!showEditRoleManagement" (click)="editUserdata()"><button  class="khulaBold font14 colorde792f onboardflowbtn btncss" type="submit" [disabled]="!f.form.valid">Save</button> </span>
+              <!-- <span class="khulaBold font14 colorde792f onboardflowbtn" (click)="expand()">{{ExpandText}}</span> --> 
+          </div>
+        </div>
+
+
+        <!-- <div (click)="allExpandState = true"><button>allExpandState</button></div> -->
+        <div class="info__right__detail border-top3954e5 backgound-colorffffff">
+            <div class="form-wrapper">
+                <!-- <form class="example-form" (ngSubmit)="invitedSuccessfull(successtemplate)" #f="ngForm"> -->
+               
+                  <mat-accordion>
+                    <mat-expansion-panel *ngFor="let item of x;let i=index" (opened)="item.visible=true" (closed)="item.visible=false" [class.expPannel]="item.visible">
+                      <mat-expansion-panel-header class="panal-layout" [class.openHeader]="item.visible" (click)="onDeptSelect(item)">
+                        <mat-panel-title class="khulaSemiBold" [class.khulaBold]="item.visible">
+                          <img src="assets/images/inviteuser/{{item.name.split(' ')[0].toLowerCase()}}.svg" alt="" class="acc-image">{{item.name}}
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <div class="verifier-box" *ngFor="let role of item.role; let j=index">
+                        <div class="verifier-text example-third-width">{{role}}</div>
+                        <mat-form-field class="example-half-width example-third-width">
+                            <input matInput class="arrow" placeholder="Primary {{role}}"  aria-label="String" [(ngModel)]="model['primary_' + item.id + '_' + role.toUpperCase()]" [name]="'primary_' + item.id + '_' + role.toUpperCase()"  [matAutocomplete]="auto" (focus)="onFocus(role.toLowerCase())" (ngModelChange)="onValChange(model['primary_' + item.id + '_' + role.toUpperCase()], 'primary_' + item.id + '_' + role.toUpperCase())" required [disabled]="userManagementEdit"><span></span>
+                            <mat-error *ngIf="'primary_' + item.id + '_' + role.toUpperCase()">
+                               {{'primary' +' ' + role.toUpperCase()}} is <strong>required</strong>
+                            </mat-error>
+                          <!-- <input type="text" class="arrow" placeholder="Primary {{role}}" aria-label="String" matInput [matAutocomplete]="auto"> -->
+                          <mat-autocomplete #auto="matAutocomplete" class="autocomplete" [displayWith]="displayFn">
+                            <mat-option class="autocomplete" *ngFor="let list of filteredValues" [value]="list">
+                              {{list.name}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+          
+                        <mat-form-field class="example-half-width example-third-width">
+                            <input matInput class="arrow" placeholder="Backup {{role}}"  aria-label="String" [(ngModel)]="model['backup_' + item.id + '_' + role.toUpperCase()]" [name]="'backup_' + item.id + '_' + role.toUpperCase()"  [matAutocomplete]="auto2" (focus)="onFocus(role.toLowerCase())" (ngModelChange)="onValChange(model['backup_' + item.id + '_' + role.toUpperCase()], 'backup_' + item.id + '_' + role.toUpperCase())" required [disabled]="userManagementEdit"><span></span>
+                            <mat-error *ngIf="'backup_' + item.id + '_' + role.toUpperCase()">
+                                {{'backup' +' '+ role.toLowerCase()}} is <strong>required</strong>
+                             </mat-error>
+                            <mat-autocomplete #auto2="matAutocomplete" class="autocomplete" [displayWith]="displayFn">
+                              <mat-option class="autocomplete" *ngFor="let list of filteredValues" [value]="list">
+                                {{list.name}}
+                              </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                      </div>
+                
+                    </mat-expansion-panel>
+                  </mat-accordion>
+                  <!-- <div class="linebottom"></div> -->
+                  <!-- <button class=" btn btn-orange btn-left" [disabled]="!f.form.valid">Submit</button> -->
+              
+              </div>
+        </div>
+      </form>
+      </div>
+
+      <!-- <div> -->
+      <div *ngIf="workflowType =='Transaction'">
+        <div class="info__heading">
+          <h2 class="khulaSemiBold font18 headingcolor">Transaction Details</h2>
+        </div>
+        <div class="info__right__details border-top3954e5">
+            <div class="row transactionRow">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 frm_walt_div pad-top">
+                    <div class="circleimage"><img src="/assets/images/personalwallet/rightarrow.svg" alt="" class="rightarow"></div>
+                  <label class="frm_walt">From Wallet</label>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <h6 class="transTitle">From Wallet Address</h6>
+                      <span class="transValue">{{transactionDetails.fromWallet}}</span>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <h6 class="transTitle">From Wallet Name</h6>
+                  <span class="transValue">{{transactionDetails.fromWalletName}}</span>
+                  </div>
+                  
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 to_walt_div pad-top">
+                    <label class="to_walt">To Wallet</label>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h6 class="transTitle">To Wallet Address</h6>
+                        <span class="transValue">{{transactionDetails.toWallet}}</span>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h6 class="transTitle">To Wallet Name</h6>
+                  <span class="transValue">{{transactionDetails.toWalletName}}</span>
+                    </div>
+                  
+                </div>
+              </div>
+              <div class="row transactionRow">
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                     
+                    <h6 class="Transaction-Amount1">test</h6>
+                    <h6 class="Transaction-Amount">Transaction Amount</h6>
+                    <h6 class="Transaction-Amount">Network Fee</h6>
+                    <h6 class="Transaction-Amount">Fusang Fee ( {{transactionDetails.transactionPercentage}}% )</h6>
+                    
+                   
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                      <div class="seconddiv"><img src="/assets/images/personalwallet/twowayarrow.svg" alt="" class="righlefttarow_sin"></div>
+                   <h6 class="BTC_header">BTC</h6>
+                    <h6 class="value_disply1">{{transactionDetails.btc}}</h6>
+                    <h6 class="value_disply1">{{transactionDetails.transactionFee}}</h6>
+                    <h6 class="value_disply1">{{transactionDetails.serviceCharge}}</h6>
+                    
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                      <h6 class="BTC_header">USD<span class="mandatory"><img src="/assets/images/personalwallet/information.svg" alt="" class="font_icon"></span></h6>
+                      <h6 class="value_disply">{{transactionDetails.usd}}</h6>
+                      <h6 class="value_disply">{{transactionDetails.transactionFeeUsd}}</h6>
+                      <h6 class="value_disply">{{transactionDetails.serviceChargeUsd}}</h6>
+                    
+                  </div>
+                </div>
+                <div class="row transactionIDRow">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                        <h6 class="Transaction-Amount">Total Amount</h6>
+                         
+                         
+                       </div>
+                       <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                          <h6 class="Transaction-Amount">{{transactionDetails.netBtc}}</h6>
+                           
+                           
+                         </div>
+                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <h6 class="Transaction-Amount">${{transactionDetails.netUsd}}</h6>
+                             
+                             
+                           </div>
+                </div>
+          <div class="verifier-box">
+              <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Transaction Date" autocomplete="off" name="createdDate" [(ngModel)]="transactionDetails.createdDate"
+                    #createdDate="ngModel" [disabled]="true" >
+                </mat-form-field>
+               
+            <mat-form-field class="example-half-width">
+              <input matInput placeholder="Wallet Type" autocomplete="off" name="walletType" [(ngModel)]="transactionDetails.walletType"
+                #walletType="ngModel" [disabled]="true">
+            </mat-form-field>
+         
+          
+          </div>
+          <div class="verifier-box">
+            <mat-form-field class="example-half-width example-third-width">
+              <input matInput placeholder="Note from Initiator" autocomplete="off" name="note" [(ngModel)]="transactionDetails.note"
+                #note="ngModel" [disabled]="true">
+            </mat-form-field>
+            <mat-form-field class="example-half-width example-third-width">
+              <input matInput placeholder="Initiated By" autocomplete="off" name="initiatorName" [(ngModel)]="transactionDetails.initiatorName"
+                #note="ngModel" [disabled]="true">
+            </mat-form-field>
+
+           
+          </div>
+          
+          <div class="verifier-box">
+              <label class="signaturestatus">Signature status</label>
+              <br>
+              <label class="Signed">{{transactionDetails.signatory}} out of {{transactionDetails.signatory}} Signed</label>
+              <span class="strclr"><img src="/assets/images/personalwallet/information.svg" alt="" class="txxt_icon">Indicative USD price only</span> 
+          </div> 
+        </div> 
+       
+      </div>
+
+
+      <!-- <div> -->
+      <div *ngIf="workflowType=='Transaction'">
+        <div class="info__heading">
+          <h2 class="khulaSemiBold font18 headingcolor">Signer Details</h2>
+        </div>
+        <div class="info__right__detail border-top3954e5">
+          <div class="verifier-box" *ngFor="let item of onbordingDetails.signatories; let j=index">
+            <mat-form-field class="example-half-width example-third-width" >
+              <input matInput placeholder="Signer Email ID" autocomplete="off" name="emailId" [value]="item.emailId" [disabled]="true"><img
+                class="ststuscls" src="assets/images/userpolicy/success.png" alt="">
+            </mat-form-field>
+            <mat-form-field class="example-half-width example-third-width" >
+              <input matInput placeholder="Signer Notes" autocomplete="off" name="note" [value]="item.note" [disabled]="true">
+              <!-- <img class="ststuscls" src="assets/images/userpolicy/success.png"> -->
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- user detail starts -->
+     
+      <!-- user detail ends -->
+
+      <!-- Policy manegment Starts -->
+      <div *ngIf="workflowType=='UserPolicyChange' || workflowType=='GlobalPolicyChange' ">
+        <form #globalpolicy="ngForm">
+        <div class="info__heading">
+          <h2 class="khulaSemiBold font18 headingcolor">Policy Management</h2>
+          <span class="spncls1">
+              <span *ngIf="showexpandall" class="expndalbtn" (click)="expandAll()">
+                  <img class="expndAlimg" src="assets/images/personalwallet/expandAll.svg" alt="">
+                  <button class="expndAltxt">Expand All</button>
+              </span>
+              <span *ngIf="!showexpandall"  class="expndalbtn" (click)="collapseAll()">
+                  <img class="expndAlimg" src="assets/images/personalwallet/collapsAll.svg" alt="">
+                  <button class="expndAltxt">Collapse All</button>
+              </span>
+              <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="workflowObject.ticketStatus == 'Claimed' && makeitedit" (click)="editPolicy()">Edit</span>
+                <span class="khulaBold font14 colorde792f margin-right onboardflowbtn" *ngIf="workflowObject.ticketStatus == 'Claimed' && !makeitedit" (click)="cancelPolicyModifications()">Cancel</span>
+                <span class="khulaBold font14 colorde792f onboardflowbtn" *ngIf="workflowObject.ticketStatus == 'Claimed' && !makeitedit" (click)="updateWalletPolicyDetails()">
+                  <button [disabled]="!globalpolicy.form.valid || validateTimeZone || !isWalletValid || starttimeerror || timestamperror || endtimeerror || endtimestamperror || uitofmeasureerror " 
+                   class="khulaBold font14 colorde792f onboardflowbtn btncss" type="submit" >Save</button> </span>
+            </span>
+            
+        </div>
+        <div class="row row-margin" >
+            
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="deepStorage-background">
+                    <img src="/assets/images/userpolicy/deep-storage.png" alt="" class="securityImg">                      
+                    <p class="securep">DEEP STORAGE</p>
+                 </div>
+                
+                 <img  *ngIf="onbordingDetails.walletType === 'DeepStorage'" class="secure-triangle" src="/assets/images/onbording/2.svg" alt="">
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+              <div class="secure-background">
+                 <!-- <img src="/assets/images/onbording/securestorage.svg"> -->
+                 <img src="/assets/images/userpolicy/securestorage.png" alt="" class="securityImg"> 
+                 <p class="securep">SECURE STORAGE</p>
+              </div>
+            
+              <img  *ngIf="onbordingDetails.walletType === 'SecureStorage'" class="secure-triangle" src="/assets/images/onbording/3.svg" alt="">
+           </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <div class="high-background">
+                      <img src="/assets/images/userpolicy/highfrequency.png" alt="" class="securityImg"> 
+                      <p class="securep">HIGH FREQUENCY</p> 
+                 </div>
+                 
+                 <img  *ngIf="onbordingDetails.walletType === 'HighFrequency'" class="secure-triangle" src="/assets/images/onbording/1.svg" alt="">
+            </div>
+        </div>
+        <div class="info__right__details border-top3954e5">
+          <!-- <mat-accordion> -->
+            <mat-expansion-panel class="expPannel" [expanded]="allExpandStatus">
+              <mat-expansion-panel-header class="panal-layout openHeader backgrnd">
+                <mat-panel-title class="khulaSemiBold stylhdr"><img
+                  class="policyimg" src="assets/images/userpolicy/transaction-hours.png" alt="">
+                    Transaction Hours Limit
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="verifier-box fieldstyle">
+               
+              <div class="verifier-text  example-third-width mat_hdr "> Time Zone</div>
+              <mat-form-field class="example-third-width">
+                  <input matInput placeholder="Time Zone" autocomplete="off" name="walletTimeZone" [(ngModel)]="updatedPolicyDetail.walletTimeZone.newValue"
+                   #walletTimeZone="ngModel" [disabled]="makeitedit"  [matAutocomplete]="auto" (ngModelChange)="getTheTimezone($event)" required>
+                   <img class="remove_walt" *ngIf="updatedPolicyDetail.walletTimeZone.newValue !== updatedPolicyDetail.walletTimeZone.oldValue"  matTooltip ="Previous value: {{updatedPolicyDetail.walletTimeZone.oldValue}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                   <mat-error *ngIf="updatedPolicyDetail.walletTimeZone.newValue === ''">
+                    Time Zone is <strong>required</strong>
+                  </mat-error>
+                  <div *ngIf="validateTimeZone && updatedPolicyDetail.walletTimeZone.newValue !== ''" class="help-block1 caution">Select valid Time Zone</div>
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                    <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+              </mat-form-field>
+
+              
+          </div>
+            <div class="verifier-box fieldstyle">
+               
+                <div class="verifier-text  example-third-width mat_hdr ">Transaction Hours Limit ( 24 hrs )</div>
+                <mat-form-field class="example-third-width">
+                    <input matInput placeholder="Start Time" autocomplete="off" name="transactionTimeStart" [(ngModel)]="updatedPolicyDetail.transactionTimeStart.newValue"
+                     #transactionTimeStart="ngModel" (ngModelChange)="timestampvalidation()" [disabled]="makeitedit" required>
+                     <img class="remove_walt" *ngIf="updatedPolicyDetail.transactionTimeStart.newValue !== updatedPolicyDetail.transactionTimeStart.oldValue"  matTooltip ="Previous value: {{updatedPolicyDetail.transactionTimeStart.oldValue}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                     <mat-error *ngIf="updatedPolicyDetail.transactionTimeStart.newValue === ''">
+                      Transaction Start Time End is <strong>required</strong>
+                    </mat-error>
+                    <!-- <mat-error *ngIf="transactionTimeStart.errors?.pattern">
+                      Transaction Start Time should be <strong>02:01</strong> format
+                    </mat-error> -->
+                </mat-form-field>
+
+                <mat-form-field class="example-third-width">
+                    <input matInput placeholder="End Time" autocomplete="off" name="transactionTimeEnd" [(ngModel)]="updatedPolicyDetail.transactionTimeEnd.newValue"
+                    #transactionTimeEnd="ngModel" (ngModelChange)="endtimestampvalidation()" [disabled]="makeitedit" required>
+                    <img *ngIf="updatedPolicyDetail.transactionTimeEnd.newValue !== updatedPolicyDetail.transactionTimeEnd.oldValue" class="remove_walt"  matTooltip ="Previous value: {{updatedPolicyDetail.transactionTimeEnd.oldValue}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                    <mat-error *ngIf="updatedPolicyDetail.transactionTimeEnd.newValue === ''">
+                      Transaction End Time End is <strong>required</strong>
+                    </mat-error>
+                    <!-- <mat-error *ngIf="transactionTimeEnd.errors?.pattern">
+                      Transaction End Time should be <strong>02:01</strong> format
+                    </mat-error> -->
+                </mat-form-field>
+                <!-- <div class="verifier-text  example-third-width "></div>  -->
+                <div *ngIf="starttimeerror && updatedPolicyDetail.transactionTimeEnd.newValue !== ''" class="caution_poliy_strt"> Transaction Start Time should be <strong>HH:MM</strong> format</div>
+                <div *ngIf="timestamperror && updatedPolicyDetail.transactionTimeStart.newValue !== '' && !starttimeerror " class="caution_poliy_strt">Transaction Start Time should be less than Transaction End Time</div>
+                <div *ngIf="endtimeerror && updatedPolicyDetail.transactionTimeEnd.newValue !== ''" class="caution_poliy"> Transaction End Time should be <strong>HH:MM</strong> format</div>
+                  <div *ngIf="endtimestamperror && updatedPolicyDetail.transactionTimeEnd.newValue !== '' && !endtimeerror " class="caution_poliy">Transaction End Time Should be greater than Transaction Start time</div>
+            </div>
+           
+            </mat-expansion-panel>
+            
+            
+            <mat-expansion-panel class="expPannel" *ngIf="workflowType=='UserPolicyChange'"  [expanded]="allExpandStatus">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold stylhdr"><img
+                      class="policyimg" src="assets/images/userpolicy/wallet-address.png" alt="">
+                      Wallet Address Config
+                    </mat-panel-title>
+                
+                  </mat-expansion-panel-header>
+                  
+                  <div class="verifier-box fieldstyle"> 
+                    <div class="verifier-text example-third-width mat_hdr">Maximum Allowed Wallet Address</div>
+                    <mat-form-field class="example-third-width" *ngIf="onbordingDetails.walletType !== 'HighFrequency'">
+                        <input matInput placeholder="Maximum Allowed Wallet Address" autocomplete="off" name="maximumAllowedWallets" [(ngModel)]="updatedPolicyDetail.maximumAllowedWallets.newValue" #maximumAllowedWallets="ngModel" [disabled]="makeitedit" maxlength="2"
+                        pattern="^[1-9]\d*$" required >
+                        <img *ngIf="updatedPolicyDetail.maximumAllowedWallets.newValue !== updatedPolicyDetail.maximumAllowedWallets.oldValue" matTooltip ="Previous value: {{updatedPolicyDetail.maximumAllowedWallets.oldValue}}" matTooltipPosition="right" class="remove_walt1"  src="./assets/images/userpolicy/info.png" alt="">
+                        <mat-error *ngIf="updatedPolicyDetail.maximumAllowedWallets.newValue === ''">
+                            Maximum Allowed Wallets is required
+                          </mat-error>
+                          <mat-error *ngIf="maximumAllowedWallets.errors?.pattern">
+                            Please enter values (1 to 99)
+                          </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class=" example-third-width" *ngIf="onbordingDetails.walletType === 'HighFrequency'">
+                      <input matInput placeholder="Enter Maximum Allowed Wallets" autocomplete="off" name="maximumAllowedWallets1"
+                        [(ngModel)]="updatedPolicyDetail.maximumAllowedWallets.oldValue" #maximumAllowedWallets1="ngModel" [disabled]="true" required
+                        [disabled]="true" >
+                      <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.maximumAllowedWallets.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                      <!-- [(ngModel)]="updatedPolicyDetail.maximumAllowedWallets.newValue" #maximumAllowedWallets="ngModel" maxlength="2" pattern="^[1-9]\d*$" -->
+                    </mat-form-field>
+                </div>
+                <!-- <div class="verifier-box" *ngFor="let item of updatedPolicyDetail.walletAddressWhitelist.oldValue;let addressindex = index"><img matTooltip ="Previous value: {{item}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"></div> -->
+                <div class="verifier-box fieldstyle"  *ngFor="let item of newwalletaddress;let addressindex = index">
+                    <div *ngIf="addressindex === 0" class="verifier-text example-third-width  mat_hdr">Wallet Address
+                        <img *ngIf="addressindex === 0 && deletedAddressIndicator().length > 0" [tooltip]="deletedWalletTooltip" placement='right' class="walletInfoIcon" src="./assets/images/userpolicy/info.png" alt="">
+                    </div>
+                    <div  *ngIf="addressindex > 0" class="verifier-text example-third-width mat_hdr"></div>
+                    <mat-form-field class="example-third-width" >                        
+                        <input matInput placeholder="Wallet Address {{addressindex+1}}" autocomplete="off" [value]="item.address"  [disabled]="true" >
+                        
+                       <img *ngIf="newAddressIndicator(item.address) < 0" matTooltip ="This is newly added Wallet address" matTooltipPosition="right" class="remove_walt1"  src="./assets/images/userpolicy/info.png" alt="">
+                       
+                    </mat-form-field>
+                    <img *ngIf="!makeitedit"  (click)="removewalletaddress(addressindex)" src="/assets/images/onbording/bin.svg" alt="" class="role-delete">
+                </div>
+                <div class="verifier-box fieldstyle" *ngIf="showwalletfield && updatedPolicyDetail.maximumAllowedWallets.newValue != newwalletaddress.length ">
+                    <div class="verifier-text example-third-width mat_hdr"></div>
+                    <mat-form-field class="example-third-width">
+                        <input matInput placeholder="Wallet Address" autocomplete="off" name="walletaddress" [(ngModel)]="itemValuewalt.address" #walletaddress="ngModel" (ngModelChange)="walletAddressValidation($event)" maxlength="34" pattern="^[^-\s][a-zA-Z0-9_\s-]+$" required >
+                        <!-- [(ngModel)]="itemvalue.walletaddress" #walletaddress="ngModel" -->
+                        <mat-error *ngIf="walletaddress === ''">
+                            Wallets Address is required
+                        </mat-error>
+                      </mat-form-field>
+                    <img  (click)="removewalletaddress1()" src="/assets/images/onbording/bin.svg" alt="" class="role-delete">
+                </div>
+                <div *ngIf="!isWalletValid && itemValuewalt.address !== ''" class="caution_poliy_wallet">Please enter
+                  valid wallet address between 27 to 34 Character's</div>
+                  <div class="verifier-text example-third-width fieldstyle" *ngIf="(updatedPolicyDetail.maximumAllowedWallets.newValue > newwalletaddress.length && !makeitedit) || !isWalletValid ">
+                  <!-- <button matButton type="submit" *ngIf="updatedPolicyDetail.maximumAllowedWallets.newValue != newwalletaddress.length  || !isWalletValid || onbordingDetails.walletType !== 'HighFrequency'" class="ADD" (click)="addwalletaddress()" >+ ADD</button> -->
+                  <button matButton type="submit" *ngIf="!makeitedit && onbordingDetails.walletType !== 'HighFrequency'" class="ADD" [disabled]="makeitedit" (click)="addwalletaddress()" >+ ADD</button>
+                </div>
+            </mat-expansion-panel>
+            <!-- golbal policy -->
+           
+            <mat-expansion-panel class="expPannel" *ngIf="workflowType=='GlobalPolicyChange'"  [expanded]="allExpandStatus">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold stylhdr"><img
+                      class="policyimg" src="assets/images/userpolicy/wallet-address.png" alt="">
+                      Wallet Address Config
+                    </mat-panel-title>
+                
+                  </mat-expansion-panel-header>
+                  
+                  <div class="verifier-box fieldstyle">
+                    <div class="verifier-text example-third-width  mat_hdr">Maximum Allowed Wallet </div>
+                    <mat-form-field class="example-third-width" *ngIf="onbordingDetails.walletType !== 'HighFrequency'">
+                        <input matInput placeholder="Enter Maximum Allowed Wallets Address" autocomplete="off" name="maximumAllowedWallets" [(ngModel)]="updatedPolicyDetail.maximumAllowedWallets.newValue" #maximumAllowedWallets="ngModel" [disabled]="makeitedit" maxlength="2" pattern="^[1-9]\d*$" 
+                         required >
+                        <img *ngIf="updatedPolicyDetail.maximumAllowedWallets.newValue !== updatedPolicyDetail.maximumAllowedWallets.oldValue" matTooltip ="Previous value: {{updatedPolicyDetail.maximumAllowedWallets.oldValue}}" matTooltipPosition="right" class="remove_walt"  src="./assets/images/userpolicy/info.png" alt="" >
+                        <mat-error *ngIf="updatedPolicyDetail.maximumAllowedWallets.newValue === ''">
+                          Maximum Allowed Wallets is required
+                        </mat-error>
+                        <mat-error *ngIf="maximumAllowedWallets.errors?.pattern">
+                          Please enter values (1 to 99)
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class=" example-third-width" *ngIf="onbordingDetails.walletType === 'HighFrequency'">
+                      <input matInput placeholder="Enter Maximum Allowed Wallets" autocomplete="off" name="maximumAllowedWallets1"
+                        [(ngModel)]="updatedPolicyDetail.maximumAllowedWallets.oldValue" #maximumAllowedWallets1="ngModel" [disabled]="true" required
+                        [disabled]="true" >
+                      <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.maximumAllowedWallets.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                      <!-- [(ngModel)]="updatedPolicyDetail.maximumAllowedWallets.newValue" #maximumAllowedWallets="ngModel" maxlength="2" pattern="^[1-9]\d*$" -->
+                    </mat-form-field>
+                </div>
+                <!-- <div class="verifier-box" *ngFor="let item of updatedPolicyDetail.walletAddressWhitelist.oldValue;let addressindex = index"><img matTooltip ="Previous value: {{item}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"></div> -->
+               
+            </mat-expansion-panel>
+            <mat-expansion-panel class="expPannel"  [expanded]="allExpandStatus">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold stylhdr"><img
+                      class="policyimg" src="assets/images/userpolicy/transaction-volume.png" alt="">
+                      Transaction Volume Cap
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                    <div class="verifier-text example-third-width mat_hdr">Maximum Transaction Volume Cap (%)</div>
+                    <mat-form-field class="example-third-width">
+                        <input matInput placeholder="Enter Maximum Allowed Transaction Volume Cap" autocomplete="off" name="transactionVolumeCap" [(ngModel)]="updatedPolicyDetail.transactionVolumeCap.newValue" #transactionVolumeCap="ngModel" [disabled]="makeitedit" pattern="^(100(?:\.0{1,2})?|(?!^0*$)(?!^0*\.0*$)^\d{1,2}(\.\d{1,2})?)$"  required>
+                        <img *ngIf="updatedPolicyDetail.transactionVolumeCap.newValue !== updatedPolicyDetail.transactionVolumeCap.oldValue" matTooltip ="Previous value: {{updatedPolicyDetail.transactionVolumeCap.oldValue}}" matTooltipPosition="right" class="remove_walt"  src="./assets/images/userpolicy/info.png" alt="">
+                        <mat-error *ngIf="updatedPolicyDetail.transactionVolumeCap.newValue === ''">
+                          Transaction Volume Cap is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="transactionVolumeCap.errors?.pattern">
+                            Please enter numerical values (1 to 100)
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="verifier-box fieldstyle">
+                    <div class="verifier-text example-third-width mat_hdr">Transaction Unit of Measure (Mins)</div>
+                    <mat-form-field class="example-third-width ">
+                        <input matInput placeholder="Unit of Measure " autocomplete="off" name="transactionUnitOfMeasure" [(ngModel)]="updatedPolicyDetail.transactionUnitOfMeasure.newValue" #transactionUnitOfMeasure="ngModel"  maxlength="4"  required [disabled]="makeitedit"
+                        (ngModelChange)="checkunitofmeasure(updatedPolicyDetail.transactionUnitOfMeasure.newValue)" >
+                        <img *ngIf="updatedPolicyDetail.transactionUnitOfMeasure.newValue !== updatedPolicyDetail.transactionUnitOfMeasure.oldValue" matTooltip ="Previous value: {{updatedPolicyDetail.transactionUnitOfMeasure.oldValue}}" matTooltipPosition="right" class="remove_walt"  src="./assets/images/userpolicy/info.png" alt="">
+                        
+                        <mat-error *ngIf="updatedPolicyDetail.transactionUnitOfMeasure.newValue === ''">
+                          Transaction Unit Of Measure is <strong>required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="transactionUnitOfMeasure.errors?.pattern">
+                          Please enter numerical values (1 to 1440)
+                        </mat-error>
+                    </mat-form-field>
+                    <div *ngIf="uitofmeasureerror && updatedPolicyDetail.transactionUnitOfMeasure.newValue !== ''" class="caution_poliy_wallet">Please enter numerical values (0 to 1440)</div>
+                </div>
+                <!-- <div class="verifier-text  example-third-width "></div> -->
+            </mat-expansion-panel>
+            <mat-expansion-panel class="expPannel"  [expanded]="allExpandStatus">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold stylhdr"><img
+                      class="policyimg" src="assets/images/userpolicy/frequency-cap.png" alt="">
+                      Frequency Cap
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                    <div class="verifier-text example-third-width mat_hdr">Maximum Allowed Frequency Cap</div>
+                    <mat-form-field class="example-third-width " *ngIf="onbordingDetails.walletType !== 'HighFrequency'">
+
+                        <input matInput placeholder="Enter Maximum Allowed Frequency cap" autocomplete="off" name="transactionLimit" [(ngModel)]="updatedPolicyDetail.transactionLimit.newValue" #transactionLimit="ngModel"  required [disabled]="makeitedit" maxlength="2" pattern="^[1-9]\d*$"   >
+
+                        <img *ngIf="updatedPolicyDetail.transactionLimit.newValue !== updatedPolicyDetail.transactionLimit.oldValue" matTooltip ="Previous value: {{updatedPolicyDetail.transactionLimit.oldValue}}" matTooltipPosition="right" class="remove_walt"  src="./assets/images/userpolicy/info.png" alt="">
+                        <mat-error *ngIf="updatedPolicyDetail.transactionLimit.newValue === ''">
+                          Transaction Limit is <strong>Required</strong>
+                        </mat-error>
+                        <mat-error *ngIf="transactionLimit.errors?.pattern">
+                          Please enter numerical values (1 to 99)
+                        </mat-error>
+                        </mat-form-field>
+                        <mat-form-field class="example-third-width " *ngIf="onbordingDetails.walletType === 'HighFrequency'">
+
+                          <input matInput placeholder="Enter Maximum Allowed Frequency cap" autocomplete="off" name="transactionLimit1" [(ngModel)]="updatedPolicyDetail.transactionLimit.newValue" #transactionLimit1="ngModel"  required [disabled]="true">
+  
+                          
+                          </mat-form-field>
+                </div>
+                <div class="verifier-box fieldstyle">
+                    <div class="verifier-text example-third-width mat_hdr">Frequency Unit of Measure</div>
+                    <mat-form-field class="example-third-width">
+                        <input matInput placeholder="Unit of Measure" autocomplete="off" [value]="Daily" [disabled]="true" >
+                        <!-- name="TransactionLimit" [(ngModel)]="policylist.TransactionLimit" #TransactionLimit="ngModel" -->
+                    </mat-form-field>
+                </div>
+            </mat-expansion-panel>
+             <!-- minimum balance -->
+            <!-- ip config -->
+            <mat-expansion-panel class="expPannel"  [expanded]="allExpandStatus" >
+              <mat-expansion-panel-header class="panal-layout openHeader">
+                  <mat-panel-title class="khulaSemiBold stylhdr"><img
+                    class="policyimg" src="assets/images/userpolicy/wallet-address.png" alt="">
+                   Minimum Balance
+                  </mat-panel-title>
+              
+                </mat-expansion-panel-header>
+                
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text example-third-width mat_hdr">Minimum Balance (%)</div>
+                  <mat-form-field class="example-third-width ">
+                      <input matInput placeholder="Enter Minimum Balance" autocomplete="off" name="minimumBalance" [(ngModel)]="updatedPolicyDetail.minimumBalance.newValue" #minimumBalance="ngModel" pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$" [disabled]="makeitedit" required >
+                      <img *ngIf="updatedPolicyDetail.minimumBalance.newValue !== updatedPolicyDetail.minimumBalance.oldValue" matTooltip ="Previous value: {{updatedPolicyDetail.minimumBalance.oldValue}}" matTooltipPosition="right" class="remove_walt"  src="./assets/images/userpolicy/info.png" alt="">
+                      <mat-error *ngIf="updatedPolicyDetail.minimumBalance.newValue === ''">
+                        Miminum balance is <strong>required</strong>
+                      </mat-error>
+                      <mat-error *ngIf="minimumBalance.errors?.pattern">
+                        Please enter numerical values (0 to 99.99)
+                      </mat-error>
+                  </mat-form-field>
+              </div>
+              <!-- <div class="verifier-box" *ngFor="let item of updatedPolicyDetail.walletAddressWhitelist.oldValue;let addressindex = index"><img matTooltip ="Previous value: {{item}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"></div> -->
+             
+          </mat-expansion-panel>
+            <!-- ip config -->
+            <!-- minimum balance -->
+            <mat-expansion-panel class="expPannel"  [expanded]="allExpandStatus">
+              <mat-expansion-panel-header class="panal-layout openHeader">
+                  <mat-panel-title class="khulaSemiBold stylhdr"><img
+                    class="policyimg" src="assets/images/userpolicy/reportconfig@2x.png" alt="">
+                   Billing
+                  </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="verifier-box fieldstyle">
+                  <div class="verifier-text example-third-width mat_hdr">Billing</div>
+                  <mat-form-field class=" example-third-width"  *ngIf="updatedPolicyDetail?.serviceCharge !==undefined">
+                      <input matInput placeholder="Fusang Fee (%)" autocomplete="off" name="Fusangfee" [(ngModel)]="updatedPolicyDetail?.serviceCharge.newValue" #serviceCharge="ngModel" pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$" [disabled]="makeitedit" required >
+                      <img *ngIf="updatedPolicyDetail?.serviceCharge.newValue !== updatedPolicyDetail?.serviceCharge.oldValue" matTooltip ="Previous value: {{updatedPolicyDetail?.serviceCharge.oldValue}}" matTooltipPosition="right" class="remove_walt"  src="./assets/images/userpolicy/info.png" alt="">
+                      <mat-error *ngIf="updatedPolicyDetail?.serviceCharge.newValue === ''">
+                        Fusang Fee is <strong>Required</strong>
+                      </mat-error>
+                      <mat-error *ngIf="serviceCharge.errors?.pattern">
+                        Please enter numerical values (0 to 99.99)
+                      </mat-error>
+                    </mat-form-field>
+                  <mat-form-field class="example-third-width" *ngIf="updatedPolicyDetail?.serviceCharge !==undefined">
+                    <input matInput placeholder="Holding Fee (%)" autocomplete="off" name="Subcription" [(ngModel)]="updatedPolicyDetail?.subcriptionCharge.newValue"
+                    #subcriptionCharge="ngModel" pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$" required [disabled]="makeitedit">
+                    <img *ngIf="updatedPolicyDetail?.subcriptionCharge.newValue !== updatedPolicyDetail?.subcriptionCharge.oldValue" class="remove_walt"  matTooltip ="Previous value: {{updatedPolicyDetail?.subcriptionCharge.oldValue}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png" alt="">
+                    <mat-error *ngIf="updatedPolicyDetail?.subcriptionCharge.newValue === ''">
+                      Holding Fee is <strong>Required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="subcriptionCharge.errors?.pattern">
+                      Please enter numerical values (0 to 99.99)
+                    </mat-error>
+                  </mat-form-field>
+              </div>
+              <!-- <div class="verifier-box fieldstyle" *ngIf="workflowType=='UserPolicyChange'"  >
+                <div class="verifier-text example-third-width">Billing</div>
+                <mat-form-field class=" example-third-width"  *ngIf="updatedPolicyDetail?.serviceCharge !==undefined">
+                    <input matInput placeholder="Fusang Fee (%)" autocomplete="off" name="Fusangfee" [(ngModel)]="updatedPolicyDetail?.serviceCharge.newValue" #transactionLimit="ngModel" [disabled]="true"  >
+                    <img *ngIf="updatedPolicyDetail?.serviceCharge.newValue !== updatedPolicyDetail?.serviceCharge.oldValue" matTooltip ="Previous value: {{updatedPolicyDetail?.serviceCharge.oldValue}}" matTooltipPosition="right" class="remove_walt"  src="./assets/images/userpolicy/info.png">
+                </mat-form-field>
+                <mat-form-field class="example-third-width" *ngIf="updatedPolicyDetail?.serviceCharge !==undefined">
+                  <input matInput placeholder="Holding Fee (%)" autocomplete="off" name="Subcription" [(ngModel)]="updatedPolicyDetail?.subcriptionCharge.newValue"
+                  #transactionTimeEnd="ngModel" [disabled]="true">
+                  <img *ngIf="updatedPolicyDetail?.subcriptionCharge.newValue !== updatedPolicyDetail?.subcriptionCharge.oldValue" class="remove_walt"  matTooltip ="Previous value: {{updatedPolicyDetail?.subcriptionCharge.oldValue}}" matTooltipPosition="right"  src="./assets/images/userpolicy/info.png">
+              </mat-form-field>
+            </div> -->
+          </mat-expansion-panel>
+            <!-- <mat-expansion-panel class="expPannel">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                    <mat-panel-title class="khulaSemiBold"><img
+                      class="policyimg" src="assets/images/userpolicy/new-device.png">
+                      New Device Access
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box ">
+                    <div class="verifier-text example-third-width">Trans Unit of Measure</div>
+                    <mat-form-field class="example-half-width example-third-width">
+                        <input matInput placeholder="Enter Max Allowed Devices" autocomplete="off">
+                        
+                    </mat-form-field>
+                </div>
+                <div class="verifier-box">
+                    <div class=" verifier-text example-third-width">Type of Devices</div>
+                    
+                    <button matButton type="submit" class="laptopbtn">Laptop</button>
+                        <button matButton type="submit" class="Desktopbtn">Desktop</button>
+                    
+                </div>
+                <div class="verifier-text  example-third-width "><img class="remove"  src="./assets/images/userpolicy/info.png"></div>
+            </mat-expansion-panel> -->
+          <!-- </mat-accordion> -->
+        </div>
+        </form>
+      </div>
+      <!-- Policy Manegement end -->
+
+    
+    </div>
+   
+
+    <div class="col-md-4">
+      <div class="info__heading" *ngIf="workflowType == 'Transaction'">
+        <h2 class="khulaSemiBold font18 headingcolor">Insights</h2>
+      </div>
+
+      <div class="info__right__detail border-topd42e42 backgound-colorfff9f9" *ngIf="workflowType == 'Transaction'">
+        <div class="policyViolation">
+          <h4 class="khulaBold font14 colorCoded42e42 text-left-custom">Policy Insights</h4>
+          <div class="no-policy" *ngIf="policy.length === 0">
+            <img src="/assets/images/onbording/shape.svg" alt="">
+            <p class="mrgintop-Policy">No policy insights for this operation.</p>
+          </div>
+          <div *ngFor="let item of policy; let j=index" >
+            <div (click)="policyinsight(bittransfer,item)" class="row mrgintop-Policy-insight crossLimit font12">
+                 <div class="col-md-1">
+                    <p class="totalpolicycount">{{item.count}}</p>
+                 </div>
+                 <div class="col-md-9">
+                    {{item.type}}
+                  </div>
+                  <div class="col-md-2">
+                      <!-- <span class="dotstle">...</span> -->
+                  </div>
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+
+      <!-- compliance starts -->
+      <!-- <div class="info__right__detail border-top3954e5 backgound-colorcomplience">
+        <div class="policyViolation">
+          <h4 class="khulaBold font14 colorCoded42e42 text-left-custom">Compliance Insights</h4>
+          <div class="no-policy">
+            <img src="/assets/images/onbording/compliance.svg">
+            <p class="mrgintop-Policy">No compliance insights for this operation.</p>
+          </div>
+        </div>
+      </div> -->
+
+
+      <div class="info__heading">
+        <h2 class="khulaSemiBold font18 headingcolor">Status/Notes</h2>
+      </div>
+
+      <div class="info__right__detail info__right__detail-status border-top56ac17 backgound-Satusnote">
+        <div class="no-policy" *ngIf="insightsInfo?.statusOrNotes?.length==0">
+          <p class="mrgintop-Policy">No Status/Note</p>
+        </div>
+        <div *ngFor="let item of insightsInfo?.statusOrNotes; let j=index" class="divstyle">
+          <div class="row">
+            <div class="col-md-1">
+              <img *ngIf= "item.status"  src="/assets/images/onbording/checkbox-green.svg" alt="">
+              <img *ngIf= "!item.status" src="/assets/images/onbording/group-3.svg" alt="">
+            </div>
+            <div class="col-md-10 font14 crossLimit1">
+              {{item.stage}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 font12 margintop-12">
+              <span class="InviteUserName">{{item.username}}</span> &nbsp;
+              <span>{{item.createdDate | date:'medium'}}</span>
+            </div>
+          </div>
+          <div class="row statusMsg">
+            <div class="col-md-1">
+              <span><img src="/assets/images/onbording/doublequote-copy-2.svg" alt=""></span>
+            </div>
+            <div class="col-md-11">
+                <span class="statusMsgtext">{{item.message}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+  </div>
+</div>
+
+<ng-template #bittransfer>
+  <div class="modal-header border-top3954e5">
+    <div class="modal-title Send-Funds">Policy Insights</div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">
+        <img class="closeimg" src="/assets/images/close.png" alt="">
+      </span>
+    </button>
+  </div>
+  <div class="modal-body bodymodalstyle ">
+    <div class="insights-list">
+      <div class="row insights-listrow">
+        <div class="col-md-9 Crossed-Daily-max-li font18">
+         {{ploicyinsightDetails.type}}
+        </div>
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-1 layer font18">
+          {{ploicyinsightDetails.count}}
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-container policyborder" *ngFor="let policylist of ploicyinsightDetails.destails; let j=index" >
+      <p class="datestle  font12"><img class="clandercls" src="/assets/images/userpolicy/calendar.png" alt="">{{policylist.createdDate
+        | date:'medium'}}
+        <!-- <span class="dotstle">...</span>  -->
+      </p>
+      <p class=" policy_err_msg font12">{{policylist.message}}
+        <!-- <span class="dotstle">...</span>  -->
+      </p>
+      <div>
+          <mat-form-field class=" example-half-width"  *ngIf="ploicyinsightDetails.type !== 'WalletAddressWhitelist'">
+              <input matInput placeholder="Policy Value" autocomplete="off" name="expectedValue" [value]="policylist.expectedValue"
+               [disabled]="true">
+              
+          </mat-form-field>
+
+          <mat-form-field class="example-half-width">
+              <input matInput placeholder="Violated Value" autocomplete="off" name="actualValue" [value]="policylist.actualValue"
+              [disabled]="true">
+              </mat-form-field>
+      </div>
+      <!-- <mat-divider></mat-divider> -->
+    </div>
+    
+  </div>
+  
+</ng-template>
+<!-- confirm template statts -->
+<ng-template #confirmchecking class="invite succesmodal">
+  <div class="modal-header">
+    <div class="modal-header-wrapper">
+      <div class="modal-header-box font24 khulaSemiBold">Confirm {{workflowbtn}} Process</div>
+      <button type="button" class="close font24 pull-right" aria-label="Close" (click)="closeApprove()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="modal-body invite">
+    <div class="conf-ckeck">
+      <div class="khulaSemiBold font12 conf-check-cont" *ngIf="workflowType ==='Transaction'">
+        <!-- <p class="c-green-text">By confirming {{workflowbtn}} process it is presumed that the following user is found
+          be legitimate and no major violations has to been commited.
+        </p>
+        <p class="c-gray-text">
+          If you have any specfic information which needs to be passed to approver, mention it in the notes below. </p> -->
+          <p class="c-green-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'"  >Ensure that you have checked the global and local wallet limits. </p>
+          <p class="c-green-text" *ngIf="workflowbtn === 'Approve'"  >Ensure that any rejections or notes that were raised are resolved with supporting evidence wherever required. </p>
+          <p class="c-gray-text">Please state any concerns or discrepancies in the notes.</p>
+      </div>
+      <div class="khulaSemiBold font12 conf-check-cont" *ngIf="workflowType === 'ClientInvite' || workflowType === 'UserInvite'|| workflowType == 'UserReactivate'">
+        <!-- <p class="c-green-text">By confirming {{workflowbtn}} process it is presumed that the following user is found
+          be legitimate and no major violations has be commited.
+        </p>
+        <p class="c-gray-text">
+          If you have any specfic information which needs to be passed to approver, mention it in the notes below. </p> -->
+          <p class="c-green-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'"  >Ensure that you have checked the profile details with the client onboarding documents. </p>
+          <p class="c-green-text" *ngIf="workflowbtn === 'Approve'"  >Ensure that this Client has been cleared for approval. </p>
+          <p class="c-gray-text" *ngIf="workflowbtn === 'Approve'">Ensure that any rejections or notes raised are resolved.</p> 
+          <p class="c-gray-text"  *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'">Please state any concerns or discrepancies in the notes.</p> 
+      </div>
+
+      <!--below commented code is done newly and required messages were created below as per the requirement-->
+      <!-- <div class="khulaSemiBold font12 conf-check-cont" *ngIf=" workflowType == 'ClientDeactivate' || workflowType === 'WalletCreation' || workflowType === 'UserPolicyChange'|| workflowType === 'UserEdit' || workflowType === 'UserDeactivate'   || workflowType === 'AdminInvite' || workflowType === 'AdminDeactivate' || workflowType === 'AdminEdit'  || workflowType ==='GlobalPolicyChange'">
+        <p class="c-green-text" *ngIf="workflowbtn !== 'Approve'">By Confirming, you have ensured to check the profile details with the onboarding documents. </p>
+        <p class="c-gray-text" *ngIf="workflowbtn !== 'Approve'"> Please state any concerns or discrepancies in the notes. </p>
+
+        <p class="c-green-text" *ngIf="workflowbtn === 'Approve'">By confirming, you have ensured to clear the user for approval. </p>       
+        <p class="c-gray-text" *ngIf="workflowbtn === 'Approve'"> Ensure that any rejections or notes raised are resolved. </p>
+          
+      </div> -->
+
+  <div class="khulaSemiBold font12 conf-check-cont" *ngIf="workflowType === 'WalletCreation' || workflowType === 'WalletDetailsUpdate' || workflowType === 'WalletFreeze' || workflowType === 'WalletUnFreeze'">
+        <p class="c-green-text" *ngIf="workflowbtn !== 'Approve'">By Confirming, you have ensured to check the wallet create information as per user request.</p>
+        <p class="c-gray-text" *ngIf="workflowbtn !== 'Approve'"> Please state any concerns or discrepancies in the notes.</p>
+
+        <p class="c-green-text" *ngIf="workflowbtn === 'Approve'">By confirming, you have ensured to clear the wallet create information for approval.</p>       
+        <p class="c-gray-text" *ngIf="workflowbtn === 'Approve'"> Ensure that any rejections or notes raised are resolved.</p>          
+      </div>
+
+
+      <div class="khulaSemiBold font12 conf-check-cont" *ngIf="workflowType === 'AdminInvite' || workflowType =='AdminReactivate'">       
+            <p class="c-green-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'">By Confirming, you have ensured to check the profile details with the onboarding documents.</p>
+            <p class="c-gray-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'">Please state any concerns or discrepancies in the notes.</p> 
+
+            <p class="c-green-text" *ngIf="workflowbtn === 'Approve'"  >By confirming, you have ensured to clear the user for approval.</p>
+            <p class="c-gray-text" *ngIf="workflowbtn === 'Approve'">Ensure that any rejections or notes raised are resolved.</p>            
+        </div>
+
+
+      <div class="khulaSemiBold font12 conf-check-cont" *ngIf="workflowType ==  'ClientDeactivate' || workflowType ==  'ClientEdit' || workflowType === 'UserEdit' || workflowType === 'UserDeactivate' ||  workflowType === 'AdminDeactivate' || workflowType === 'AdminEdit'">       
+          <p class="c-green-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'"  >By confirming, you are verifying that the user is found to be legitimate and has committed no major violations.</p>
+          <p class="c-gray-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'">Please state any concerns or discrepancies in the notes.</p> 
+
+          <p class="c-green-text" *ngIf="workflowbtn === 'Approve'"  >By confirming, you have ensured to clear the user for approval.</p>
+          <p class="c-gray-text" *ngIf="workflowbtn === 'Approve'">Ensure that any rejections or notes raised are resolved.</p>          
+      </div>
+
+      
+      <div class="khulaSemiBold font12 conf-check-cont" *ngIf="workflowType === 'UserPolicyChange'">       
+          <p class="c-green-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'">By Confirming, you have ensured to check the policy change matches user request.</p>
+          <p class="c-gray-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'">Please state any concerns or discrepancies in the notes.</p> 
+
+          <p class="c-green-text" *ngIf="workflowbtn === 'Approve'"  >By confirming, you have ensured to clear the changes for policy approval.</p>
+          <p class="c-gray-text" *ngIf="workflowbtn === 'Approve'">“Ensure that any rejections or notes raised are resolved.</p>            
+      </div>
+
+      <div class="khulaSemiBold font12 conf-check-cont" *ngIf="workflowType === 'GlobalPolicyChange'">       
+        <p class="c-green-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'">By Confirming, you have ensured to check the policy change as per requirement.</p>
+        <p class="c-gray-text" *ngIf="workflowbtn === 'Verify' || workflowbtn === 'Check'">Please state any concerns or discrepancies in the notes.</p> 
+
+        <p class="c-green-text" *ngIf="workflowbtn === 'Approve'"  >By confirming, you have ensured to clear the changes for policy approval.</p>
+        <p class="c-gray-text" *ngIf="workflowbtn === 'Approve'">Ensure that any rejections or notes raised are resolved.</p>            
+    </div>
+
+
+
+
+
+
+      <mat-form-field class="example-full-width padd32">
+        <textarea matInput placeholder="Enter the Note" [(ngModel)]="approve"></textarea>
+      </mat-form-field>
+    </div>
+    <button class="btn-orange marg32" (click)="updateDetail('Close')">CONFIRM</button>
+  </div>
+</ng-template>
+<!-- confirm template ends -->
+  
+<!-- rejectVerification template statts -->
+<!-- <button (click)="rejectVerification(rejectverification)" class="btn-orange">reject</button> -->
+<ng-template #rejectverification class="invite succesmodal">
+  <div class="modal-header">
+    <div class="modal-header-wrapper">
+      <div class="modal-header-box font24 khulaSemiBold">Reject Verification</div>
+      <button type="button" class="close font24 pull-right" aria-label="Close" (click)="closeReject()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="modal-body invite">
+    <form (ngSubmit)="f.form.valid && updateDetail('Reject')" #f="ngForm" >
+    <div class="conf-ckeck rejectPadding">
+      <!-- <div class="khulaSemiBold font12 conf-check-cont">
+                <p class="c-green-text" >By confirming checking process it is presumed that the following user is found be legitimate and no major violations has been commited.
+                </p>
+                <p class="c-gray-text">
+                    If you have any specfic information which needs to be passed to approver, mention it in the notes below. </p>
+              </div> -->
+      <mat-form-field class="example-full-width padd32">
+        <textarea matInput placeholder="Enter the Note" [(ngModel)]="reject" name="rejectcus" #rejectcus="ngModel" required></textarea>
+        <mat-error *ngIf="rejectcus.touched==true && rejectcus.valid==false && reject==''">
+            Reason is required for <strong>rejection</strong>
+         </mat-error>
+      </mat-form-field>
+    </div>
+    <button class="btn btn-orange marg32" [disabled]="!f.form.valid">Reject</button>
+  </form>
+  </div>
+</ng-template>
+<!-- rejectVerification template ends -->
+
+<!-- authentication template start-->
+<ng-template #auth class="invite succesmodal">
+    <div class="invitepopup">
+      <div class="modal-header">
+        <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold">Verification</div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="CloseAuth()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      </div>
+      <div class="modal-body invite">
+        <!-- <div class="invite-tabs">
+          <div class="Information-box font14 khulaRegular" [class.activeTab]="googleAuth" (click)="showgooleAuth()"></div> -->
+          <!-- <div class="Information-box font14 khulaRegular tabDesabled" [class.activeTab]="Yubikey" (click)="showyubikey()">Yubikey</div> -->
+      <!-- </div> -->
+      <div class="basic-info-wrapper" >
+        <div class="form-wrapper">
+            <form class="example-form"  (ngSubmit)="f.form.valid && validate(confirmchecking,rejectverification,Reassignchecking)" #f="ngForm" novalidate>
+                <div class="inner-form">
+                    <div class="modal-header-box font18 khulaSemiBold auth-headding">Google Authenticator</div>
+                      <mat-form-field class="example-half-width">
+                          <input matInput placeholder="Enter your code" (keypress)="numberOnly($event)" required [(ngModel)]="authmodel.googleCode"  name="authcode" autocomplete="off" maxlength="6" (ngModelChange)="vcValidation($event)">
+                      </mat-form-field>
+                </div>
+                <div class="linebottom"></div>
+                <button type="submit" class="btn btn-orange_auth" [disabled]="!verificationCodeValid">VERIFY</button>
+                </form>
+        </div>
+        
+      </div>
+      <div class="basic-info-wrapper" *ngIf="Yubikey">
+        <div class="form-wrapper">
+            <form class="example-form"  #f="ngForm" novalidate>
+                <div class="inner-form">
+                    <div class="modal-header-box font18 khulaSemiBold auth-headding">Yubikey</div>
+                    <div> 
+                      <button mat-raised-button class="yubi-btn-outer"><img src="/assets/images/lockedyubi.svg" alt=""></button>
+                      <span class="yubi-btn-text khulaRegular">Waiting for yubikey</span>
+                    </div>
+                </div>
+              </form>
+            <div class="linebottom"></div>
+            <button class="btn-orange">VERIFY</button>
+        </div>
+      </div>
+      </div>
+      </div>
+</ng-template>
+    <!-- authentication template end-->
+
+
+    <ng-template #successtemplate class="dashbard ">
+
+      <!-- <ng-template  #template class="dashbard "> -->
+      <div class="successpoup">
+        <div class="modal-header">
+    
+          <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef1.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body dashbard succesmodal">
+          <div>
+            <div class="form-container">
+              <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+              <img src="/assets/images/personalwallet/success.svg" alt="" class="successimg">
+            </div>
+            <div style="text-align:  center">
+              <label class="User-invited-succesf">Are you sure you want to claim this ticket?</label>
+            </div>
+            <div>
+              <button type="submit" class="invitemoreBtn" (click)="modalRef1.hide();">CANCEL</button>
+              <!-- <button class="successBtn" aria-label="Close" (click)="sendbtc()">PROCEED</button> -->
+              <button class="successBtn" aria-label="Close"(click)="confirmClime()" >CONFIRM</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template #confirmaction class="dashbard ">
+
+        <!-- <ng-template  #template class="dashbard "> -->
+        <div class="successpoup">
+          <div class="modal-header">
+      
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefactinconfrm.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body dashbard succesmodal">
+            <div>
+              <div class="form-container">
+                <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+                <img src="/assets/images/personalwallet/success.svg" alt="" class="successimg">
+              </div>
+              <div style="text-align:  center">
+                <label class="User-invited-succesf">Please save the changes before you proceed with verification.</label>
+              </div>
+              <div class="buttonDiv">
+                <!-- <button type="submit" class="invitemoreBtn" (click)="modalRefactinconfrm.hide();">CANCEL</button> -->
+                <!-- <button class="successBtn" aria-label="Close" (click)="sendbtc()">PROCEED</button> -->
+                <button class="successBtnpopup" aria-label="Close"(click)="confirmProcess(auth)" >OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #saveconfirmaction class="dashbard ">
+
+        <!-- <ng-template  #template class="dashbard "> -->
+        <div class="successpoup">
+          <div class="modal-header">
+      
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefsaveconfirm.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body dashbard succesmodal">
+            <div>
+              <div class="form-container">
+                <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+                <img src="/assets/images/personalwallet/success.svg" alt="" class="successimg">
+              </div>
+              <div style="text-align:  center">
+                <label class="User-invited-succesf">Are you sure you want to update the changes?</label>
+              </div>
+              <div>
+                <button type="submit" class="invitemoreBtn" (click)="modalRefsaveconfirm.hide();">CANCEL</button>
+                <!-- <button class="successBtn" aria-label="Close" (click)="sendbtc()">PROCEED</button> -->
+                <button class="successBtn" aria-label="Close"(click)="confirmupdate()" >CONFIRM</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #deletedWalletTooltip>
+        <div class="deletedWallets">Recently Deleted Wallet Addresses:</div>
+         <ul>
+              <li class="deletedWalletNames" *ngFor="let item of deletedAddressIndicator(); index as i"> {{i+1}}.{{item.address}} </li>
+          </ul>
+      </ng-template>
+  
+      <!-- Reassign template statts -->
+<ng-template #Reassignchecking class="invite succesmodal">
+    <div class="modal-header">
+      <div class="modal-header-wrapper">
+        <div class="modal-header-box font24 khulaSemiBold">Confirm Reassign Process</div>
+        <button type="button" class="close font24 pull-right" aria-label="Close" (click)="closeReassign()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body invite">
+      <div class="conf-ckeck">
+        <div class="khulaSemiBold font12 conf-check-cont">
+            <p class="c-green-text">Ensure that you have checked the profile details with the client onboarding documents. </p>
+            <p class="c-green-text">Ensure that this Client has been cleared for approval. </p> 
+        </div>
+  
+  
+        <mat-form-field class="example-full-width padd32">
+          <textarea matInput placeholder="Enter the Note" [(ngModel)]="reassign"></textarea>
+        </mat-form-field>
+      </div>
+      <button class="btn-orange marg32" (click)="updateDetail('Reassign')">REASSIGN</button>
+    </div>
+  </ng-template>
+  <!-- Reassign template ends -->

@@ -1,0 +1,503 @@
+<div class="onboardflow">
+  <form class="example-form" #globalpolicy="ngForm" autocomplete="off">
+    <div class="col-md-12 row">
+      <div class="col-md-9">
+
+        <label class="Configurations">Configurations</label>
+
+
+      </div>
+      <div class="col-md-3" *ngIf="isEdit">
+        <button type="submit" class="cancelbtn" (click)="cancelrequest()">CANCEL</button>
+        <button type="submit" class="sendbtn" (click)="authPublic(auth)" [disabled]="!globalpolicy.form.valid || validate ||uitofmeasureerror || timestamperror || endtimestamperror || starttimeerror || endtimeerror">UPDATE</button>
+      </div>
+
+
+    </div>
+    <div class="flow">
+      <div class="">
+        <div class="col-md-12 row mainclss">
+
+          <div class="invite-tabs">
+            <div class="Information-box font14  policyCSS" [class.activeTab]="policy" (click)="showpolicyconfig()">Policy Configurations</div>
+          </div>
+          <div *ngIf="policy" class="col-md-12 row sub-mainclss ">
+            <label class="Select-Customer-Type">Select a Wallet Type to Edit the Policy</label>
+            <div class="col-md-12 row">
+
+              
+              <!-- <div class="col-md-3 cardstlye" [class.disabled]="deepStorageedit">
+                <div class="col-md-12 row  deepstorage-image">
+                  <div class="col-md-12 row">
+                    <div class="col-md-10 headertext row">
+                      DEEP STORAGE
+                    </div>
+                    <div class="col-md-2">
+                      <img src="./assets/images/userpolicy/pencil.png" alt="" (click)="editpolicy(sldeepstorageId,successtemplate)" class="information" title="Edit">
+                    </div>
+                  </div>
+                  <div class="col-md-12 row">
+                    <img src="./assets/images/userpolicy/deep-storage.png" alt="" class="database">
+                  </div>
+                </div>
+                <img *ngIf="WalletTypeId === 0" class="secure-triangle" src="/assets/images/onbording/2.svg" alt="">
+              </div> -->
+
+              <div class="col-md-3 cardstlye">
+                <div class="deepstorage-image">
+                    <div class="headerDiv">
+                      <h3 class="headerAlter">DEEP STORAGE</h3>
+                      <img src="./assets/images/userpolicy/pencil.png" alt="" (click)="editpolicy(sldeepstorageId,successtemplate)" class="information1" title="Edit">
+                    </div>
+                  <div class="dataBaseDiv"><img src="./assets/images/userpolicy/deep-storage.png" alt="" class="dataBaseImg"></div>
+                </div>
+                <img *ngIf="WalletTypeId === 0" class="secure-triangle" src="/assets/images/onbording/2.svg" alt="">
+              </div>
+
+              <!-- <div class="col-md-3 cardstlye" [class.disabled]="secureStorageedit">
+                <div class="col-md-12 row securestorage-image">
+                  <div class="col-md-12 row">
+                    <div class="col-md-10 headertext row">
+                      SECURE STORAGE
+                    </div>
+                    <div class="col-md-2">
+                      <img src="./assets/images/userpolicy/pencil.png" (click)="editpolicy(slsecurestorageId,successtemplate)" class="information" alt="" title="Edit">
+                    </div>
+                  </div>
+                  <div class="col-md-12 row">
+                    <img src="./assets/images/userpolicy/securestorage.png" class="database" alt="">
+                  </div>
+                </div>
+                <img *ngIf="WalletTypeId === 1" class="secure-triangle" src="/assets/images/onbording/3.svg" alt="">
+              </div> -->
+
+              <div class="col-md-3 cardstlye">
+                <div class="securestorage-image">
+                    <div class="headerDiv">
+                      <h3 class="headerAlter">SECURE STORAGE</h3>
+                      <img src="./assets/images/userpolicy/pencil.png" alt="" (click)="editpolicy(slsecurestorageId ,successtemplate)" class="information1" title="Edit">
+                    </div>
+                  <div class="dataBaseDiv"><img src="./assets/images/userpolicy/securestorage.png" alt="" class="dataBaseImg"></div>
+                </div>
+                <img *ngIf="WalletTypeId === 1" class="secure-triangle" src="/assets/images/onbording/3.svg" alt="">
+              </div>
+<!-- 
+              <div class="col-md-3 cardstlye" [class.disabled]="highFrequencyedit">
+                <div class=" col-md-12 row example-header-image">
+                  <div class="col-md-12 row">
+                    <div class="col-md-10 headertext row">
+                      HIGH FREQUENCY
+                    </div>
+                    <div class="col-md-2">
+                      <img src="./assets/images/userpolicy/pencil.png" alt="" (click)="editpolicy(slhighfrquencyId,successtemplate)" class="information" title="Edit">
+                    </div>
+                  </div>
+                  <div class="col-md-12 row">
+                    <img src="./assets/images/userpolicy/highfrequency.png" alt="" class="database">
+                  </div>
+                </div>
+                <img *ngIf="WalletTypeId === 2" class="secure-triangle" src="/assets/images/onbording/1.svg" alt="">
+              </div> -->
+
+
+              <div class="col-md-3 cardstlye">
+                <div class="example-header-image">
+                    <div class="headerDiv">
+                      <h3 class="headerAlter">HIGH FREQUENCY</h3>
+                      <img src="./assets/images/userpolicy/pencil.png" alt="" (click)="editpolicy(slhighfrquencyId,successtemplate)" class="information1" title="Edit">
+                    </div>
+                  <div class="dataBaseDiv"><img src="./assets/images/userpolicy/highfrequency.png" alt="" class="dataBaseImg"></div>
+                </div>
+               <img *ngIf="WalletTypeId === 2" class="secure-triangle" src="/assets/images/onbording/1.svg" alt="">
+              </div>
+
+            </div>
+
+            
+          
+
+
+            <div class="col-md-12 row" *ngIf="initialvalue">
+              <div class="col-md-3 cardstlye">
+                <div class="col-md-12 row thrddivstyle">
+                    <div class="col-md-12 row rowclss">
+                        <label class="text-style-1"><img src="./assets/images/personalwallet/timezoneicon.svg" alt="" class="editicon">&nbsp;Time Zone </label>
+                        <label class="datastyle">{{deepStorage.walletTimeZone}}</label>
+                      </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction Hours ( 24 hrs )</label>
+                    <label class="datastyle">{{deepStorage.transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{deepStorage.transactionTimeEnd}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum Allowed Wallet Address</label>
+                    <label class="datastyle">{{deepStorage.maximumAllowedWallets}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-volume.png" alt="" class="editicon">&nbsp;Transaction Maximum Allowed Volume Cap (%)</label>
+                    <label class="datastyle">{{deepStorage.transactionVolumeCap}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Unit Of Measure (Mins) </label>
+                    <label class="datastyle">{{deepStorage.transactionUnitOfMeasure}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/frequency-cap.png" alt="" class="editicon">&nbsp;Maximum Allowed Frequency Cap </label>
+                    <label class="datastyle">{{deepStorage.transactionLimit}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Frequency Unit Of Measure </label>
+                    <label class="datastyle">{{valumecape}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Minimum Balance (%)</label>
+                    <label class="datastyle">{{deepStorage.minimumBalance}} </label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/reportconfig@2x.png" alt="" class="editicon">&nbsp;Fusang Fee (%)</label>
+                    <label class="datastyle">{{deepStorage.serviceCharge}} </label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/reportconfig@2x.png" alt="" class="editicon">&nbsp;Holding Fee (%)</label>
+                    <label class="datastyle">{{deepStorage.subcriptionCharge}} </label>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-3 cardstlye">
+                <div class="col-md-12 row thrddivstyle">
+                    <div class="col-md-12 row rowclss">
+                        <label class="text-style-1"><img src="./assets/images/personalwallet/timezoneicon.svg" alt="" class="editicon">&nbsp;Time Zone</label>
+                        <label class="datastyle">{{secureStorage.walletTimeZone}}</label>
+                      </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction Hours ( 24 hrs )</label>
+                    <label class="datastyle">{{secureStorage.transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{secureStorage.transactionTimeEnd}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum Allowed Wallet Address</label>
+                    <label class="datastyle">{{secureStorage.maximumAllowedWallets}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-volume.png" alt="" class="editicon">&nbsp;Transaction Maximum Allowed Volume Cap (%)</label>
+                    <label class="datastyle">{{secureStorage.transactionVolumeCap}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Unit Of Measure (Mins) </label>
+                    <label class="datastyle">{{secureStorage.transactionUnitOfMeasure}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/frequency-cap.png" alt="" class="editicon">&nbsp;Maximum Allowed Frequency Cap </label>
+                    <label class="datastyle">{{secureStorage.transactionLimit}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Frequency Unit Of Measure </label>
+                    <label class="datastyle">{{valumecape}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Minimum Balance (%)</label>
+                    <label class="datastyle">{{secureStorage.minimumBalance}} </label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/reportconfig@2x.png" alt="" class="editicon">&nbsp;Fusang Fee (%)</label>
+                    <label class="datastyle">{{secureStorage.serviceCharge}} </label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/reportconfig@2x.png" alt="" class="editicon">&nbsp;Holding Fee (%)</label>
+                    <label class="datastyle">{{secureStorage.subcriptionCharge}} </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-3 cardstlye">
+                <div class="col-md-12 row thrddivstyle"> 
+                    <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/personalwallet/timezoneicon.svg" alt="" class="editicon">&nbsp;Time Zone </label>
+                    <label class="datastyle">{{highFrequency.walletTimeZone}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction Hours ( 24 hrs )</label>
+                    <label class="datastyle">{{highFrequency.transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{highFrequency.transactionTimeEnd}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum Allowed Wallet Address</label>
+                    <label class="datastyle">{{highFrequency.maximumAllowedWallets}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-volume.png" alt="" class="editicon">&nbsp;Transaction Maximum Allowed Volume Cap (%)</label>
+                    <label class="datastyle">{{highFrequency.transactionVolumeCap}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Unit Of Measure (Mins) </label>
+                    <label class="datastyle">{{highFrequency.transactionUnitOfMeasure}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/frequency-cap.png" alt="" class="editicon">&nbsp;Maximum Allowed Frequency Cap </label>
+                    <label class="datastyle">{{highFrequency.transactionLimit}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Frequency Unit Of Measure </label>
+                    <label class="datastyle">{{valumecape}}</label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Minimum Balance (%)</label>
+                    <label class="datastyle">{{highFrequency.minimumBalance}} </label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/reportconfig@2x.png" alt="" class="editicon">&nbsp;Fusang Fee (%)</label>
+                    <label class="datastyle">{{highFrequency.serviceCharge}} </label>
+                  </div>
+                  <div class="col-md-12 row rowclss">
+                    <label class="text-style-1"><img src="./assets/images/userpolicy/reportconfig@2x.png" alt="" class="editicon">&nbsp;Holding Fee (%)</label>
+                    <label class="datastyle">{{highFrequency.subcriptionCharge}} </label>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+            <div class="col-md-12 row" *ngIf="view">
+
+              <div class="col-md-10">
+                <div class="verifier-box fieldstyle" *ngFor="let data of policyList">
+                  <div class="verifier-text  example-third-width maintext"><img src="{{data.img}}" alt=""
+                    class="editicon">&nbsp;{{data.label}}</div>
+                    <mat-form-field class="example-half-width example-third-width" *ngFor="let inputData of data.labelData">
+                      <input *ngIf="inputData.autoComplete !== 'Y' && inputData.columnName !== 'walletTimeZone' && inputData.columnName !== 'transactionTimeStart' && inputData.columnName !== 'transactionTimeEnd'"  matInput placeholder="{{inputData.columnTitle}}" name="{{inputData.columnName}}" maxlength="{{inputData.maxLength}}" pattern="{{inputData.pattern}}" [(ngModel)]="policyDetails[inputData.columnName]"
+                        #{{inputData.columnName}}="ngModel" [disabled]="inputData.isEditable !== 'Y'" required>
+                        <input  *ngIf="inputData.autoComplete === 'Y' && inputData.columnName === 'walletTimeZone'" matInput [matAutocomplete]="auto" (ngModelChange)="getTheValue($event)" placeholder="{{inputData.columnTitle}}" name="{{inputData.columnName}}" [(ngModel)]="policyDetails[inputData.columnName]"
+                        #{{inputData.columnName}}="ngModel" required>
+                        <input  *ngIf="inputData.autoComplete !== 'Y' && inputData.columnName === 'transactionTimeStart'" matInput  placeholder="{{inputData.columnTitle}}" name="{{inputData.columnName}}" [(ngModel)]="policyDetails[inputData.columnName]"
+                        #{{inputData.columnName}}="ngModel" (ngModelChange)="timestampvalidation()" required>
+                         <input  *ngIf="inputData.autoComplete !== 'Y' && inputData.columnName === 'transactionTimeEnd'" matInput placeholder="{{inputData.columnTitle}}" name="{{inputData.columnName}}" [(ngModel)]="policyDetails[inputData.columnName]"
+                        #{{inputData.columnName}}="ngModel" (ngModelChange)="endtranstampvalidation()" required>
+                      <span *ngIf="inputData.autoComplete === 'Y'"></span>
+                      <mat-error *ngIf="policyDetails[inputData.columnName] === ''">
+                                {{inputData.columnTitle}} <strong>required</strong>
+                              </mat-error>
+                              <mat-error *ngIf="policyDetails[inputData.columnName] !== ''">
+                                 {{inputData.patterError}}
+                                </mat-error>
+                      <div *ngIf="validate && policyDetails.walletTimeZone !== '' && inputData.columnName === 'walletTimeZone'" class="caution_timezone">Select valid Time Zone</div>
+                      <div *ngIf="timestamperror && policyDetails.transactionTimeStart !== '' && !starttimeerror && inputData.columnName === 'transactionTimeStart'" class="caution_timezone">Transaction Start Time should be less than Transaction End Time</div>
+                  <div *ngIf="endtimestamperror && policyDetails.transactionTimeEnd !== '' && !endtimeerror && inputData.columnName === 'transactionTimeEnd'" class="caution_timezone">Transaction End Time Should be greater than Transaction Start time</div>
+
+                  <div *ngIf="starttimeerror &&  policyDetails.transactionTimeStart !== '' && inputData.columnName === 'transactionTimeStart'" class="caution_timezone"> Transaction Start Time should be <strong>HH:MM</strong> format</div>
+                  <div *ngIf="endtimeerror && policyDetails.transactionTimeEnd !== '' && inputData.columnName === 'transactionTimeEnd'" class="caution_timezone"> Transaction End Time should be <strong>HH:MM</strong> format</div>
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                      <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item">
+                        {{item}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <!-- <div class="verifier-box fieldstyle" *ngIf="WalletTypeId !== 2">
+                  <div class="verifier-text  example-third-width maintext"><img src="./assets/images/userpolicy/wallet-address.png" alt=""
+                      class="editicon">&nbsp;Wallet Address Config</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Maximum Allowed Wallet Address" autocomplete="off" name="maximumAllowedWallets"
+                      [(ngModel)]="policyDetails.maximumAllowedWallets" #maximumAllowedWallets="ngModel"  maxlength="2" pattern="^[1-9]\d*$" required>
+                    <mat-error *ngIf="policyDetails.maximumAllowedWallets === ''">
+                      Maximum Allowed Wallets is <strong>Required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="maximumAllowedWallets.errors?.pattern">
+                      Please enter numerical values (1 to 99)
+                    </mat-error>
+                  </mat-form-field>
+
+
+                </div> -->
+                <!-- <div class="verifier-box fieldstyle" *ngIf="WalletTypeId === 2">
+                  <div class="verifier-text  example-third-width maintext"><img src="./assets/images/userpolicy/wallet-address.png" alt=""
+                      class="editicon">&nbsp;Wallet Address Config</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Maximum Allowed Wallet Address" autocomplete="off" name="maximumAllowedWallets"
+                      [(ngModel)]="policyDetails.maximumAllowedWallets" #maximumAllowedWallets="ngModel" [disabled]="true"   required>
+                    
+                  </mat-form-field>
+
+
+                </div> -->
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text  example-third-width maintext "><img src="./assets/images/userpolicy/transaction-volume.png" alt=""
+                      class="editicon">&nbsp;Transaction Volume Cap</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Maximum Allowed Volume Cap (%)" autocomplete="off" name="transactionVolumeCap"
+                      [(ngModel)]="policyDetails.transactionVolumeCap" #transactionVolumeCap="ngModel" pattern="^(100(?:\.0{1,2})?|(?!^0*$)(?!^0*\.0*$)^\d{1,2}(\.\d{1,2})?)$" required>
+                    <mat-error *ngIf="policyDetails.transactionVolumeCap === ''">
+                      Transaction Volume Cap is <strong>Required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="transactionVolumeCap.errors?.pattern">
+                      Please enter numerical values (1 to 100)
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Transaction Unit Of Measure (Mins)" autocomplete="off" name="transactionUnitOfMeasure"
+                      [(ngModel)]="policyDetails.transactionUnitOfMeasure" #transactionUnitOfMeasure="ngModel" maxlength="4" (ngModelChange)="checkunitofmeasure(policyDetails.transactionUnitOfMeasure)" required>
+                    
+                    <mat-error *ngIf="policyDetails.transactionUnitOfMeasure === ''">
+                      Transaction Unit Of Measure is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+
+                  <div *ngIf="uitofmeasureerror && policyDetails.transactionUnitOfMeasure !== ''" class="caution_poliy">Please enter numerical values (0 to 1440)</div>
+                </div>
+                <div class="verifier-box fieldstyle" *ngIf="WalletTypeId === 2">
+                  <div class="verifier-text  example-third-width maintext "><img src="./assets/images/userpolicy/frequency-cap.png" alt=""
+                      class="editicon">&nbsp;Frequency Cap</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Maximum Allowed Frequency Cap " autocomplete="off" name="transactionLimit"
+                      [(ngModel)]="policyDetails.transactionLimit" #transactionLimit="ngModel" [disabled]="true">
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Frequency Unit Of Measure" autocomplete="off" name="valumecape"
+                      [value]="valumecape"  [disabled]="true">
+                  </mat-form-field>
+
+
+                </div>
+
+                <div class="verifier-box fieldstyle" *ngIf="WalletTypeId !== 2">
+                  <div class="verifier-text  example-third-width maintext "><img src="./assets/images/userpolicy/frequency-cap.png" alt=""
+                      class="editicon">&nbsp;Frequency Cap</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Maximum Allowed Frequency Cap " autocomplete="off" name="transactionLimit"
+                      [(ngModel)]="policyDetails.transactionLimit" #transactionLimit="ngModel"  maxlength="2" pattern="^[1-9]\d*$" required>
+                    <mat-error *ngIf="policyDetails.transactionLimit === ''">
+                      Transaction Limit is <strong>Required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="transactionLimit.errors?.pattern">
+                      Please enter numerical values (1 to 99)
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Frequency Unit Of Measure" autocomplete="off" name="transactionLimit"
+                      [value]="valumecape"  [disabled]="true">
+                  </mat-form-field>
+
+
+                </div>
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text  example-third-width maintext"><img src="./assets/images/userpolicy/new-device.png" alt=""
+                      class="editicon">&nbsp;Transaction Minimum Balance</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Minimum Balance (%)" autocomplete="off" name="minimumBalance"
+                      [(ngModel)]="policyDetails.minimumBalance" #minimumBalance="ngModel" pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$" required>
+                    <mat-error *ngIf="policyDetails.minimumBalance === ''">
+                      Minimum Balance is <strong>Required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="minimumBalance.errors?.pattern">
+                      Please enter numerical values (0 to 99.99)
+                    </mat-error>
+                  </mat-form-field>
+
+
+                </div>
+                <div class="verifier-box fieldstyle">
+                    <div class="verifier-text  example-third-width maintext"><img src="./assets/images/userpolicy/reportconfig@2x.png" alt=""
+                      class="editicon">&nbsp;Billing</div>
+                      <mat-form-field class="example-half-width">
+                        <input matInput placeholder="Fusang Fee (%)" autocomplete="off" name="fusangfee"
+                        [(ngModel)]="policyDetails.serviceCharge" #fusangfee="ngModel"  pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$" [disabled]="makeitedit" required>
+                       
+                          <mat-error *ngIf="policyDetails.serviceCharge === ''">
+                              Fusang Fee is <strong>Required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="fusangfee.errors?.pattern">
+                              Please enter numerical values (0 to 99.99)
+                            </mat-error>
+                      </mat-form-field>
+                      <mat-form-field class="example-half-width">
+                          <input matInput placeholder="Holding Fee (%)" autocomplete="off" name="neworkfee"
+                          [(ngModel)]="policyDetails.subcriptionCharge" #neworkfee="ngModel"  pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$" required>
+                         
+                            <mat-error *ngIf="policyDetails.subcriptionCharge === ''">
+                                Holding Fee is <strong>Required</strong>
+                              </mat-error>
+                              <mat-error *ngIf="neworkfee.errors?.pattern">
+                                Please enter numerical values (0 to 99.99)
+                              </mat-error>
+                        </mat-form-field>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+          <div *ngIf="compilance" class="col-md-12 row mainclss ">
+            <label>Test Compilance</label>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<ng-template #successtemplate class="dashbard ">
+    <!-- <ng-template  #template class="dashbard "> -->
+    <div class="successpoup">
+      <div class="modal-header">
+  
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body dashbard succesmodal">
+        <div>
+          <div class="form-container">
+            <img src="/assets/images/personalwallet/success.svg" alt="" class="successimg">
+          </div>
+          <div style="text-align:  center">
+            <label class="User-invited-succesf">Are you sure you want to discard your policy changes?</label>
+          </div>
+          <div>
+            <button type="submit" class="invitemoreBtn" (click)="modalRef.hide();">CANCEL</button>
+            <button class="successBtn" aria-label="Close"(click)="confirmClime(); modalRef.hide()" >CONFIRM</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #auth class="invite succesmodal">
+      <div class="invitepopup">
+        <div class="modal-header">
+          <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold">Verification</div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="CloseAuth()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-body invite">
+          <div class="basic-info-wrapper">
+            <div class="form-wrapper">
+              <form class="example-form" (ngSubmit)="f.form.valid && authSuccess()" #f="ngForm" novalidate>
+                <div class="inner-form">
+                  <div class="modal-header-box font18 khulaSemiBold auth-headding">Google Authenticator</div>
+                  <mat-form-field class="example-half-width1">
+                    <input matInput placeholder="Enter your Code" (keypress)="numberOnly($event)" required [(ngModel)]="authmodel.googleCode"
+                      name="authcode" autocomplete="off" maxlength="6" (ngModelChange)="vcValidation($event)">
+                  </mat-form-field>
+                </div>
+                <div class="linebottom"></div>
+                <button type="submit" class="btn btn-orange_auth" [disabled]="!verificationCodeValid">Verify</button>
+              </form>
+            </div>
+          </div>
+          <div class="basic-info-wrapper" *ngIf="Yubikey">
+            <div class="form-wrapper">
+              <form class="example-form" #f="ngForm" novalidate>
+                <div class="inner-form">
+                  <div class="modal-header-box font18 khulaSemiBold auth-headding">Yubikey</div>
+                  <div>
+                    <button mat-raised-button class="yubi-btn-outer"><img src="/assets/images/lockedyubi.svg" alt=""></button>
+                    <span class="yubi-btn-text khulaRegular">Waiting for yubikey</span>
+                  </div>
+                </div>
+              </form>
+              <div class="linebottom"></div>
+              <button class="btn-orange">Verify</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>

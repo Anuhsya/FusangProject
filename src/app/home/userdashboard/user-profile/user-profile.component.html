@@ -1,0 +1,158 @@
+<div class="wallets-wrapper form-wrapper">
+    <!-- class="notmaterial" -->
+    <form  *ngIf = "dataLodedSuccessfully === true" name="form" (ngSubmit)="f.form.valid && profileUpdate()" #f="ngForm"   novalidate>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="wallets-heading khulaLite"> Profile</div>
+        </div>
+      </div>
+      <div class="wallet-info-wrapper">
+        <div class="khulaRegular">
+          General Information
+        </div>
+        <div class="row">
+              <div class="profileImage" [ngStyle]="{'background-image': 'url('+imageUrl+')'}" id="imgCont">
+               <div class="khulaSemiBold changeText">Change</div>
+              <div class="profileImageChange" title="Edit Image">
+                <input type='file' (change)="readURL($event)" accept="image/jpeg, image/jpg, image/png"/>
+              </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+          <div class="col-md-12">
+            <div class="user-name khulaRegular">
+              <div class="fus-name">
+                <div class="group" >
+                  <input class="form-control" type="text" name="firstName" (focusout)="focusFunction('')" (focus)="focusFunction('firstName')" [(ngModel)]="model.firstName" #firstName="ngModel"  required />
+                  <label [class.activeLabel]="focusedElement=='firstName'" [class.lableTop]="(model.firstName!=='') && (firstName.touched==true || firstName.valid==true|| firstName.valid==false)"
+                  [class.inputError1]="firstName.valid==false && firstName.touched==true" [class.inputError]="focusedElement!=='firstName' && firstName.valid==false && firstName.touched==true">First Name </label>
+                  <div *ngIf="!firstName.valid && firstName.touched === true" class="help-block caution">First name required</div>
+                </div>
+                <div class="group" >
+                  <input class="form-control" type="text" name="lastName" (focusout)="focusFunction('')" (focus)="focusFunction('lastName')" [(ngModel)]="model.lastName" #lastName="ngModel"  required/>
+                  <label [class.activeLabel]="focusedElement=='lastName'" [class.lableTop]="(model.lastName!=='') && (lastName.touched==true || lastName.valid==true|| lastName.valid==false)"
+                  [class.inputError1]="lastName.valid==false && lastName.touched==true" [class.inputError]="focusedElement!=='lastName' && lastName.valid==false && lastName.touched==true">Last Name </label>
+                  <div *ngIf="!lastName.valid && lastName.touched === true" class="help-block caution">Last name required</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="user-name khulaRegular">
+              <div class="fus-name">
+                <div class="group" >
+                  <label class="lableTop">Country</label>
+                  <select class="form-control" name="country"  [(ngModel)]="model.country" (ngModelChange)="getCode($event)" #country="ngModel"
+                     required>
+                    <option [value]="undefined" [attr.selected]="true" disabled>Select Country</option>
+                    <option *ngFor="let item of countrylist;let i= index" value="{{item.name}}" >{{item.name}}</option>
+                  </select>
+              </div>
+                <div class="group codeSettings">
+                    <label class="lableTop">Code</label>
+                  <input class="form-control"  [class.activeLabel]="(focusedElement=='code')"  [class.lableTop]="(model.code !=='') && (code.touched==true || code.valid==true || code.valid==false)" placeholder="Code" name="code" autocomplete="off" #code="ngModel" [(ngModel)]="model.code">
+               </div>
+                <div class="group phoneNumberSett" >
+                  <input class="form-control"  (focusout)="focusFunction('')" [class.errBorder]="(invalidphone==true)" (focus)="focusFunction('phoneNumber')" type="number" name="phoneNumber" maxLength="{{countryPhonelen}}" [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel" (ngModelChange)="onChange(model.phoneNumber)"oninput="this.value=this.value.slice(0,this.maxLength)" required />
+
+                  <label [class.activeLabel]="(focusedElement=='phoneNumber')" [class.lableTop]="(model.phoneNumber!=='') && (phoneNumber.touched==true || phoneNumber.valid==true || phoneNumber.valid==false)"
+                  [class.inputError1]="(phoneNumber.valid==false && phoneNumber.touched==true) || (invalidphone==true)" [class.inputError]="focusedElement!=='phoneNumber' && phoneNumber.valid==false && phoneNumber.touched==true">Phone Number</label>
+                  <div *ngIf="phoneNumber.touched==true && model.phoneNumber==''" class="help-block caution">Phone number is required</div>
+                  <div *ngIf="invalidphone && model.phoneNumber!=''" class="help-block caution">Please enter {{countryPhonelen}} digit number</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="user-name khulaRegular">
+              <div class="fus-name">
+                <div class="group" >
+                  <input class="form-control" type="email" name="email" [(ngModel)]="model.email" #email="ngModel" readonly required />
+                  <label class="lableTop">Email ID</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->     
+ 
+          <div  class="inner-form basicInfo-sett">
+            <mat-form-field class="example-half-width">
+              <input matInput placeholder="First Name" required id="firstName" name="firstName" #firstName="ngModel"
+                [(ngModel)]="getProfileInfo.firstName" autocomplete="off" [disabled]="true"> 
+              <mat-error *ngIf="'firstName'">
+                First Name is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-half-width">
+                <input matInput placeholder="Last Name" required id="lastName" name="lastName" #lastName="ngModel"
+                  [(ngModel)]="getProfileInfo.lastName" autocomplete="off" [disabled]="true">
+                <mat-error *ngIf="'lastName'">
+                  Last Name is <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-half-width "> 
+                <input type="text" class="arrow" required  placeholder="Country" name="country" matInput  [matAutocomplete]="auto" [(ngModel)]="getProfileInfo.country"
+                 (ngModelChange)="getTheValue()"  #country="ngModel" [disabled]="true" required >
+                <span><em class="fa fa-caret-down arrowclass"></em></span>
+              <mat-error *ngIf="'country'">
+                Country is <strong>required</strong> 
+              </mat-error>
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item">
+                  {{item}} 
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field class="example-third-width">
+              <input matInput placeholder="Code" name="code" autocomplete="off" [disabled]="true" [(ngModel)]="code">
+            </mat-form-field>
+
+            <!-- example-half-width country-code -->
+            <mat-form-field class="example-phone-width phone-number">
+              <input matInput class="font14" placeholder="Phone Number" type="number" required name="phoneNumber" max="{{countryPhonelen}}"
+                [disabled]="true" maxLength="{{countryPhonelen}}" autocomplete="off" [(ngModel)]="getProfileInfo.phoneNumber"
+                #phoneNumber="ngModel" oninput="this.value=this.value.slice(0,this.maxLength)" [disabled]="!editUser"
+                (ngModelChange)="onChange(getProfileInfo.phoneNumber)">
+
+                <mat-error *ngIf="getProfileInfo.phoneNumber === ''">
+                PhoneNumber is <strong>required</strong>
+              </mat-error>
+              <div *ngIf="invalidphone === true && getProfileInfo.phoneNumber !== ''" class="help-block1 caution">
+                Please enter {{countryPhonelen}} digit number</div>
+            </mat-form-field> 
+            
+            <mat-form-field class="example-half-width">
+              <input matInput required [disabled]="true" #emailId="ngModel" autocomplete="off" placeholder="Email ID" name="emailId" [(ngModel)]="getProfileInfo.emailId">
+              <mat-error *ngIf="'emailId'">
+                Please enter email ID in <strong>email format</strong>
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+     
+      </div>
+
+      <div class="wallet-info-wrapper">
+          <div class="khulaRegular">
+            Roles
+          </div>
+          <div class="row">
+            <div class="font10 roles-outer-box col-md-2" *ngFor="let role of roles">
+                {{role.split("_")[0] }}  {{role.split("_")[1] !=undefined? role.split("_")[1]:''}}
+            </div>
+          </div>
+        </div>
+
+        <!--Need to uncomment this if allowed to edit and update the user profile fields-->
+      <!-- <div class="user-action-box">
+        <input type="submit" style="cursor:pointer" class="sub-btn-info khulaSemiBold"  value="UPDATE" [disabled]="!f.form.valid || invalidphone">
+        <input type="reset" style="cursor:pointer" class="khulaSemiBold" value="CANCEL" (click)="getProfileDetails()">
+      </div> -->
+    </form>
+  </div>

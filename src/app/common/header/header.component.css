@@ -1,0 +1,338 @@
+ .inner-header-box{
+   text-align: right;
+  margin-right: 10px;
+  width:80%;
+  color: #5a5a5a;
+  font-size: 15px;
+  }
+.header_img{
+       width: 40px;
+       height: 40px;
+    /* margin-left: 27px; */
+    border-radius: 50%;
+    margin-top: 10px;
+    cursor: pointer;
+
+}
+.header_img1{
+    width: 28.7px;
+    height: 26px;
+    /* margin-left: 27px;
+    margin-top: -12%; */
+    cursor: pointer;
+}
+
+.home-img{
+    /* margin-top: 4px;
+    margin-left: 20px; */
+    position: relative;
+    top: 10px;
+}
+.hoverChange{
+    padding: 2px 0px;
+}
+.header_css{
+
+    position: fixed;
+    width: calc(100% - 92px);
+    /* width: 100%; */
+    margin: 0 auto;
+    height: 60px;
+    z-index: 9991;
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1);
+
+}
+ul#dropdown-basic li {
+  font-size: 12px;
+  font-family: khula-Regular , Arial, Helvetica, sans-serif;
+  padding: 5px;
+  padding-top: 7px;
+  padding-left: 10px;
+  cursor: pointer;
+}
+ul#dropdown-basicprofile{
+  height: auto;
+  min-width: 160px!important;
+  left: -34px!important;
+}
+ul#dropdown-basicprofile li {
+  font-size: 12px;
+  font-family: khula-Regular , Arial, Helvetica, sans-serif;
+  padding: 5px;
+  padding-top: 7px;
+  padding-left: 10px;
+  cursor: pointer;
+
+}
+ul#dropdown-basicprofile li:hover {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
+ul#dropdown-basicprofile li a {
+  color: #4a4a4a;
+  display: block;
+}
+ul#dropdown-basicprofile li a:hover {
+  text-decoration: none;
+}
+/* ul#dropdown-basic li:nth-child(odd) {
+  background: #fff;
+}
+ul#dropdown-basic li:nth-child(even) {
+  background: #f2f2f2;
+} */
+ul#dropdown-basic li:hover {
+  color: #4a4a4a;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+}
+button#button-basic[aria-expanded=true] {
+  background: rgba(255, 255, 255, 0.08)!important;
+}
+.dropdown-menu.show {
+  display: block;
+  padding: 0;
+
+  margin-top: 0px;
+}
+ul#dropdown-basic {
+  min-width: 128px!important;
+  left:-42px!important;
+
+}
+.select-coin{
+  padding: 5px 8px;
+  outline: none;
+  padding-bottom: 0px;
+}.select-profile{
+  padding: 0px 8px;
+  outline: none;
+  margin-top: -10px;
+  /* padding-bottom: 0px; */
+}
+ul#dropdown-basic.form-control{
+  height: inherit;
+}
+
+/* .row.header_css .col-md-1,.row.header_css .col-md-2,.row.header_css .col-md-4,{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+
+} */
+/* .row.header_css .col-md-2,.row.header_css .col-md-4 {
+  padding-left: 0!important;
+  padding-right: 0!important;
+} */
+.listActive{
+   background-color: #00b0ff;
+}
+.profilePic{
+   margin-right: 5px;
+   margin-top: 14px;
+}
+.userName{
+    font-family: khula-lite, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #ffffff;
+    position: relative;
+    top: 8px;
+
+}
+.rightSpan {
+    margin-top: 4px;
+    /* margin-right: 55px; */
+  }
+  .selectboxstyle{
+    position: relative;
+    top: 20%;
+    left: 3%;
+    background: transparent;
+    border: none;
+    color: white;
+    -webkit-appearance: none;
+  }
+  .lablestyle{
+    /* margin-top: 15%; */
+    color: white;
+  }
+  .hdrdiv{
+    display: flex;
+    align-items: center;
+  }
+  .user-cont {
+    cursor: pointer;
+    margin-left: 7px;
+    display: block;
+  }
+  .logout{
+    cursor: pointer;
+    text-align: center;
+    padding: 10px 0px;
+    position: absolute;
+    top: 52px;
+    left: 0px;
+    z-index: 3;
+    width: 128px;
+    font-size: 14px;
+    box-shadow: 3px 3px 12px 0 rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+  }
+
+.dropdownstyl{
+    position: relative;
+    top: 10px;
+    left: 5px;
+    color: white;
+}
+.currencydp{
+  font-family: khula-lite, Arial, Helvetica, sans-serif;
+  /* position: relative;
+    top: 19px;
+    left: 42px; */
+    border: none;
+    background-color: transparent;
+    color: #4a4a4a;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    padding-right: 20px;
+    padding-left: 10px;
+}
+.notification{
+  width:40px;
+  height:40px;
+}
+.displayInline{
+  display:inline-block;
+  position: relative;
+}
+.currency-positioin{
+  position: relative;
+  top: 4px;
+  margin-left: 27px;
+  margin-right: 7px;
+
+}
+sub.subrole{
+  color: #6fadf5;
+  position: absolute;
+  left: 55px;
+  top: 43px;
+  text-transform: capitalize;
+}
+.header-wrapper{
+display: flex;
+}
+
+.header-text {
+  vertical-align: middle;
+  margin-top: 20px;
+  margin-left: 20px;
+  font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  font-size: 17px;
+}
+.notification-count{
+  position: absolute;
+  color: white;
+  bottom: 0px;
+  right: -4px;
+  background: #e31932;
+  border-radius: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+  padding: 4px 3px;
+  height: 18px;
+  width: 18px;
+  font-size: 9px;
+  vertical-align: middle;
+}
+@media screen and (max-width: 1440px) and (min-width: 1025px){
+  /* .inner-header-box{
+    margin-left: 0px;
+  } */
+}
+@media screen and (max-width: 1024px) {
+  /* .inner-header-box{
+    margin-left: 0px;
+  } */
+  .inner-header-box{
+    width:75%;
+  }
+  .header_css {
+    width: calc(100% - 88px);
+  }
+}
+
+.dropdown-toggle::after{
+  display: none !important;
+}
+.userNameSpan::after{
+  display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+}
+.modal-header-wrapper {
+  padding: 8px 0px 2px 0px;
+  width: 100%;
+  display: flex;
+  text-align: center;
+}
+.modal-header{
+  border-top: 4px solid #3954e5;
+  border-radius: 0px;
+  color: #3954e5;
+}
+.helpDesk{
+  margin-top: 40px;
+}
+.helpdeskModel{
+   text-align: center;
+   padding-bottom: 80px;
+}
+.helpDeskQuery{
+  font-family: khula-Regular , Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.33;
+  letter-spacing: normal;
+  text-align: center;
+  color: #5a5a5a;
+  margin-top: 30px;
+}
+.mainDataphone{
+  float: right;
+}
+.infotext{
+  font-family: khula-Regular , Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+  letter-spacing: normal;
+  color: #3954e5;
+}
+.infoPhoneImg{
+    position: relative;
+    right: 10px;
+}
+.infotextmail{
+    position: relative;
+    left: 10px;
+}

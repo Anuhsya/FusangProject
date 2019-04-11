@@ -1,0 +1,319 @@
+<br><br>
+<div class="ap-user-section">
+  <div class="ap-backArrow">
+    <a [routerLink]="['/fusang/admins']">
+      <img src="../../../assets/images/backArrow.svg" alt="">
+    </a>
+  </div>
+  <div class="ap-userName">
+    <span class="userClass {{workflowObject.status.toLowerCase()}}2" >{{ adminfirstName }} {{ adminLastName }}</span>
+    <span class="{{workflowObject.status.toLowerCase()}} commonstatus">{{workflowObject.status}}</span>
+  </div>
+  <div class="main-sec">
+    <div class="ap-user-card">
+      <div *ngIf="getProfileInfo.profilePic == null" ><img class="ap-userImage" src="../../../assets/images/sidebar/profile.svg" alt=""></div>
+          <div *ngIf="getProfileInfo.profilePic != null" ><img class="ap-userImage" src="{{ getProfileInfo.profilePic }}" alt=""></div>
+            <div class="ap-user-details">
+              <div class="ap-user-wallet-det">
+                  <div class="ap-user-email">{{ adminEmailID  }}</div>
+                  <div class="ap-user-phoneNumber">{{code}} {{ adminphoneNumber }} </div>
+               </div>
+          </div>
+    </div>
+
+    <div *ngIf="workflowObject.status === 'Active'" class="deactivate-sec"> <button class="commonButton" (click)="sucspop(successtemplate)" >DEACTIVATE</button></div>
+    <div *ngIf="workflowObject.status === 'Deactivated'" class="deactivate-sec"> <button class="commonButton"  (click)="reactivateAdmin(invitetemplate)">REACTIVATE</button></div> 
+   
+    <ng-template #successtemplate class="invite succesmodal"> 
+      <div class=" successpopup">
+        <div class="modal-header no-line">
+          <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold"></div>
+            <button *ngIf="workflowObject.status !== 'Deactivated'" type="button" class="close font24 pull-right" aria-label="Close" (click)="successRef.hide()">              
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <button *ngIf="workflowObject.status === 'Deactivated'" type="button" class="close font24 pull-right" aria-label="Close" (click)=" restorePrevRoles()">              
+                <span aria-hidden="true">&times;</span>
+              </button>           
+          </div>
+        </div>
+        <div class="modal-body center-box">
+          <img *ngIf="workflowObject.status !== 'Deactivated'" src="../../../assets/images/inviteuser/success.svg" alt="">
+          <img *ngIf="workflowObject.status === 'Deactivated'" src="../../../assets/images/success.svg" alt="">
+          <div class="sus-contant-box">
+            <p *ngIf="workflowObject.status !== 'Deactivated'" class="font24 khulaSemiBold success-message">Are you sure you want to deactivate {{
+              getProfileInfo.firstName }} {{ getProfileInfo.lastName }}</p>
+              
+              <p *ngIf="workflowObject.status === 'Deactivated'" class="font24 khulaSemiBold success-message">Are you sure you want to reactivate 
+                {{ adminfirstName }} {{ adminLastName }}</p>
+            <div> 
+
+              <button *ngIf="workflowObject.status !== 'Deactivated'" class="cancel khulaSemiBold" (click)="successRef.hide()">CANCEL</button>
+              <button *ngIf="workflowObject.status !== 'Deactivated'" class="btn-orange khulaSemiBold" (click)="deActivateUser();successRef.hide()">DEACTIVATE</button>
+
+              <button *ngIf="workflowObject.status === 'Deactivated'" class="cancelReActivate khulaSemiBold" (click)="restorePrevRoles()">CANCEL</button>            
+              <button *ngIf="workflowObject.status === 'Deactivated'" class="btn-orange khulaSemiBold" (click)="reActivateUser();successRef.hide()">REACTIVATE</button>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </ng-template>
+  </div>
+</div>
+<mat-card class="matCard-border">
+  <mat-tab-group>
+    <mat-tab label="Basic Info">
+      <ng-template matTabContent>
+        <div class="basic-info-wrapper">
+          <div class="form-wrapper">
+            <form class="example-form" #f="ngForm" novalidate>
+              <div class="tab-header-sec">
+                <span>Admin Basic Information</span>
+                <button *ngIf="enableupdateBtns && workflowObject.status === 'Active'" class="editBtn" (click)="editadminInfo()" >EDIT</button>
+                <div class="edit-cancel-btnGrp" *ngIf="!enableupdateBtns">
+                  <button  class="cancel khulaSemiBold" (click)="cancelRoleModifications()">CANCEL</button>
+                  <button  class="btn-orange khulaSemiBold" (click)="updateRoleModifications()" [disabled]="isenableform == true || !f.form.valid || invalidphone ">UPDATE</button>
+                </div>
+              </div>
+
+              <div class="inner-form basicInfo-sett">
+                <mat-form-field class="example-half-width">
+                  <input matInput placeholder="First Name" required id="firstName" name="firstName" #firstName="ngModel"
+                    [(ngModel)]="getProfileInfo.firstName" autocomplete="off" [disabled]="true">
+                  <mat-error *ngIf="'firstName'">
+                    First is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Last Name" required name="lastName" #lastName="ngModel" [(ngModel)]="getProfileInfo.lastName"
+                    autocomplete="off" [disabled]="true">
+                  <mat-error *ngIf="'lastName'">
+                    LastName is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="example-half-width ">
+                  <input matInput placeholder="Country" class="arrow" name="country" [(ngModel)]="getProfileInfo.country"
+                    #country="ngModel" [disabled]="editUser" [matAutocomplete]="auto" (ngModelChange)="getTheValue()"
+                    required>
+                  <span></span>
+                  <mat-error *ngIf="'country'">
+                    Country is <strong>required</strong>
+                  </mat-error>
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                    <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <mat-form-field class="example-third-width">
+                  <input matInput placeholder="Code" name="code" autocomplete="off" [disabled]="true" [(ngModel)]="code">
+                </mat-form-field>
+
+                <mat-form-field class="example-phone-width phone-number">
+                  <input matInput class="font14" placeholder="Phone Number" (keypress)="numberOnly($event)" required name="phoneNumber" max="{{countryPhonelen}}" 
+                    [disabled]="editUser" maxLength="{{countryPhonelen}}" autocomplete="off" [(ngModel)]="getProfileInfo.phoneNumber"
+                    #phoneNumber="ngModel"  [disabled]="!editUser"
+                    (ngModelChange)="onChange(getProfileInfo.phoneNumber)" >
+
+                    <mat-error *ngIf="getProfileInfo.phoneNumber === ''">
+                    PhoneNumber is <strong>required</strong>
+                  </mat-error>
+                  <div *ngIf="invalidphone && getProfileInfo.phoneNumber !== ''" class="help-block1 caution">Please
+                    enter {{countryPhonelen}} digit number</div>
+
+                  <!-- <div *ngIf="invalidphone && getProfileInfo.phoneNumber !== ''" class="help-block1 caution">Please enter 10 digit number</div> -->
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                  <input matInput required [disabled]="true" #username="ngModel" autocomplete="off" placeholder="Email ID"
+                    name="username" [(ngModel)]="getProfileInfo.username">
+                  <mat-error *ngIf="'username'">
+                    Please enter username as <strong>email format</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </form>
+          </div>
+          <div class="tab-header-sec">
+            <span>Admin Roles Information</span>
+        </div>
+        <div class="form-wrapper">
+          <form class="example-form" (ngSubmit)="f1.form.valid && inviteUser(signupsuccess)" #f1="ngForm">
+            <div class="inner-form basic-roleInfo">
+              <div class="wro-wrapper" *ngFor="let dl of finalData;let i =index">
+                <div class="dep-col-wrapper">
+                  <img src="assets/images/inviteuser/{{dl.name.split(' ')[0].toLowerCase()}}.svg" class="acc-image" alt="">
+                  <span>{{dl.name}}</span>
+                </div>
+                <div class="role-checkbox">
+                <mat-checkbox class="margin-check"
+                 *ngFor="let rdl of dl.role;let j =index" [disabled]="!isEditAdmin"
+                 (change)="updateAdminRole(dl,rdl,$event)" [checked]="rdl.isEnable">{{rdl.userRole}}</mat-checkbox>
+                
+                </div>
+              </div>
+            </div>
+            <div class="linebottom"></div>
+          </form>
+        </div>
+        </div>
+        
+      </ng-template>
+    </mat-tab>
+   
+    
+    <mat-tab label="Workflow">    
+
+        <div *ngIf ="!enableWorkflowSec" class="main-sec-workflow">
+            <div class="ap-backArrow workflow-navigation">    
+                <a (click) = "goToIndividualWF()">
+                  <img src="../../../assets/images/backArrow.svg" alt="">                 
+                </a>
+                <span>Back to workflow list</span>
+             </div>         
+             <app-onboardflow></app-onboardflow>   
+        </div>
+
+        <div class="tableSection workflow-div" *ngIf ="enableWorkflowSec">
+              <table mat-table [dataSource]="data" class="mat-elevation-z8">
+                   <ng-container matColumnDef="info" >
+                      <th mat-header-cell *matHeaderCellDef> Info </th>
+                      <td mat-cell *matCellDef="let element" (click) = "goToSelectedWorkFlow(element)"> {{element.info}} </td>
+                    </ng-container>
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="createdDate">
+                      <th mat-header-cell *matHeaderCellDef> Name </th>
+                      <td mat-cell *matCellDef="let element" (click) = "goToSelectedWorkFlow(element)"> {{element.createdDate | date :'dd-MMM-yyyy h:mm:ss '}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let element" (click) = "goToSelectedWorkFlow(element)"> {{element.status}} </td>
+                      </ng-container>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+              <pagination *ngIf="tabData.length !== 0" [boundaryLinks]="true" [totalItems]="resultsLength" [itemsPerPage]="10" (pageChanged)="pageChanged($event)"
+                    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+             </pagination>    
+        </div>
+        <div class=" wellcome-msg" *ngIf="tabData.length === 0">
+            <h4 class="khulaLite" >This place looks deserted.</h4>
+            <p class="khulaSemiBold" >No workflow started yet</p>
+        </div>
+      <!-- <app-onboardflow></app-onboardflow> -->
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
+
+<ng-template #invitetemplate class="invite succesmodal">
+    <div class="invitepopup">
+      <div class="modal-header">
+        <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold">Reactivate {{ adminfirstName }} {{ adminLastName }}</div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="restorePrevRoles()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      </div>
+
+      <div class="modal-body invite"> 
+          <form class="example-form" #fBasic="ngForm" novalidate>
+          <div class="invite-tabs">
+              <div class="Information-box font14 khulaRegular" [class.activeTab]="basic" (click)="showbasic()">Basic Information</div>
+              <div class="Information-box font14 khulaRegular" [class.activeTab]="assignroles" (click)="showassignroles()" [class.tabDesabled]="!fBasic.valid || invalidphone">Assign Roles</div>
+          </div>
+          <div class="basic-information" *ngIf="basic"> 
+            <div class="marginleft15">
+              <div class="form-wrapper">                
+                  <div class="inner-form basicInfo-sett">
+                    <mat-form-field class="example-half-width1">
+                      <input matInput placeholder="First Name" required id="firstName" name="firstName" #firstName="ngModel"
+                        [(ngModel)]="getProfileInfo.firstName" autocomplete="off" [disabled]="true">            
+                      <mat-error *ngIf="'firstName'">
+                        First Name is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+    
+                    <mat-form-field class="example-half-width1">
+                      <input matInput placeholder="Last Name" required name="lastName" #lastName="ngModel" [(ngModel)]="getProfileInfo.lastName"
+                        autocomplete="off" [disabled]="true">
+                      <mat-error *ngIf="'lastName'">
+                        Last Name is <strong>required</strong>
+                      </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="example-half-width1 ">
+                      <input matInput placeholder="Country" class="arrow" name="country" [(ngModel)]="getProfileInfo.country"
+                        #country="ngModel" [matAutocomplete]="auto" (ngModelChange)="getTheValue()"
+                        required>
+                      <span></span>
+                      <mat-error *ngIf="'country'">
+                        Country is <strong>required</strong>
+                      </mat-error>
+                      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                        <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item">
+                          {{item}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <!-- example-half-width country-code -->
+                    <mat-form-field class="example-third-width">
+                      <input matInput placeholder="Code" name="code" autocomplete="off" [disabled]="true" [(ngModel)]="code">
+                    </mat-form-field>
+    
+                    <mat-form-field class="example-phone-width1 phone-number">
+                      <input matInput class="font14" placeholder="Phone Number" (keypress)="numberOnly($event)" required name="phoneNumber" max="{{countryPhonelen}}"
+                         maxLength="{{countryPhonelen}}" autocomplete="off"  [(ngModel)]="getProfileInfo.phoneNumber"
+                        #phoneNumber="ngModel"  (ngModelChange)="onChange(getProfileInfo.phoneNumber)">
+    
+                        <mat-error *ngIf="getProfileInfo.phoneNumber === ''">
+                        Phone Number is <strong>required</strong>
+                      </mat-error>
+                      <div *ngIf="invalidphone && getProfileInfo.phoneNumber !== ''" class="help-block1 caution">Please
+                        enter {{countryPhonelen}} digit number</div>
+                    </mat-form-field>
+    
+                    <mat-form-field class="example-full-width1">
+                      <input matInput required [disabled]="true"  #username="ngModel" autocomplete="off" placeholder="Email ID"
+                        name="username" [(ngModel)]="getProfileInfo.username" pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$">
+                      
+                       <mat-error *ngIf="getProfileInfo.username !== ''">
+                        Please enter Email as <strong>email format</strong>
+                      </mat-error>     
+                      <mat-error *ngIf="getProfileInfo.username === ''">
+                          Email ID is <strong>required</strong>
+                        </mat-error>    
+                    </mat-form-field>
+                  </div>
+                  <div class="linebottom"></div>
+                  <button class="btn btn-orange" (click)="showassignroles()" [disabled]="!fBasic.valid || invalidphone">NEXT</button>
+                
+              </div>
+            </div>
+          </div>      
+          <div class="basic-info-wrapper" *ngIf="assignroles"> 
+            <div class="form-wrapper">
+                <form class="example-form" (ngSubmit)="f.form.valid" #f="ngForm">
+                    <div class="inner-form basic-roleInfo">
+                      <div class="wro-wrapper" *ngFor="let dl of finalData;let i =index">
+                        <div class="dep-col-wrapper">
+                          <img src="assets/images/inviteuser/{{dl.name.split(' ')[0].toLowerCase()}}.svg" class="acc-image" alt="">
+                          <span>{{dl.name}}</span>
+                        </div>
+                        <div class="role-checkbox">
+                        <mat-checkbox class="margin-check"
+                        *ngFor="let rdl of dl.role;let j =index" (change)="updateAdminRole(dl,rdl,$event)" [checked]="rdl.isEnable">{{rdl.userRole}}</mat-checkbox>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="linebottom">
+                        <button class="btn btn-orange btn-left" type="submit" (click)="reActivatePop(successtemplate)" [disabled] = "isenableform == true">SUBMIT</button>
+                    </div> 
+                  </form>
+            </div>
+          </div>
+        </form>
+      </div>    
+      </div>
+    </ng-template>

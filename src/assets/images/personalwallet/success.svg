@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="113" height="113" viewBox="0 0 113 113">
+    <defs>
+        <circle id="b" cx="57" cy="57" r="40"/>
+        <filter id="a" width="117.5%" height="117.5%" x="-8.8%" y="-6.2%" filterUnits="objectBoundingBox">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.0255038496 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <circle cx="56.5" cy="56.5" r="56.5" fill="#9013FE" fill-rule="nonzero" opacity=".2"/>
+        <circle cx="56.5" cy="56.5" r="48.5" fill="#9013FE" fill-rule="nonzero" opacity=".2"/>
+        <g fill-rule="nonzero">
+            <use fill="#000" filter="url(#a)" xlink:href="#b"/>
+            <use fill="#9013FE" xlink:href="#b"/>
+        </g>
+        <text fill="#FFF" font-family="Khula-SemiBold, Khula" font-size="48" font-weight="500">
+            <tspan x="49" y="71">!</tspan>
+        </text>
+    </g>
+</svg>

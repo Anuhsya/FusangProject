@@ -1,0 +1,918 @@
+<br><br>
+<div class="up-user-section">
+  <!-- <div  *ngIf = "navigatedFrom ===  'clientProfile'" class="up-backArrow">
+    <a [routerLink]="['/fusang/clients']">
+      <img src="../../../assets/images/backArrow.svg" alt="">
+    </a>
+  </div> -->
+  <div class="up-backArrow">
+    <a [routerLink]="['/fusang/User/userlist']">
+      <img src="../../../assets/images/backArrow.svg" alt="">
+    </a>
+  </div>
+  <div class="up-userName">
+    <span class="userClass {{workflowObject?.status?.toLowerCase()}}2" >{{ userProfilefirstName }} {{ userProfileLastName }}</span>
+     <span class="{{workflowObject?.status?.toLowerCase()}} commonstatus">{{workflowObject.status}}</span>
+    <!-- <span class="userClass">{{ getProfileInfo.firstName }} {{ getProfileInfo.lastName }}</span> -->
+  </div>
+  <div class="main-sec">
+    <div class="up-user-card">
+      <div *ngIf="getProfileInfo.profilePic == null" ><img class="up-userImage" src="../../../assets/images/sidebar/profile.svg" alt=""></div>
+          <div  class="user-profile-pic"  *ngIf="getProfileInfo.profilePic != null" >
+            <img class="up-userImage" src="{{ getProfileInfo.profilePic }}" alt="">
+
+          </div>
+          <img class= "superAdminPic" *ngIf = "isSuperAdmin === true" class="superAdminPic" src="../../../assets/images/superUserIndicator.svg" alt="">
+
+<!--Added below repeating code(above) as we are getting alignment issues (more spacing b/w  pic and email section-->
+
+          <div *ngIf="isSuperAdmin === true" class="up-superUser-details">
+                <div  class="up-user-wallet-det">
+                  <div class="up-user-email">{{ userProfileEmailID }}</div>
+                  <div class="">{{workflowObject?.clientName}} user </div>
+                </div>
+          </div>
+          <div *ngIf="isSuperAdmin === false" class="up-user-details">
+              <div  class="up-user-wallet-det">
+                <div class="up-user-email">{{ userProfileEmailID }}</div>
+                <div class="">{{workflowObject?.clientName}} user </div>
+              </div>
+          </div>
+    </div>
+    <!-- <div class="deactivate-sec"> <button class="commonButton" (click)="sucspop(successtemplate)" >DEACTIVATE</button></div> -->
+    <!-- [disabled]= 'moreThanTwoWallets === true' -->
+    <div *ngIf="workflowObject.status === 'Active' && role1 === 'superUser'  && moreThanTwoWallets === false" class="deactivate-sec"> <button class="commonButton"  (click)="sucspop(successtemplate)">DEACTIVATE</button></div>
+    <div *ngIf="workflowObject.status === 'Deactivated' && role1 === 'superUser' && isClientActive" class="deactivate-sec"> <button class="commonButton"  (click)="reactivateUser(inviteUsertTemplate)" >REACTIVATE</button></div>
+  
+    <ng-template #successtemplate class="invite succesmodal">
+      <div class=" successpopup">
+        <div class="modal-header no-line">
+          <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold"></div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="successRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-body center-box">
+          <img *ngIf="workflowObject.status !== 'Deactivated'" src="../../../assets/images/inviteuser/success.svg" alt="">
+          <img *ngIf="workflowObject.status === 'Deactivated'" src="../../../assets/images/success.svg" alt="">
+          <div class="sus-contant-box">
+            <p *ngIf="workflowObject.status !== 'Deactivated'" class="font24 khulaSemiBold success-message">Are you sure you want to deactivate
+              {{ userProfilefirstName }} {{ userProfileLastName }} </p>
+
+              <p *ngIf="workflowObject.status === 'Deactivated'" class="font24 khulaSemiBold success-message">Are you sure you want to reactivate
+                  {{ userProfilefirstName }} {{ userProfileLastName }} </p>
+            <div>
+              <button *ngIf="workflowObject.status !== 'Deactivated'" class="cancelReActivate khulaSemiBold" (click)="successRef.hide()">CANCEL</button>
+              <button *ngIf="workflowObject.status !== 'Deactivated'" class="btn-orange khulaSemiBold" (click)="deActivateUser();successRef.hide()">DEACTIVATE</button>
+
+              <button *ngIf="workflowObject.status === 'Deactivated'" class="cancelReActivate khulaSemiBold" (click)="restorePrevData()">CANCEL</button>
+              <button *ngIf="workflowObject.status === 'Deactivated'" class="btn-orange khulaSemiBold" (click)="reActivateUserDetails();successRef.hide()">REACTIVATE</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
+<mat-card class="matCard-border">
+  <mat-tab-group (selectedTabChange)="tabClick($event)">
+    <mat-tab label="Basic Info">
+      <ng-template matTabContent>
+        <div class="basic-info-wrapper">
+          <div class="form-wrapper">
+            <form class="example-form" #f="ngForm" novalidate>
+              <div class="tab-header-sec">
+                <span>Basic Information</span>
+                <button *ngIf= "!enableBtns && workflowObject.status === 'Active' && role1 === 'superUser'" class="editBtn" (click)="editRoleForm()">EDIT</button>
+                        
+                        <div class="edit-cancel-btnGrp" *ngIf="enableModBtns">
+                          <button class="cancel khulaSemiBold" (click)="cancelRoleModifications()">CANCEL</button>
+                          <button class="btn-orange khulaSemiBold" (click)="updateUserRoleDetails()" [disabled]="!f.form.valid || invalidphone">UPDATE</button>
+                        </div>
+              </div>
+
+              <div class="inner-form basicInfo-sett">
+                <mat-form-field class="example-half-width">
+                  <input matInput placeholder="First Name" required id="firstName" name="firstName" #firstName="ngModel"
+                    [(ngModel)]="getProfileInfo.firstName" autocomplete="off" [disabled]="true">
+                  <mat-error *ngIf="'firstName'">
+                    First Name is <strong>required</strong>
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field class="example-half-width">
+                    <input matInput placeholder="Last Name" required id="lastName" name="lastName" #lastName="ngModel"
+                      [(ngModel)]="getProfileInfo.lastName" autocomplete="off" [disabled]="true">
+                    <mat-error *ngIf="'lastName'">
+                      Last Name is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-half-width ">
+                  <input matInput placeholder="Country" class="arrow" name="country" [(ngModel)]="getProfileInfo.country"
+                    #country="ngModel" [disabled]="editUser" [matAutocomplete]="auto" (ngModelChange)="getTheValue(getProfileInfo.country)"
+                    required>
+                  <span></span>
+                  <mat-error *ngIf="'country'">
+                    Country is <strong>required</strong>
+                  </mat-error>
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                    <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+
+                <mat-form-field class="example-third-width">
+                  <input matInput placeholder="Code" name="code" autocomplete="off" [disabled]="true" [(ngModel)]="code">
+                </mat-form-field>
+
+                <!-- example-half-width country-code -->
+                <mat-form-field class="example-phone-width phone-number">
+                  <input matInput class="font14" placeholder="Phone Number" (keypress)="numberOnly($event)" required name="phoneNumber" max="{{countryPhonelen}}" 
+                    maxLength="{{countryPhonelen}}" autocomplete="off" [(ngModel)]="getProfileInfo.phoneNumber"
+                    #phoneNumber="ngModel" [disabled]="editUser"
+                    (ngModelChange)="onChange(getProfileInfo.phoneNumber)">
+
+                    <mat-error *ngIf="getProfileInfo.phoneNumber === ''">
+                    PhoneNumber is <strong>required</strong>
+                  </mat-error>
+                  <div *ngIf="invalidphone && getProfileInfo.phoneNumber !== ''" class="help-block1 caution">Please
+                    enter {{countryPhonelen}} digit number</div>
+                </mat-form-field>
+
+                <mat-form-field class="example-half-width">
+                  <input matInput required [disabled]="true" #emailId="ngModel" autocomplete="off" placeholder="Email ID" name="emailId" [(ngModel)]="getProfileInfo.emailId">
+                  <mat-error *ngIf="'emailId'">
+                    Please enter email ID in <strong>email format</strong>
+                  </mat-error>
+                 
+                </mat-form-field>
+                <div class="role-checkbox">
+                  <mat-checkbox class="chkbxstly" [checked]="superAdmin" [(ngModel)]="getProfileInfo.superAdmin"  name="superAdmin"  #superAdmin="ngModel"  [disabled]="editUser || getProfileInfo.isLoggedInUser"  autocomplete="off">
+                    Super User
+                  </mat-checkbox>
+              </div>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <!-- <mat-tab label="Role">
+      <ng-template matTabContent>
+          <div class="basic-info-wrapper">
+              <div class="form-wrapper">
+                <form class="example-form"  #f="ngForm" novalidate>
+                    <div class="tab-header-sec">
+                        <span>Role Information</span>
+                        <button *ngIf= "!enableBtns && workflowObject.status === 'Active' && role1 === 'superUser' && moreThanTwoWallets === false" class="editBtn" (click)="editRoleForm()">EDIT</button>
+                        
+                        <div class="edit-cancel-btnGrp" *ngIf="enableModBtns">
+                          <button class="cancel khulaSemiBold" (click)="cancelRoleModifications()">CANCEL</button>
+                          <button class="btn-orange khulaSemiBold" (click)="updateUserRoleDetails()" [disabled]="!f.form.valid">UPDATE</button>
+                        </div>
+                      </div>
+
+
+                    <mat-form-field class="example-half-width">
+                        <mat-select placeholder="Wallet Management" [(ngModel)]="userDetailRole.userRoles" name="role" #role="ngModel"  [disabled]="editUserRole" (change)="roleSelected($event.target.value)">
+                      
+                              <mat-option  value="USER_SIGNER" >Signer</mat-option>
+                              <mat-option  value="USER_VIEWER" >Viewer</mat-option>
+                            </mat-select>
+                      </mat-form-field>
+                    <div class="role-checkbox">
+                        <mat-checkbox class="chkbxstly" [checked]="superAdmin" [(ngModel)]="getProfileInfo.superAdmin"  name="superAdmin"  #superAdmin="ngModel"  [disabled]="editUserRole"  autocomplete="off">
+                          Super User
+                        </mat-checkbox>
+                    </div>
+                </form>
+              </div>
+              </div>
+      </ng-template>
+    </mat-tab> -->
+
+   <!-- Client Basic Info Starts -->
+   <mat-tab label="Client Basic Info" *ngIf="isSuperAdmin === true">
+    <ng-template matTabContent>
+        <div class="basic-info-wrapper">
+            <div class="form-wrapper">
+                <form class="example-form" #fClient="ngForm" novalidate>
+                    <div class="tab-header-sec">
+                        <span> Client Basic Information</span>
+                        <button *ngIf="!enableBtns1 && workflowObject.status === 'Active' && isSuperAdmin === true" class="editBtn" (click)="editFormClient()">EDIT</button>
+                        <div class="edit-cancel-btnGrp" *ngIf="enableBtns1">
+                            <button class="cancel khulaSemiBold" (click)="resetClientInfo()">CANCEL</button>
+                            <button class="btn-orange khulaSemiBold" (click)="updateClientInfo()" [disabled]="!fClient.form.valid">UPDATE</button>
+                        </div>
+                    </div>
+                    <div class="inner-form basicInfo-sett">
+                        <mat-form-field class="example-half-widthClient">
+                            <input matInput placeholder="Client Name" required id="clientName" name="clientName" #clientName="ngModel" [(ngModel)]="clientBasicInfo.clientName" autocomplete="off" [disabled]="true">
+                            <mat-error *ngIf="'clientName'">
+                               Client Name is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="example-half-widthClient">
+                            <input matInput placeholder="Website" required id="domainName" name="domainName" #domainName="ngModel" [(ngModel)]="clientBasicInfo.domainName" autocomplete="off" [disabled]="true">
+                            <mat-error *ngIf="'domainName'">
+                                website is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field class="example-full-widthClient ">
+                            <input matInput placeholder="Country" class="arrow" name="country" [(ngModel)]="clientBasicInfo.country" #country="ngModel" [disabled]="editUser1" [matAutocomplete]="auto" (ngModelChange)="getTheValue(clientBasicInfo.country)" required>
+                            <span></span>
+                            <mat-error *ngIf="'country'">
+                                Country is <strong>required</strong>
+                            </mat-error>
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item">
+                                    {{item}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-widthClient">
+                            <textarea matInput placeholder="Address" required  name="address" #address="ngModel" [(ngModel)]="clientBasicInfo.address" autocomplete="off" [disabled]="editUser1"></textarea>
+                            <mat-error *ngIf="'address'">
+                                Address is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>  
+
+                        <mat-form-field class="example-full-widthClient">
+                            <textarea matInput placeholder="Note" required  name="note" #note="ngModel" [(ngModel)]="clientBasicInfo.notes" autocomplete="off" [disabled]="editUser1"></textarea>
+                            <mat-error *ngIf="'Note'">
+                                Note is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>                           
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+</mat-tab>
+        
+   <!-- Client Basic Info Ends -->
+
+    <mat-tab label="Audit Trail">
+      <ng-template matTabContent>
+        <div class="">
+            <ng2-smart-table [settings]="auditsettings" [source]="auditTraillist"></ng2-smart-table>
+          </div>
+          <pagination *ngIf="auditTraillist.length!==0" [boundaryLinks]="true" [totalItems]="auditlistLength"
+          [itemsPerPage]="20" (pageChanged)="pageChangedaudit($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+          lastText="&raquo;">
+        </pagination>
+      </ng-template>
+
+    </mat-tab>
+    <mat-tab label="Wallets">
+        <ng-template matTabContent>
+            <div  class="personal-wallets-wrapper">
+                <div class="tab-info-sec tab-header-sec" *ngIf = "walletsummaryinfo.totalWallet > 0">
+                    <span> Wallet Information</span>
+                  </div>
+                <div  class="row wallet-overflow">
+                  <div  *ngIf= "workflowObject.status === 'Active' && (role1 === 'superUser' || role1 === 'Account')" class="col-md-4 col-sm-6 col-lg-3 margin-bottom">
+                    <!-- <div class=""> -->
+                    <div class="center center-add create-wallets-btn" (click)="createwallet(invitetemplate)">
+                      <!-- <div> -->
+                      <a class="marBtm" >
+                        <!-- (click)="createwallet(invitetemplate)"  [routerLink]="['/fusang/createvalletinfo']" -->
+                        <!-- [routerLink]="['/fusang/createvalletinfo']" -->
+                        <img class="imgcls" src="./assets/images/add-circular-button.svg" alt="" >
+                      </a>
+                      <p>Create wallet</p>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4 col-sm-6 col-lg-3 walletList margin-bottom" *ngFor='let wallet of walletsummaryinfo.walletList'>
+                    <div [class.walletDisabled]="wallet.status === 'Invited'" (click)="redirect(wallet)">
+                      <div class="create-wallets-btn create-wallets-btn-margin" [ngStyle]="{'border-top':wallet.status === 'Invited' ? '3px solid #39b7c5' : wallet.status === 'Completed' ? '3px solid #56ac17': wallet.status === 'Freezed' ? '3px solid #adb0aa':'3px solid #e16c7a'}">
+                        <button class="btn status-btn" [class.statusInvited]="wallet.status === 'Invited'" [class.statusCompleted]="wallet.status === 'Completed'"
+                          [class.statusIncompleted]="wallet.status === 'Incomplete'" [class.statusFreezed]="wallet.status === 'Freezed'">{{wallet.status}}</button>
+                          <span class="example-header-bg" *ngIf="wallet.walletType === 'HighFrequency'">
+                            <img src="./assets/images/userpolicy/highfrequency.png" alt="" class="statusimg">
+
+                          </span>
+                          <span class="securestorage-bg" *ngIf="wallet.walletType === 'SecureStorage'"><img src="./assets/images/userpolicy/securestorage.png" alt="" class="statusimg"></span>
+
+                        <span class="deepstorage-bg" *ngIf="wallet.walletType === 'DeepStorage'"><img src="./assets/images/userpolicy/deep-storage.png" alt="" class="statusimg"></span>
+                        <div class="center khulaSemiBold">
+                          <p class="wallet-title-box"> {{wallet.walletName}}</p>
+                          <div>
+                            <img class="imgcls" src="./assets/images/bitcoin_new.svg" alt="">
+                            </div>
+                          <p class="wallet-id-box"></p>
+                          <p class="wallet-id-box"> {{wallet.clientName}}</p>
+                          <p class="wallet-member-box khulaSemiBold">{{wallet.users}}
+                            <span>{{(wallet.users==1)?'Member':'Members'}}</span>
+                            <div class="wallet-table" *ngIf="wallet.status!=='Invited'">
+                              <div class="wallet-col">
+                                <p class="khulaSemiBold">{{wallet.balanceBtc}}</p>
+                                <p class="khulaRegular">{{wallet.coinType}}</p>
+                              </div>
+                              <div class="wallet-col">
+                                <p class="khulaSemiBold">{{wallet.balanceUsd}}</p>
+                                <p class="khulaRegular">USD</p>
+                              </div>
+                            </div>
+                            <!--Commenting this as we dont need join wallet for user profile details page-->
+                            <!-- <div class="wallet-table" *ngIf="wallet.status==='Invited'">
+
+                              <div class="wallet-col">
+                                <button class="btn  join-btn sub-btn-info" (click)=joinwallet(wallet.walletId)>JOIN WALLET</button>
+                              </div>
+                            </div> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="walletsummaryinfo.totalWallet > 0">
+                  <div class="col-md-12">
+                  <pagination [boundaryLinks]="true" [totalItems]="walletsummaryinfo.totalWallet" class="pagination-xs"
+                    [itemsPerPage]="10" (pageChanged)="pageChangewallet($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                    lastText="&raquo;" [rotate]="false">
+                  </pagination>
+              </div>
+              </div>
+                <div class="wellcome-msg" *ngIf="walletList.length === 0">
+                  <h4 class="khulaLite" >This place looks deserted.</h4>
+                  <p class="khulaSemiBold" >No wallets created yet</p>
+              </div>
+              </div>
+          </ng-template>
+          <ng-template #invitetemplate class="invite succesmodal">
+              <div class="invitepopup">
+                <div class="modal-header">
+                  <div class="modal-header-wrapper">
+                    <div class="modal-header-box font24 khulaSemiBold">Create Wallet
+                      <button type="button" class="close font24 pull-right" aria-label="Close" (click)="clearWalletData()">
+                        <img class="closeimg" src="/assets/images/close.png" alt="">
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-body invite">
+                  <div class="invite-tabs">
+                    <div class="Information-box font14 khulaRegular" [class.activeTab]="basic" (click)="showbasic()">Wallet Type </div>
+                    <div class="Information-box font14 khulaRegular" [class.activeTab]="approver" [class.tabDesabled]="!basicForm.valid && !assignroles" (click)="showapprover()">Wallet Info</div>
+                    <div class="Information-box font14 khulaRegular" [class.activeTab]="assignroles" [class.tabDesabled]="!basicForm.valid && !assignroles" (click)="showassignroles()">Add User</div>
+                  </div>
+                  <div class="basic-info-wrapper" *ngIf="basic">
+                    <div class="form-wrapper">
+                      <form class="example-form" [formGroup]="basicForm" (ngSubmit)="nexttab()" #f="ngForm" novalidate>
+                        <div class="row">
+
+                        
+                          <div class="col-md-4 cardstlye" [class.disabled]="deepStorageedit" (click)="editpolicy(sldeepstorageId)">
+                            <div class="col-md-12 row  deepstorage-image">
+                              <!-- <div class="col-md-12 row">
+                                    <div class="col-md-10 headertext row">
+                                      DEEP STORAGE
+                                    </div>
+
+                                  </div> -->
+                              <div class="col-md-12 row">
+                                <img src="./assets/images/userpolicy/deep-storage.png" alt=""  class="database">
+                              </div>
+                              <span class="headertext deepSpacing">DEEP STORAGE</span>
+                            </div>
+                            <img *ngIf="walletTypeId === 0" class="secure-triangle" src="/assets/images/onbording/2.svg" alt="">
+                          </div>
+                          <div class="col-md-4 cardstlye" [class.disabled]="secureStorageedit" (click)="editpolicy(slsecurestorageId)">
+                            <div class="col-md-12 row securestorage-image">
+                              <!-- <div class="col-md-12 row">
+                                    <div class="col-md-10 headertext row">
+                                      SECURE STORAGE
+                                    </div>
+                                     </div> -->
+                              <div class="col-md-12 row">
+                                <img src="./assets/images/userpolicy/securestorage.png" alt=""  class="database">
+                              </div>
+                              <span class="headertext"> SECURE STORAGE</span>
+                            </div>
+                            <img  *ngIf="walletTypeId === 1" class="secure-triangle" src="/assets/images/onbording/3.svg" alt="" >
+                           </div>
+                          <div class="col-md-4 cardstlye" [class.disabled]="highFrequencyedit" (click)="editpolicy(slhighfrquencyId)">
+                            <div class=" col-md-12 row example-header-image">
+                              <!-- <div class="col-md-12 row">
+                                    <div class="col-md-10 headertext row" >
+                                      HIGH FREQUENCY
+                                    </div>
+
+                                  </div> -->
+                              <div class="col-md-12 row">
+                                <img src="./assets/images/userpolicy/highfrequency.png" alt=""  class="database">
+                              </div>
+                              <span class="headertext"> HIGH FREQUENCY</span>
+                            </div>
+                            <img  *ngIf="walletTypeId === 2" class="secure-triangle" src="/assets/images/onbording/1.svg" alt="">
+                          </div>
+
+                        </div>
+                        <div class="inner-form" *ngIf="isEdit" >
+                            <mat-form-field class="example-half-width1">
+                                <input matInput placeholder="Transaction Start Time ( 24 hrs )"  name="transactionLimit"
+                                  autocomplete="off" [value]="policyDetails.transactionTimeStart" [disabled]="true">
+                              </mat-form-field>
+                              <mat-form-field class="example-half-width1">
+                                  <input matInput placeholder="Transaction End Time ( 24 hrs )"  name="transactionLimit"
+                                    autocomplete="off" [value]="policyDetails.transactionTimeEnd"  [disabled]="true">
+                                </mat-form-field>
+                              <mat-form-field class="example-half-width1">
+                                <input matInput placeholder="Transaction Maximum Allowed Volume Cap (%)"  name="transactionCap"
+                                  autocomplete="off" [value]="policyDetails.transactionVolumeCap" [disabled]="true">
+                              </mat-form-field>
+                              <mat-form-field class="example-half-width1">
+                                <input matInput placeholder="Transaction Unit Of Measure (Mins) "  name="transactionUnitOfMeasure" autocomplete="off"   [value]="policyDetails.transactionUnitOfMeasure" [disabled]="true">
+                              </mat-form-field>
+                              <mat-form-field class="example-half-width1">
+                                <input matInput placeholder="Maximum Allowed Frequency Cap"  name="frequencyCap" autocomplete="off"   [value]="policyDetails.transactionLimit" [disabled]="true">
+                              </mat-form-field>
+                              <mat-form-field class="example-half-width1">
+                                <input matInput placeholder="Frequency Unit Of Measure"   autocomplete="off"   [value]="frequencymesure" [disabled]="true">
+                              </mat-form-field>
+                              <mat-form-field class="example-half-width1">
+                                <input matInput placeholder="Maximum Allowed Wallet Address"  name="walletAddress"
+                                  autocomplete="off" [value]="policyDetails.maximumAllowedWallets" [disabled]="true">
+                              </mat-form-field>
+                              <!-- <mat-form-field class="example-half-width">
+                                  <input matInput placeholder="Maximum Allowed IP's"  name="maximumAllowedIp" autocomplete="off" formControlName="maximumAllowedIp" [value]="policyDetails.maximumAllowedIp" [disabled]="true">
+                              </mat-form-field> -->
+                              <mat-form-field class="example-half-width1">
+                                <input matInput placeholder="Time Zone"  name="maximumAllowedIp" autocomplete="off" formControlName="walletTimeZone" [value]="policyDetails.walletTimeZone" [disabled]="true">
+                            </mat-form-field>
+                            <mat-form-field class="example-half-width1">
+                              <input matInput placeholder="Transaction Minimum Balance (%)"  name="minimumBalance" autocomplete="off"  [value]="policyDetails.minimumBalance" [disabled]="true">
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width1">
+                            <input matInput placeholder="Fusang Fee (%)"  name="erviceCharge" autocomplete="off" [value]="policyDetails.serviceCharge" [disabled]="true">
+                        </mat-form-field>
+                        <mat-form-field class="example-half-width1">
+                          <input matInput placeholder="Holding Fee (%)"  name="subcriptionCharge" autocomplete="off"  [value]="policyDetails.subcriptionCharge" [disabled]="true">
+                      </mat-form-field>
+                        </div>
+                        <div class="linebottom"></div>
+                        <button *ngIf="isEdit" class="btn-orange" >NEXT</button>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="approver-info-wrapper" *ngIf="approver">
+                    <div class="form-wrapper">
+                      <form name="form" (ngSubmit)="f.form.valid && nexttousertab()" #f="ngForm"  class="notmaterial" novalidate>
+                          <div class="wallet-info-wrapper">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="user-name khulaRegular fus-name">
+                                    <!-- <div class="fus-name"> -->
+                                      <div class="group" [ngClass]="{ 'has-error': f.submitted && !walletName.valid}">
+                                        <input class="form-control" type="text" (focusout)="focusFunction('')" (focus)="focusFunction('walletName')" name="walletName"
+                                          [(ngModel)]="wDetails.walletName" #walletName="ngModel" required />
+                                        <label [class.activeLabel]="focusedElement=='walletName'" [class.lableTop]="(wDetails.walletName!=='') && (walletName.touched==true || walletName.valid==true|| walletName.valid==false)"
+                                          [class.inputSuccess]="walletName.valid==true" [class.inputError1]="walletName.valid==false && walletName.touched==true"
+                                          [class.inputError]="focusedElement!=='walletName' && walletName.valid==false && walletName.touched==true"
+                                          for="walletName">Wallet Name &nbsp;
+                                          <span class="mandatory">*</span>
+                                        </label>
+
+                                        <div *ngIf="!walletName.valid && walletName.touched === true" class="help-block caution">wallet name required</div>
+                                        <!-- <div *ngIf="!f.submitted && !walletName.valid && walletName.touched === true" class="help-block caution">wallet name required</div> -->
+                                      </div>
+                                      <!-- <div class="group" [ngClass]="{ 'has-error': f.submitted && !ownerName.valid}">
+                                        <input class="form-control" type="text" name="ownerName" (focusout)="focusFunction('')" (focus)="focusFunction('ownerName')"
+                                          [(ngModel)]="wDetails.ownerName" #ownerName="ngModel" required [disabled]= "true" />
+                                        <label [class.activeLabel]="focusedElement=='ownerName'" [class.lableTop]="(wDetails.ownerName !== '') && (ownerName.touched === true || ownerName.valid==true|| ownerName.valid === false)"
+                                          [class.inputSuccess]="ownerName.valid === true" [class.inputError1]="ownerName.valid === false && ownerName.touched === true"
+                                          [class.inputError]="focusedElement!=='ownerName' && ownerName.valid === false && ownerName.touched === true"
+                                          for="ownerName">User Name &nbsp;
+                                          <span class="mandatory">*</span>
+                                        </label>
+                                        <div *ngIf="!ownerName.valid && ownerName.touched === true" class="help-block caution">owner name required</div>
+                                      
+                                      </div> -->
+                                    <!-- </div> -->
+                                    <div class="group" [ngClass]="{ 'has-error': f.submitted && !coinType.valid}">
+                                      <label [class.activeLabel]="focusedElement=='coinType'" [class.lableTop]="(coinValue.coinType!='') && (coinType.touched==true || coinType.valid==true|| coinType.valid==false)"
+                                        [class.inputSuccess]="coinType.valid==true" [class.inputError1]="coinType.valid==false && coinType.touched==true"
+                                        [class.inputError]="focusedElement!=='coinType' && coinType.valid==false && coinType.touched==true" for="coinType">Coin
+                                        <span class="mandatory">*</span>
+                                      </label>
+                                      <select class="form-control" name="coinType" (focusout)="focusFunction('')" (focus)="focusFunction('coinType')" [(ngModel)]="coinValue.coinType"
+                                        (change)="coinSelected(coinValue.coinType);" #coinType="ngModel" required>
+                                        <option [value]="undefined" [attr.selected]="true" disabled>Select Coin</option>
+                                        <option *ngFor="let item of coinlist;let i= index">{{item}}</option>
+
+                                      </select>
+                                      <div *ngIf="!coinType.valid && coinType.touched==true" class="help-block caution errclass">Coin is required</div>
+
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="user-name khulaRegular fus-name">
+                                    <!-- <div class="fus-name"> -->
+                                    <div class="group" [ngClass]="{ 'has-error': f.submitted && !noOfUsers.valid}">
+                                      <input class="form-control" type="text" step="1" min="1" name="noOfUsers" (focusout)="focusFunction('')" (focus)="focusFunction('noOfUsers')"
+                                        [(ngModel)]="wDetails.noOfUsers" #noOfUsers="ngModel" (ngModelChange)="onuserChange($event)" maxlength="2"  pattern="^[1-9]\d*$" required />
+                                      <label [class.activeLabel]="focusedElement=='noOfUsers'" [class.lableTop]="(wDetails.noOfUsers !== '') && (noOfUsers.touched === true || noOfUsers.valid==true|| noOfUsers.valid === false)"
+                                        [class.inputSuccess]="noOfUsers.valid === true" [class.inputError1]="noOfUsers.valid === false && noOfUsers.touched === true"
+                                        [class.inputError]="focusedElement!=='noOfUsers' && noOfUsers.valid === false && noOfUsers.touched === true"
+                                        for="noOfUsers">Number of User/s &nbsp;
+                                        <span class="mandatory">*</span>
+                                      </label>
+                                      <!-- <div *ngIf="noOfUsersAvail">Enter users more than 0</div> -->
+                                      <div *ngIf="wDetails.noOfUsers === '' && noOfUsers.touched === true" class="help-block caution">Number of users required</div>
+                                      <!-- <div *ngIf="!f.submitted && !noOfUsers.valid && noOfUsers.touched === true" class="help-block caution">number of users required</div> -->
+                                      <div *ngIf="wDetails.noOfUsers !== '' && noOfUsers.errors?.pattern" class="help-block caution">Please enter numerical values (1 to 99)</div>
+                                      </div>
+                                      <div class="group" [ngClass]="{ 'has-error': f.submitted && !noOfSignatures.valid}">
+                                        <input class="form-control" type="text" name="noOfSignatures" (focusout)="focusFunction('')" (focus)="focusFunction('noOfSignatures')"
+                                          [(ngModel)]="wDetails.noOfSignatures" #noOfSignatures="ngModel" (ngModelChange)="onsignatureChange($event)"  pattern="^[1-9]\d*$"
+                                          required />
+                                        <label [class.activeLabel]="focusedElement=='noOfSignatures'" [class.lableTop]="(wDetails.noOfSignatures !== '') && (noOfSignatures.touched === true || noOfSignatures.valid==true|| noOfSignatures.valid === false)"
+                                          [class.inputSuccess]="noOfSignatures.valid === true" [class.inputError1]="noOfSignatures.valid === false && noOfSignatures.touched === true"
+                                          [class.inputError]="focusedElement!=='noOfSignatures' && noOfSignatures.valid === false && noOfSignatures.touched === true"
+                                          for="noOfSignatures">Required Number of Signature/s &nbsp;
+                                          <span class="mandatory">*</span>
+                                        </label>
+                                        <!-- <div *ngIf="noOfUsersAvail && !wDetails.noOfSignatures)||!noOfSignatures.valid && noOfSignatures.touched === true" class="help-block caution">signatures required</div> -->
+                                        <!-- <div *ngIf="!f.submitted && !noOfSignatures.valid && noOfSignatures.touched === true" class="help-block caution">signatures required</div> -->
+                                        <div *ngIf="erroinsignsture" class="help-block caution">Signatures cannot be more than number of user/s</div>
+                                        <div *ngIf="(noOfUsersAvail && !wDetails.noOfSignatures)||!noOfSignatures.valid && noOfSignatures.touched === true && wDetails.noOfSignatures === ''"  class="help-block caution">Signatures required</div>
+                                        <div *ngIf="wDetails.noOfSignatures !== '' && noOfSignatures.errors?.pattern" class="help-block caution">Please enter numerical values (1 to 99)</div>
+                                      </div>
+                                    <!-- </div> -->
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- <div class="row">
+                                <div class="col-md-12">
+                                  <div class="user-name khulaRegular fus-name">
+                                      <div class="group" [ngClass]="{ 'has-error': f.submitted && !coinType.valid}">
+                                        <label [class.activeLabel]="focusedElement=='coinType'" [class.lableTop]="(coinValue.coinType!='') && (coinType.touched==true || coinType.valid==true|| coinType.valid==false)"
+                                          [class.inputSuccess]="coinType.valid==true" [class.inputError1]="coinType.valid==false && coinType.touched==true"
+                                          [class.inputError]="focusedElement!=='coinType' && coinType.valid==false && coinType.touched==true" for="coinType">Coin
+                                          <span class="mandatory">*</span>
+                                        </label>
+                                        <select class="form-control" name="coinType" (focusout)="focusFunction('')" (focus)="focusFunction('coinType')" [(ngModel)]="coinValue.coinType"
+                                          (change)="coinSelected(coinValue.coinType);" #coinType="ngModel" required>
+                                          <option [value]="undefined" [attr.selected]="true" disabled>Select Coin</option>
+                                          <option *ngFor="let item of coinlist;let i= index">{{item}}</option>
+
+                                        </select>
+                                        <div *ngIf="!coinType.valid && coinType.touched==true" class="help-block caution errclass">Coin is required</div>
+
+                                      </div>
+                                  </div>
+                                </div>
+                              </div> -->
+                            </div>
+                        <!-- <div class="inner-form" afasfasf>
+                          <mat-form-field class="example-half-width">
+                            <input matInput placeholder="Wallet Name" required formControlName="walletName" name="walletName"
+                              autocomplete="off">
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width">
+                            <input matInput placeholder="Customer Name" required formControlName="customerName" name="customerName"
+                              autocomplete="off">
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width">
+                            <input matInput placeholder="No. of User" required formControlName="noOfUsers" name="transactionLimit"
+                              autocomplete="off">
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width">
+                            <input matInput placeholder="Required Sign" required formControlName="noOfSignatures" name="noOfSignatures"
+                              autocomplete="off">
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width">
+                            <input matInput placeholder="Coin" required formControlName="coinType" name="coinType" autocomplete="off">
+                          </mat-form-field>
+                        </div> -->
+                        <!-- <div class="linebottom"></div> -->
+                        <button class="btn-orange btn-left"  [class.disabled]="!f.form.valid">NEXT</button>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="basic-info-wrapper" *ngIf="assignroles">
+                    <div class="form-wrapper">
+                      <form name="addForm" #addForm="ngForm" class="notmaterial" (ngSubmit)="addForm.form.valid && createWallet(addForm, wallettemplate)" novalidate>
+                        <div class="user-name khulaRegular">
+                          <div class="fus-name col-md-12 row" *ngFor="let user of userList;let userindex = index">
+                            <div class="group">
+                              <input type="text" name="userId" [value]="user.username" required readonly />
+                              <label class="inputSuccess">Email ID</label>
+                            </div>
+                            <div class="group" dropdown>                    
+                                <label class="group_label" [for]="'userrole'+userId">Role <span class="mandatory">*</span></label>
+                                <select class="form-control" [name]="'userrole'+user.userId" 
+                                [(ngModel)]="user.role" #user.userId="ngModel" required>
+                                <option *ngFor="let item of roleList;let i= index;" [value]="item.value" [selected]="item.value === user.role">{{item.name}}</option>
+                
+                            </select>
+
+
+                            </div>
+                            <span class="deleteimg-outer">
+                              <img class="deleteimg" src="./assets/images/personalwallet/smalldelete.svg" alt="" (click)="deleterow(userindex)">
+                            </span>
+                          </div>
+                          <div class="fus-name col-md-12 row" *ngIf="initialfslde">
+                           
+                              <div class="group">
+                                <mat-form-field class="example-half-width material-half-width">
+                                    <input type="text" class="arrow override" required placeholder="Email ID" aria-label="String" matInput  name="username" [matAutocomplete]="auto" [(ngModel)]="model.username" (ngModelChange)="uiautoserach($event)" #username="ngModel" required><span><em class="fa fa-caret-down arrowclass"></em></span>
+                                    <mat-error *ngIf="'username'">
+                                      Email ID is required
+                                    </mat-error>
+                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="userSelected($event)">
+                                      <mat-option *ngFor="let item of autosearchresult1" [value]="item" >
+                                          {{item}}
+                                      </mat-option>
+                                    </mat-autocomplete>
+                                  </mat-form-field>
+                                </div>
+                                  <!-- [ngClass]="{ 'has-error': !username.valid}" -->
+                              <!-- <input type="text" name="username" [(ngModel)]="model.username" (focus)="focusFunction('username')"
+                                (ngModelChange)="onChangeuser($event)" dropdownToggle #username="ngModel" required autocomplete="off" />
+                              
+                              <ul id="dropdown-basic" name="role" *dropdownMenu class="dropdown-menu form-control  " role="menu" aria-labelledby="button-basic">
+                              <li #id role="menuitem" *ngFor="let item of autosearchresult;let i= index" (click)="userSelected(item)">{{item.username}}</li>
+                            </ul>
+                              <label [class.activeLabel]="focusedElement=='username'" [class.lableTop]="(model.username!=='') && (username.touched==true || username.valid==true|| username.valid==false)"
+                                [class.inputSuccess]="username.valid==true" [class.inputError1]="username.valid==false && username.touched==true"
+                                [class.inputError]="focusedElement!=='username' && username.valid==false && username.touched==true"
+                                for="username">Email ID</label>
+                             
+                              <div *ngIf="!username.valid && username.touched === true" class="help-block caution">user email
+                                required</div> -->
+                              
+                            
+
+                            <div class="group">
+                              <mat-form-field class="example-half-width material-half-width">
+                                <mat-select placeholder="Role" [(ngModel)]="model.role" name="role" #role="ngModel" required>
+                                  <mat-option  *ngFor="let item of roleList;let i= index;" [value]="item.value">{{item.name}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="'role'">
+                                  Role is Required
+                                </mat-error>
+                              </mat-form-field>
+
+                            </div>
+                            <span class="deleteimg-outer">
+                              <img class="deleteimg_row" src="./assets/images/personalwallet/smalldelete.svg" alt="" (click)="deleteextrarow()">
+                            </span>
+
+                          </div>
+                        </div>
+                        <div class="add-more-user" *ngIf="(userList.length < wDetails.noOfUsers) && adduserStatus" (click)="addForm.form.valid && addUser(addForm);">
+                          <img class="imgcls" src="./assets/images/add-circular-button.svg" alt="">
+                          <span class="addUser">Add User</span>
+                        </div>
+                        <div>
+                          <!-- <span class="caution errorclass" *ngIf="moreAdmins"> Admin role of the added user should  be equal to  no of signatures.</span> -->
+                          <span *ngIf="errorUserInfo" class="caution ">Number of users added does not match with count</span>
+                        </div>
+                        <button class="btn-orange testbutton" [class.disabled]="!addForm.form.valid" >SUBMIT</button>
+                      </form>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+    </mat-tab>
+
+    <mat-tab *ngIf= "role1 !== 'superUser'" label="Workflow">
+        <div *ngIf ="!enableWorkflowSec" class="main-sec-workflow">
+        <div class="ap-backArrow workflow-navigation">
+            <a (click) = "goToIndividualWF()">
+              <img src="../../../assets/images/backArrow.svg" alt="">
+            </a>
+            <span>Back to workflow list</span>
+         </div>
+         <app-onboardflow></app-onboardflow>
+    </div>
+
+    <div class="tableSection workflow-div" *ngIf ="enableWorkflowSec">
+          <table mat-table [dataSource]="onloadUserDetailsWFData" class="mat-elevation-z8">
+        <!-- Position Column -->
+        <ng-container matColumnDef="info" >
+          <th mat-header-cell *matHeaderCellDef> Info </th>
+          <td mat-cell *matCellDef="let element" (click) = "goToSelectedWorkFlow(element)"> {{element.info}} </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> status </th>
+            <td mat-cell *matCellDef="let element" (click) = "goToSelectedWorkFlow(element)"> {{element.status}} </td>
+         </ng-container>   
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="createdDate">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element" (click) = "goToSelectedWorkFlow(element)"> {{element.createdDate | date :'yyyy-MM-dd HH:mm:ss'}} </td>
+        </ng-container>
+
+        
+        <!-- <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let element" (click) = "goToSelectedWorkFlow(element)"> {{element.status}} </td>
+        </ng-container> -->
+
+        <!-- <tr mat-header-row *matHeaderRowDef="dispWorkFlowColumns"></tr> -->
+        <tr mat-row *matRowDef="let row; columns: dispWorkFlowColumns;"></tr>
+      </table>
+
+          <pagination *ngIf="tabData.length!==0" [boundaryLinks]="true" [totalItems]="resultsLength" [itemsPerPage]="10" (pageChanged)="pageChanged($event)"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+         </pagination>
+
+         <div class="wellcome-msg" *ngIf="tabData.length === 0">
+          <h4 class="khulaLite" >This place looks deserted.</h4>
+          <p class="khulaSemiBold" >No workflow started yet</p>
+      </div>
+        </div>
+
+    </mat-tab>
+  </mat-tab-group>
+</mat-card>
+<ng-template #wallettemplate class="dashbard ">
+
+  <!-- <ng-template  #template class="dashbard "> -->
+  <div class="successpoup">
+    <div class="modal-header">
+
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefwallet.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body dashbard succesmodal">
+      <div>
+        <div class="form-container">
+          <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+          <img src="/assets/images/personalwallet/success.svg" alt="" class="successimg">
+        </div>
+        <div style="text-align:  center">
+          <label class="User-invited-succesf">Are you sure you want to create wallet?</label>
+        </div>
+        <div>
+          <button type="submit" class="invitemoreBtn" (click)="modalRefwallet.hide();">CANCEL</button>
+          <!-- <button class="successBtn" aria-label="Close" (click)="sendbtc()">PROCEED</button> -->
+          <button class="successBtn" aria-label="Close"(click)="authPublic(auth); modalRefwallet.hide()" >CONFIRM</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+    <ng-template #inviteUsertTemplate class="invite succesmodal">
+      <div class="invitepopup">
+        <div class="modal-header">
+          <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold">Reactivate {{ userProfilefirstName }} {{ userProfileLastName }}</div>
+              <button type="button" class="close font24 pull-right" aria-label="Close" (click)="restorePrevData()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        </div>
+        <div class="modal-body invite">
+          <div class="invite-tabs">
+            <div class="Information-box font14 khulaRegular" [class.activeTab]=true>Basic Information</div>
+        </div>
+        <div class="basic-info-wrapper form-wrapper">
+
+              <form class="example-form" #fuserForm="ngForm" novalidate>
+                <div class="inner-form">
+                  <mat-form-field class="example-half-width2">
+                    <input matInput placeholder="First Name" required id="firstName" name="firstName" #firstName="ngModel"
+                      [(ngModel)]="getProfileInfo.firstName" autocomplete="off" [disabled]="true">
+                    <mat-error *ngIf="'firstName'">
+                      First Name is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width2">
+                      <input matInput placeholder="Last Name" required id="lastName" name="lastName" #lastName="ngModel"
+                        [(ngModel)]="getProfileInfo.lastName" autocomplete="off" [disabled]="true">
+                      <mat-error *ngIf="'lastName'">
+                        Last Name is <strong>required</strong>
+                      </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-half-width2">
+                    <input matInput placeholder="Country" class="arrow" name="country" [(ngModel)]="getProfileInfo.country"
+                      #country="ngModel" [matAutocomplete]="auto" (ngModelChange)="getTheValue(getProfileInfo.country)"
+                      required>
+                    <span></span>
+                    <mat-error *ngIf="'country'">
+                      Country is <strong>required</strong>
+                    </mat-error>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                      <mat-option class="autocomplete" *ngFor="let item of filteredOptions" [value]="item">
+                        {{item}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-third-width">
+                    <input matInput placeholder="Code" name="code" autocomplete="off" [disabled]="true" [(ngModel)]="code">
+                  </mat-form-field>
+
+                  <!-- example-half-width country-code -->
+                  <mat-form-field class="example-phone-width phoneNumberCSS1">
+                    <input matInput class="font14" placeholder="Phone Number" (keypress)="numberOnly($event)" required name="phoneNumber" max="{{countryPhonelen}}"
+                       maxLength="{{countryPhonelen}}" autocomplete="off"  [(ngModel)]="getProfileInfo.phoneNumber"
+                      #phoneNumber="ngModel" 
+                      (ngModelChange)="onChange(getProfileInfo.phoneNumber)">
+
+                      <mat-error *ngIf="getProfileInfo.phoneNumber === ''">
+                      PhoneNumber is <strong>required</strong>
+                    </mat-error>
+                    <div *ngIf="invalidphone && getProfileInfo.phoneNumber !== ''" class="help-block1 caution">Please
+                      enter {{countryPhonelen}} digit number</div>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-full-width">
+                    <input matInput [disabled]="true"  #emailId="ngModel" autocomplete="off" placeholder="Email ID" name="emailId" [(ngModel)]="getProfileInfo.emailId">
+                    <!-- <mat-error *ngIf="'emailId'">
+                      Please enter email ID in <strong>email format</strong>
+                    </mat-error> -->
+                  </mat-form-field>
+                <!-- <mat-form-field class="example-half-width">
+                  <mat-select placeholder="Wallet Management" [(ngModel)]="userDetailRole.userRoles" name="role" #role="ngModel" (change)="roleSelected($event.target.value)">
+                     
+                        <mat-option  value="USER_SIGNER" >Signer</mat-option>
+                        <mat-option  value="USER_VIEWER" >Viewer</mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="'role'">
+                           User role is <strong>required</strong>
+                        </mat-error>
+                </mat-form-field> -->
+                  <div class="role-checkbox">
+                      <mat-checkbox class="chkbxstly" [checked]="superAdmin" [(ngModel)]="getProfileInfo.superAdmin"  name="superAdmin"  #superAdmin="ngModel" autocomplete="off">
+                        Super User
+                      </mat-checkbox>
+                  </div>
+
+                </div>
+                  <button class="btn btn-orange" type="submit" [disabled]="!fuserForm.valid || invalidphone" (click)="reActivatePop(successtemplate)">SUBMIT</button>
+
+                <!-- [disabled]="!basicForm.valid || invalidphone" -->
+                </form>
+
+        </div>
+
+        </div>
+        </div>
+
+      </ng-template>
+      <ng-template #auth class="invite succesmodal">
+          <div class="invitepopup">
+            <div class="modal-header">
+              <div class="modal-header-wrapper">
+                <div class="modal-header-box font24 khulaSemiBold">Verification</div>
+                <button type="button" class="close font24 pull-right" aria-label="Close" (click)="CloseAuth()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+            <div class="modal-body invite">
+              <div class="basic-info-wrapper">
+                <div class="form-wrapper">
+                  <form class="example-form" (ngSubmit)="f.form.valid && authSuccess()" #f="ngForm" novalidate>
+                    <div class="inner-form">
+                      <div class="modal-header-box font18 khulaSemiBold auth-headding">Google Authenticator</div>
+                      <mat-form-field class="example-half-width1">
+                        <input matInput placeholder="Enter your Code" (keypress)="numberOnly($event)" required [(ngModel)]="authmodel.googleCode"
+                          name="authcode" autocomplete="off" maxlength="6" (ngModelChange)="vcValidation($event)">
+                      </mat-form-field>
+                    </div>
+                    <div class="linebottom"></div>
+                    <button type="submit" class="btn btn-orange_auth" [disabled]="!verificationCodeValid">Verify</button>
+                  </form>
+                </div>
+              </div>
+              <div class="basic-info-wrapper" *ngIf="Yubikey">
+                <div class="form-wrapper">
+                  <form class="example-form" #f="ngForm" novalidate>
+                    <div class="inner-form">
+                      <div class="modal-header-box font18 khulaSemiBold auth-headding">Yubikey</div>
+                      <div>
+                        <button mat-raised-button class="yubi-btn-outer"><img src="/assets/images/lockedyubi.svg" alt=""></button>
+                        <span class="yubi-btn-text khulaRegular">Waiting for yubikey</span>
+                      </div>
+                    </div>
+                  </form>
+                  <div class="linebottom"></div>
+                  <button class="btn-orange">Verify</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>

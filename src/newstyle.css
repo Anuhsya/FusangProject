@@ -1,0 +1,429 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: khula-lite;
+    src: url(./assets/fonts/khula/Khula-Light.ttf);
+    }
+@font-face {
+    font-family: khula-Regular;
+    src: url(./assets/fonts/khula/Khula-Regular.ttf);
+    }
+    @font-face {
+        font-family: Khula-SemiBold;
+        src: url(./assets/fonts/khula/Khula-SemiBold.ttf);
+    }
+        .khulaLite{
+            font-family: khula-lite ,Arial, Helvetica, sans-serif;
+        }
+        .khulaRegular{
+            font-family: khula-Regular, Arial, Helvetica, sans-serif;
+        }
+        .khulaSemiBold{
+            font-family: Khula-SemiBold, Arial, Helvetica, sans-serif;
+        }
+
+        .bgColor01{
+            background-color: rgba(0, 65, 106, 0.27);
+        }
+        .bgColor02{
+            background-color: #fff;
+        }
+        .bgColor03{
+            background-color: #ccc;
+        }
+        .bgColor04{
+            background-color: #4a90e2;
+        }
+        .bgColor05{
+            background-color: #fff;
+        }
+        .bgColor06{
+            background-color: #de792f;
+        }
+        .bgColor07{
+            background: #0085ca;
+        }
+        .bgColor08{
+            background-color: #457199
+        }
+        .bgColor09{
+            background-color: #00b0ff;
+         }
+         .bgColor10{
+            background-color: #1ccbf3;
+         }
+
+        .bgColor11{
+            background-color: #F0CA00;
+        }
+        .bgColor12{
+            background-color: #f2f2f2
+        }
+        .bgColor13{
+            background-color: #e2e2e2
+        }
+        .bgColor13{
+            background-color: #f8f8f8;
+        }
+        .btn-orange{
+            color: #fff;
+            background-color: #de792f;
+            border-color: #de792f;
+            padding: 4px 37px;
+        }
+        .btn-white{
+            color: #de792f;
+            padding: 3px 33px;
+            /* width: 100px;
+            height: 25px; */
+            border-radius: 3px;
+            border: solid 0.5px #cccccc;
+        }
+html, body{
+    height: 100%;
+    margin: 0;
+    padding:0;
+}
+body{
+    width: 100%;
+}
+.logo-container-box {
+    margin-top: 48px;
+}
+img.logo {
+    /* width: 174px;
+    height: 43.5px; */
+}
+.bg-image{
+    background:url('./assets/images/brina.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: rgba(0, 65, 106, 0.27);
+    height: 100%;
+    width:100%;
+    min-height: 100vh;
+}
+.bg-image:after {
+
+}
+.overlay{
+}
+.overlay:after{
+    position: absolute;
+    background: rgba(74, 74, 74, 0.2);
+    background-color: rgba(0, 65, 106, 0.27);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    content: '';
+    right: 0;
+    min-height: 500px;
+}
+.get_form_inner{
+    background: #ffffff;
+    padding: 40px 50px;
+    /* margin-top: -26.5px; */
+    width: 100%;
+    border-radius: 3px;
+    position: absolute;
+    top: 65%; left: 50%;
+    transform: translate(-50%,-50%);
+}
+.fus-name {
+    display: inline-block;
+    width: 100%;
+}
+.fus-name .group:nth-child(2) {
+    margin-left: 10%;
+}
+.fus-name .group {
+    float: left;
+    margin-left: 0px;
+    z-index: 1;
+    width:45%;
+}
+input[type="checkbox"].terms-check{
+    height: 20px;
+    width: 20px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #cccccc;
+    position: relative;
+    top: 5px;
+}
+.terms-contant
+{
+    margin-left: 21px;
+}
+span.signup-lable-headding {
+    font-size: 48px;
+    font-weight: 300;
+    color: #ffffff;
+    margin-bottom: 20px;
+    display: block;
+}
+p.signup-lable-content {
+    font-size: 20px;
+    color: #ffffff;
+}
+p.signup-lable-content>span {
+    display: block;
+}
+.signup-lable {
+    margin-top: 192px;
+    font-family: khula-lite, Arial, Helvetica, sans-serif;
+}
+/* ----------------------creating custom check box start */
+.checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+/* Hide the browser's default checkbox */
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    border-radius: 4px;
+    background-color: #ffffff;
+    border: solid 1px #cccccc;
+}
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+    background-color: #4a90e2;
+}
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+    left: 7px;
+    top: 4px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+/* ----------------------creating custom check box end */
+.group{
+    position:relative;
+    margin-bottom:25px;
+  }
+  .group input              {
+    font-size:14px;
+    padding:7px 7px 5px 2px;
+    display:block;
+    width:100%;
+    border:none;
+    color: #4a4a4a;
+    border-bottom:2px solid #cccccc;
+    outline:none;
+    font-family: khula-Regular , Arial, Helvetica, sans-serif;
+    border-radius: 0px;
+  }
+  .group input:focus        { outline:none; }
+
+  /* LABEL ======================================= */
+  .group label               {
+    color:#fff;
+    font-size:12px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    left:2px;
+    top:-20px;
+    font-family: khula-lite, Arial, Helvetica, sans-serif
+    /* transition:0.2s ease all;
+    -moz-transition:0.2s ease all;
+    -webkit-transition:0.2s ease all; */
+  }
+
+  /* active state */
+  /* .group input:focus ~ label, input:valid ~ label        {
+    top:-15px;
+    font-size:14px;
+    color:#5264AE;
+  } */
+  .form-group.text-right a{
+      color: #4a90e2;
+  }
+  /* BOTTOM BARS ================================= */
+  .group .bar   { position:relative; display:block; }
+  .group .bar:before, .bar:after    {
+    content:'';
+    height:2px;
+    width:0;
+    bottom:1px;
+    position:absolute;
+    background:#cccccc;
+    transition:0.2s ease all;
+    -moz-transition:0.2s ease all;
+    -webkit-transition:0.2s ease all;
+  }
+  .group .bar:before {
+    left:50%;
+  }
+  .group .bar:after {
+    right:50%;
+  }
+
+  /* active state */
+  .group input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width:50%;
+  }
+
+  /* HIGHLIGHTER ================================== */
+  .group .highlight {
+    position:absolute;
+    height:60%;
+    width:100px;
+    top:25%;
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+  }
+
+  /* .sub-btn-info {
+    color: #fff;
+    background-color: #de792f;
+    border-color: #de792f;
+    padding: 4px 37px;
+    } */
+/* dashboard starts */
+    .userList a.ng2-smart-sort-link.sort {
+        font-size: 12px;
+        color: #9b9b9b;
+        font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+    }
+    /* .userList table-cell-view-mode {
+        font-family: khula-Regular;
+        font-size: 14px;
+        color: #999999;
+    } */
+    .userList tbody tr {
+        background: #fff;
+        border: 10px solid #f2f2f2;
+        border-top: none;
+    }
+    .userList tr.ng2-smart-titles {
+        border: 10px solid #f2f2f2;
+        border-bottom: none;
+    }
+    .dashbard.modal-title {
+        text-align: center;
+        width: 100%;
+        padding: 55px 0 20px 0;
+        font-size: 24px;
+        font-family: khula-lite, Arial, Helvetica, sans-serif;
+        color: #4a4a4a;
+    }
+    .row{
+        margin: 0;
+        padding: 0;
+    }
+     .modal-header {
+        border: none;
+    }
+    .dashbard.modal-body {
+        padding: 0 68px 45px;
+    }
+     table tr td, table tr th {
+        font-size: .875em;
+        margin: 0;
+        padding: .7em 1em !important;
+    }
+    ul#dropdown-basic li {
+        font-size: 14px;
+        font-family: khula-Regular , Arial, Helvetica, sans-serif;
+    }
+/* dashboard ends */
+
+  /* active state */
+  /* .group input:focus ~ .highlight {
+    -webkit-animation:inputHighlighter 0.3s ease;
+    -moz-animation:inputHighlighter 0.3s ease;
+    animation:inputHighlighter 0.3s ease;
+  } */
+
+  /* ANIMATIONS ================ */
+  /* @-webkit-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to  { width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to  { width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to  { width:0; background:transparent; }
+  } */
+tbody:before {
+    content: '-';
+    display: block;
+    color: transparent;
+    margin-top: -24px;
+}
+thead {
+    border-bottom: 1px solid #e0e0e0;
+}
+.form-control:focus {
+    box-shadow: none;
+}
+.modal {
+
+    z-index: 9999;
+
+}
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+@media screen and(max-width: 1025px){
+    .get_form_inner{
+        top:53%;
+    }
+.modal-dialog {
+
+    margin-top: 10%;
+}
+}
+.succesmodal
+{display: flex;
+height: 323px;
+align-items: center;
+justify-content: center;
+margin-top: 35px;
+}

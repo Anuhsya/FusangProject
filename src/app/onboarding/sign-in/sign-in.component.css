@@ -1,0 +1,66 @@
+
+/* .signRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+} */
+.get_form_inner {
+  background: #ffffff;
+  padding: 18px 55px 40px;
+  width: 498px;
+  border-radius: 3px;
+  border-top: 4px solid #3954e5;
+}
+.get_form_inner .group {
+  margin-bottom: 27px;
+}
+/* img.logo {
+  left: 14% !important;
+  position: relative;
+  margin-top:48px;
+} */
+input:-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px white inset; /* Change the color to your own background color */
+    -webkit-text-fill-color: #999;
+}
+input:-webkit-autofill:focus {
+    -webkit-box-shadow:0 0 0 50px white inset;
+    -webkit-text-fill-color: #999;
+}
+/* .signRight{
+    margin-right: 30px;
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
+.col-md-6.side-box-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.khulaRegular{
+    position: relative;
+    top: 43px;
+}
+.logbtn{
+    position: relative;
+    top: 30px;
+}
+.forget{
+    background: white;
+    margin-left: 30px;
+    padding: 0px;
+    border: none;
+    cursor: pointer;
+}
+/* .help-block{
+  color: red;
+  font-size: 10px;
+  top: 12px;
+  left: 4px;
+  position: relative;
+} */
+

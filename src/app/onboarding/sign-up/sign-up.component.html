@@ -1,0 +1,174 @@
+<div class="bg-image">
+	<div class="row">
+		<div class="col-md-6 leftcol">
+				<app-onboarding-text [title]="title"></app-onboarding-text>
+			<!-- </div> -->
+		</div>
+		<div class="col-md-6 signRight">
+			<!-- <div class=""> -->
+				<div class="get_form_innerSignUp">
+					<form name="form" (ngSubmit)="f.form.valid && register(signupsuccess)" #f="ngForm" novalidate  class="notmaterial">
+
+						<div class="fus-name">
+							<div class="group">
+								<input type="text" class="firstNameCss" [(ngModel)]="model.firstName" #firstName="ngModel" name="firstName" disabled/>
+								<label class="lableTop">First Name</label>
+							</div>
+							<div class="group">
+								<input class="form-control" type="text" (focusout)="focusFunction('')"  (focus)="focusFunction('lastName')" [(ngModel)]="model.lastName"
+								 #lastName="ngModel" name="lastName"  disabled/>
+								<label [class.activeLabel]="focusedElement=='lastName'" [class.lableTop]="(model.lastName!=='') && (lastName.touched==true || lastName.valid==true|| lastName.valid==false)"
+								 [class.inputError1]="lastName.valid==false && lastName.touched==true" [class.inputError]="focusedElement!=='lastName' && lastName.valid==false && lastName.touched==true">Last Name</label>
+
+							</div>
+						</div>
+						<div class="group">
+							<input type="email" class="form-control" [(ngModel)]="model.username" #username="ngModel" name="username" disabled />
+							<label class="lableTop">Email Address</label>
+						</div>
+						<div id="countrySignUp" class="group" [ngClass]="{ 'has-error': f.submitted}">
+							<ng-select [(ngModel)]="selectedcountrylist" placeholder="Country" (change)="countrySelected($event)" (clear)="countrySelected($event)" [closeOnSelect]="true"
+							 [clearable]="false" [hideSelected]="false" name="serchValue" #selectedcountry="ngModel" disabled  >
+							 <ng-option *ngFor="let item of countrylist" [value]="item">{{item.name}}</ng-option>
+							</ng-select>
+							<div *ngIf="!selectedcountry.valid && selectedcountrylist!='' && selectedcountry.touched" class="help-block caution">country is required</div>
+						</div>
+
+						<div class="country-section">
+							<div class="group">
+								<label class="" [class.codeLabel]="model.country!==''">Code</label>
+								<input type="text" class="codebtn transpatent" [value]="countrycode" name="countrycode" style="border-bottom: 1px solid lightgray;margin-right: 6px;"
+								 disabled />
+							</div>
+							<div class="group input-group" [ngClass]="{ 'has-error': f.submitted && !phoneNumber.valid}">
+								<input (focusout)="focusFunction('')"  [class.errBorder]="(invalidphone==true)" (focus)="focusFunction('phoneNumber')" type="number"
+								 class="codeinput form-control" [(ngModel)]="model.phoneNumber" #phoneNumber="ngModel" name="phoneNumber" (ngModelChange)="onChange(model.phoneNumber)"
+								 maxLength="{{countryPhonelen}}" required oninput="this.value=this.value.slice(0,this.maxLength)" disabled>
+								<label [class.activeLabel]="(focusedElement=='phoneNumber')" [class.lableTop]="(model.phoneNumber!=='') && (phoneNumber.touched==true || phoneNumber.valid==true || phoneNumber.valid==false)"
+								 [class.inputError1]="(phoneNumber.valid==false && phoneNumber.touched==true) || (invalidphone==true)" [class.inputError]="focusedElement!=='phoneNumber' && phoneNumber.valid==false && phoneNumber.touched==true">Phone Number &nbsp;
+									<!-- <span class="mandatory">*</span> -->
+								</label>
+								<div *ngIf="phoneNumber.touched==true  && model.phoneNumber==''" class="help-block caution">Phone number is required</div>
+								<div *ngIf="invalidphone && model.phoneNumber!=''" class="help-block caution">Please enter {{countryPhonelen}} digit number</div>
+							</div>
+						</div>
+
+						<div class="group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
+							<input class="form-control" type="password" (focusout)="focusFunction('')" (focus)="focusFunction('password')" [(ngModel)]="model.password"
+							 #password="ngModel" name="password" pattern=".{20,}"
+							 required>
+							 <!-- pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-zd$@$!%*?&].{11,}" -->
+							<label [class.activeLabel]="focusedElement=='password'" [class.lableTop]="(model.password!=='') && (password.touched==true || password.valid==true|| password.valid==false)"
+							 [class.inputSuccess]="password.valid==true" [class.inputError1]="password.valid==false && password.touched==true"
+							 [class.inputError]="focusedElement!=='password' && password.valid==false && password.touched==true">Password &nbsp;
+								<span class="mandatory">*</span>
+							</label>
+							<div *ngIf="f.submitted && model.password == ''" class="help-block caution">Password is required</div>
+							<div *ngIf="!f.submitted && model.password == '' && password.touched==true" class="help-block cautiyon margin-block">Password is required</div>
+							<!-- <div class="caution margin-block" *ngIf="password.errors?.pattern">
+								Password should contain 12 characters with 1 uppercase, 1 special and 1 number.
+							</div> -->
+							<div class="caution margin-block" *ngIf="password.errors?.pattern">
+									Password should contain minimum 20 characters .
+								</div>
+						</div>
+
+						<div class="group" [ngClass]="{ 'has-error': f.submitted && !repassword.valid }">
+							<input class="form-control" type="password" (focusout)="focusFunction('')" (focus)="focusFunction('repassword')" name="repassword"
+							 required [(ngModel)]="model.repassword" #repassword="ngModel" pattern=".{20,}"
+							 (ngModelChange)='onOptionsSelected($event)' />
+							<label [class.activeLabel]="focusedElement=='repassword'" [class.lableTop]="(model.repassword!=='') && (repassword.touched==true || repassword.valid==true|| repassword.valid==false)"
+							 [class.inputSuccess]="repassword.valid==true" [class.inputError1]="repassword.valid==false && repassword.touched==true"
+							 [class.inputError]="focusedElement!=='repassword' && repassword.valid==false && repassword.touched==true">Confirm Password &nbsp;
+								<span class="mandatory">*</span>
+							</label>
+							<div *ngIf="!f.submitted && model.repassword =='' && repassword.touched==true " class="help-block caution margin-block">Confirm password is required</div>
+							<!-- <div  *ngIf="model.repassword =='' && !repassword.valid && password.touched==true" class="help-block caution">Confirm password is required</div> -->
+							<div class="caution margin-block" *ngIf="showPasswordCaution && model.repassword !==''">
+								Confirm password does not match
+							</div>
+							<!-- <div class="caution" *ngIf="repassword.errors?.pattern">
+										Password should contain 8 characters with 1 uppercase, 1 special and 1 number.
+								</div> -->
+
+						</div>
+						<div class="form-group btnclss">
+							<label class="checkbox-container khulaRegular">By signing up, I agree with <span class="terms"> terms and conditions</span>
+								<input type="checkbox" name="isAgreed" [(ngModel)]="isAgreed" (ngModelChange)="openModalWithClass(template,$event)"
+								 [checked]="isAgreed">
+								<span class="checkmark"></span>
+							</label>
+						</div>
+						<div class="form-group">
+							<div style="margin-top: 33px">
+								<button class="btn sub-btn-info" [disabled]="!isAgreed||!model.firstName">Signup</button>
+								<!-- [disabled]="!isAgreed||!model.firstName"" -->
+							</div>
+							<!-- <button type="button" class="btn btn-primary" (click)="openModal(template)">Create template modal</button> -->
+						</div>
+					</form>
+					<ng-template #template id="modal-con">
+						<div class="modal-header">
+							<h5 class="modal-title pull-left">Terms and Conditions</h5>
+							<button type="button" class="close pull-right" aria-label="Close" (click)="uncheck(false);modalRef.hide()">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<app-terms-condition></app-terms-condition>
+						</div>
+
+						<div class="row">
+
+							<div class="dwonload-imgs col-md-5" style="	margin-top: -8%;">
+								<a href="assets\pdf\terms.pdf" download="terms and conditions.pdf" class="dpdf">
+									<span class="images">
+										<img src="assets\images\dwonload-img.svg" alt="" class="imgclass">
+									</span>
+									<span class="text-name">Download</span>
+								</a>
+							</div>
+							<div class="col-md-7 butndiv">
+								<button type="button" class="declinebtn" (click)="uncheck(false);modalRef.hide()">Decline</button>
+								<button type="button" class="btn sub-btn-info cmn-btn" (click)="uncheck(true);modalRef.hide()">Accept</button>
+							</div>
+						</div>
+
+					</ng-template>
+				<!-- </div> -->
+			</div>
+		</div>
+	</div>
+</div>
+<ng-template #signupsuccess class="invite succesmodal">
+    <div class=" successpopup">
+      <div class="modal-header cus-modal-header no-line">
+        <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold"></div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="signupsuccessRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      </div>
+      <div class="modal-body center-box">
+		<img *ngIf="!signupError" src="assets/images/inviteuser/success.svg" alt="">
+		<img *ngIf="signupError" src="assets/images/signupError.svg" alt="">
+        <div class="sus-contant-box" *ngIf="isFusanguser">
+		  <p class="font24 khulaSemiBold success-message">{{msg}}</p>
+		  <!-- Your Registration <span class="c-orange">Completed Successfully !</span> -->
+          <!-- <p  class=" khulaRegular c-s-text">Please wait for your account verification from Fusang Team</p> -->
+          <div>
+             <button class="btn-orange khulaSemiBold" (click)="signupsuccessRef.hide()">OK</button>
+          </div>
+		</div>
+		<div class="sus-contant-box" *ngIf="!isFusanguser">
+			<p class="font24 khulaSemiBold success-message">{{msg}}</p>
+			<!-- Your Registration <span class="c-orange">Completed Successfully !</span> -->
+			<p  class=" khulaRegular c-s-text">Please wait for your account verification from Fusang Team</p>
+			<div>
+			   <button class="btn-orange khulaSemiBold" (click)="signupsuccessRef.hide()">OK</button>
+			</div>
+		  </div>
+      </div>
+    </div>
+</ng-template>

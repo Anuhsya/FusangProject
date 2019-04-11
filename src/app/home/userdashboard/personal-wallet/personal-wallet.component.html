@@ -1,0 +1,1962 @@
+<div class="pswallet-wrapper">
+  <div *ngIf="navigatedFrom ===  'createWallet'" class="back-img-wrapper">
+    <a [routerLink]="['/fusang/walletcreate']">
+      <img src="./assets/images/go-back-left-arrow.svg" alt="">
+    </a>
+  </div>
+
+  <div *ngIf="navigatedFrom ===  'userProfileDetails'" class="back-img-wrapper">
+    <a [routerLink]="['/fusang/User/userDetailsProfile']">
+      <img src="./assets/images/go-back-left-arrow.svg" alt="">
+    </a>
+  </div>
+
+  <div class="row col-md-12 divstyle">
+    <div class="col-md-6">
+      <label class="font24 khulaLite waltname">{{walletDetails.walletName}}</label>
+      <span class="example-header-bg" *ngIf="walletDetails.walletType === 'HighFrequency'">
+        <img src="./assets/images/userpolicy/highfrequency.png" alt="" class="statusimg"><label class="walletnamedisplay">High
+          Frequency</label></span>
+      <span class="securestorage-bg" *ngIf="walletDetails.walletType === 'SecureStorage'"><img src="./assets/images/userpolicy/securestorage.png" alt=""
+          class="statusimg"><label class="walletnamedisplay">Secure Storage</label></span>
+      <span class="deepstorage-bg" *ngIf="walletDetails.walletType === 'DeepStorage'"><img src="./assets/images/userpolicy/deep-storage.png" alt=""
+          class="statusimg"><label class="walletnamedisplay">Deep Storage</label></span>
+
+    </div>
+    <div class="col-md-6 btn-wrapper-outer">
+        <!-- <button  class="cancel khulaSemiBold" (click)="Freezewallet(Policyviolation)">FREEZE</button> -->
+      <button  class="btn freez_style" *ngIf="currWalletStatus ===  'Completed' && (tempdata.role !== 'Viewer' || (tempdata.role === 'Viewer' && role === 'superUser'))" (click)="confirmFreeze(walletfreeztemplate)">FREEZE</button>
+      <button  class="btn freez_style" *ngIf="currWalletStatus ===  'Freezed' && frezeeuser === 'complianceChecker'" (click)="confirmFreeze(walletfreeztemplate)">UNFREEZE</button>
+      <button *ngIf="currWalletStatus ===  'Completed' && navigatedFrom ===  'createWallet' && PartofWallet && !InactiveLoginUser" class=" btn sub-btn-info"
+        (click)="openBTC(bittransfer,whitelistpop)">
+        <img class="sendbtc" src="assets/images/personalwallet/sendbtc.png" alt=""> &nbsp;SEND FUND</button>
+    </div>
+
+  </div>
+  <div class="row divstyle">
+    <div class="col-md-4 wallet-balance-wrapper">
+      <div class="">
+        <label class="Wallet_Balance">
+          Wallet balance
+        </label>
+        <span class="khulaSemiBold font12 btctousd">1 BTC ~ {{oneUsdvalue}} USD</span>
+        <br>
+      </div>
+      <div class=" col-md-12 row">
+        <div class="col-md-6 wallet-balance-inner">
+          <label class="Text_Balance">Total Balance</label><br>
+          <label class="BTC">{{walletDetails.balanceBtc }} BTC</label>
+          <br>
+          <span class="wallet_doller">$ {{walletDetails.balanceUsd}}
+          </span>
+
+          <!-- <img class=" col-md-6 wallet_bitcoin" src="assets/images/personalwallet/bitcoin.png"> -->
+        </div>
+        <div class=" col-md-6 wallet-balance-inner">
+          <label class="Text_Balance">Available Balance</label><br>
+          <label class="BTC">{{walletDetails.avilableBtc}} BTC</label>
+          <br>
+          <span class="wallet_doller">$ {{walletDetails.avilableUsd}}
+            <!--  -->
+          </span>
+
+
+        </div>
+
+      </div>
+      <img class="wallet_bitcoin" src="assets/images/personalwallet/bitcoin.png" alt="" >
+    </div>
+    <div class="col-md-4">
+      <div class="wallet_excahngediv">
+        <div class="label-wrapper">
+          <label class="wallet_BTC-Exchange-Rate">BTC Exchange Rate
+            <br />
+            <span class="usdValue">{{oneUsdvalue}} USD</span>
+          </label>
+          <label class="wallet_value">{{avaragePrice | number : '1.4-2'}}
+            <span [class.walletValueAd]="avaragePrice > 0" [class.walletValueAu]="avaragePrice < 0"></span>
+          </label>
+        </div>
+        <div [chart]="chart" class="chart-box"></div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="wallet_profile">
+        <div class="dis-qr">
+          <qrcode [qrdata]="angularxQrCode" [size]="85" [level]="'H'"></qrcode>
+        </div>
+        <div class="dis-cont">
+          <label class="wallet_Account-ID-Copy">Wallet Address</label>
+          <br>
+          <label class="wallet_userid word_wrap">{{walletDetails.address}}</label>
+          <br>
+          <!-- <button class="wallet_sharebuttom" (click)=ShareQrCode(walletAddress)>SHARE</button> -->
+          <button class="wallet_sharebuttom" ngxClipboard [cbContent]="walletDetails.address" (click)="copy()">COPY</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="row col-md-12 divstyle sub-tab-btn">
+    <button class="tabbuttons" [class.tabActive]="transdiv" (click)="showtransaction()">Transactions</button>
+    <button class="tabbuttons" [class.tabActive]="userdiv" (click)="showusers()">Wallet Users</button>
+    <button class="tabbuttons" [class.tabActive]="settingdiv" (click)="showsettings()">Settings</button>
+    <button class="tabbuttons" [class.tabActive]="auditdiv" (click)="showaudittrail()">Audit Trail</button>
+    <button *ngIf="hideTasksTab ===  false" class="tabbuttons" [class.tabActive]="taskdiv" (click)="showtasklist()">Tasks
+      <img *ngIf="showindication" class="task_indicationb" src="assets/images/personalwallet/indicator.svg" alt=""></button>
+    <button class="tabbuttons" [class.tabActive]="policydiv" (click)="showpolicylist()">Policy</button>
+    <span *ngIf="currWalletStatus ===  'Completed'"><img class="rfresh" src="./assets/images/Refresh.svg" alt="" title="Refresh" (click)="refresh()"></span>
+
+  </div>
+
+</div>
+<!-- <div class="bodystyle"></div> -->
+
+<div class=" bodystyle" *ngIf="transdiv" [class.bodystyle1]="transdiv">
+  <div class="userList">
+    <div *ngIf="transactionlist.length === 0" class="wellcome-msg">
+      <h4 class="khulaLite" *ngIf="transactionlist.length === 0">Welcome, to your new wallet.</h4>
+      <p class="khulaSemiBold" *ngIf="transactionlist.length === 0">No transaction performed yet</p>
+    </div>
+    <div *ngIf="transactionlist.length !== 0">
+      <!-- <ng2-smart-table [settings]="transactionsettings" [source]="transactionlist"></ng2-smart-table> -->
+      <div class="tableSection">
+        <table mat-table [dataSource]="data1" matSort class="mat-elevation-z8">
+          <ng-container *ngFor="let column of columns;" matColumnDef="{{column.value}}">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.name}} </th>
+            <td mat-cell *matCellDef="let element;let i=index" (click)="showTransactionDetails(element,transactionDetails)" (mouseleave)="showleave()">
+              <span *ngIf="column.value!== 'transactionStatus' && column.value!== 'createdDate' && column.value != 'morePic' && column.value !== 'statusPic'">{{element[column.value]}}</span>
+              <!-- <span *ngIf="column.value === 'roles'">
+                  <span *ngFor="let role of element[column.valueina;">{{role}}</span>
+                  </span> -->
+              <span *ngIf="column.value === 'createdDate'">{{element[column.value] | date :'yyyy-MM-dd HH:mm:ss'}}</span>
+              <!-- <span *ngIf="column.value === 'statusPic'" style="width:15px"><img src="{{element[column.value]}}"></span>
+              <span *ngIf="column.value === 'morePic' && element.transactionStatus === 'Unconfirmed'" class="manualTrigger role-wrapper">
+                   <span (mouseenter)="showTool(i)"><img src="{{element[column.value]}}"></span>
+                   <span class="tool" *ngIf="i == current" (click)="manualTriger($event,element)">Manual Trigger</span>
+              </span> -->
+              <span class="tableStatus {{element[column.value].toLowerCase()}}1" *ngIf="column.value === 'transactionStatus'">{{element[column.value]}}</span>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <!-- <pagination [totalItems]="resultsLength" (pageChanged)="pageChanged($event)"></pagination> -->
+        <pagination *ngIf="transactionlist.length!==0" [boundaryLinks]="true" [totalItems]="resultsLength"
+          [itemsPerPage]="10" (pageChanged)="pageChanged($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+          lastText="&raquo;">
+        </pagination>
+        <!-- <mat-paginator [length]="resultsLength"
+        [pageSize]="10"
+        [pageSizeOptions]="[5,10, 20]" (page)="onPaginateChange($event)" showFirstLastButtons>
+    </mat-paginator> -->
+        <!-- <mat-paginator [pageSizeOptions]="[10, 20]" showFirstLastButtons></mat-paginator> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="userList" *ngIf="userdiv">
+  <ng2-smart-table [settings]="usersettings" [source]="userDetails"></ng2-smart-table>
+
+
+</div>
+
+<div class="userList" *ngIf="settingdiv">
+
+  <div class="textcls">
+    <form name="form" (ngSubmit)="f.form.valid &&  updateWallet(addUserForm,wallettemplate)" class="notmaterial" #f="ngForm"
+      novalidate>
+      <div class="row">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          <span class="user_edit">
+            <button *ngIf="!walletuserupdate && (role == 'superUser' || role == 'Account') && currWalletStatus ===  'Completed'" class="btn-orange khulaSemiBold"
+              (click)="editwalletdetails()">EDIT</button>
+          </span>
+          <span class="user_update" *ngIf="walletuserupdate">
+            <button class="cancel khulaSemiBold" (click)="cancelwalletuserupdate()">CANCEL</button>
+            <!-- <button class="btn-orange khulaSemiBold" (click)="updateWalletPolicyDetails()" >UPDATE</button> -->
+            <!-- <input type="submit" class="cancel khulaSemiBold" value="CANCEL"> -->
+            <input type="submit" class="btn-orange khulaSemiBold" [disabled]='!f.form.valid || erroinsignsture === true' value="UPDATE">
+            <!-- [disabled]="!globalpolicy.form.valid || !isWalletValid" -->
+          </span>
+        </div>
+
+      </div>
+      <div class="wallet-info-wrapper wallet-info-wrapper1">
+        <div class="khulaRegular">
+          Wallet Information
+        </div>
+        <div>
+            <mat-form-field class="example-half-width">
+                <input matInput placeholder="Wallet Name" autocomplete="off" name="walletName" [(ngModel)]="walletDetails.walletName"
+                [disabled]="iseditable" #walletName = "ngModel" required>
+                <mat-error *ngIf="'walletName'">
+                    Wallet Name is <strong>required</strong>
+                 </mat-error>
+              </mat-form-field>
+              <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Number of User/s" autocomplete="off" name="numberOfUsers" [(ngModel)]="walletDetails.noOfUsers"
+                  (ngModelChange)="onuserChange($event)" #numberOfUsers = "ngModel" [disabled]="iseditable" maxlength="2"  pattern="^[1-9]\d*$"  required>
+                  <mat-error *ngIf="'numberOfUsers'">
+                     Number of users required
+                  </mat-error>
+              </mat-form-field>
+              <mat-form-field class="example-half-width">
+                  <input matInput placeholder="Required number of Signature/s" autocomplete="off" name="requiredsign" [(ngModel)]="walletDetails.noOfSignatures"
+                   (ngModelChange)="onsignatureChange($event)" #numberOfSign = "ngModel" [disabled]="iseditable"  maxlength="2"  pattern="^[1-9]\d*$" required>
+                  
+                  <mat-error *ngIf="'numberOfSign'">
+                      Signatures Required
+                  </mat-error>
+              </mat-form-field>
+              <span *ngIf="erroinsignsture && walletDetails.noOfSignatures !== ''" class="caution_poliy_sign">
+                Signatures cannot be more than number of user/s</span>
+                <!-- <span *ngIf="erroinsignsture && walletDetails.noOfSignatures !== ''" class="caution_poliy_updt">Please enter
+                  Signatures cannot be more than number of user/s</span> -->
+              <mat-form-field class="example-half-width">
+                    <!-- <mat-select placeholder="Coin" [(ngModel)]="walletDetails.coinType" name="Coin" #Coin="ngModel" [disabled]="true" required>
+                      <mat-option  value="BTC" >BTC</mat-option>
+                    </mat-select> -->
+                    <input matInput placeholder="Coin" name="Coin" [(ngModel)]="walletDetails.coinType"
+                [disabled]="true" #Coin = "ngModel" required>
+                    <mat-error *ngIf="'Coin'">
+                      Coin is Required
+                    </mat-error>
+                  </mat-form-field>
+        </div>
+        <!-- <div class="row ">
+          <div class="col-md-12">
+            <div class="user-name khulaRegular">
+              <div class="fus-name">
+                <div class="group" [ngClass]="{ 'has-error': f.submitted && !walletName.valid}">
+                  <input class="form-control" type="text"  name="walletName" (focusout)="focusFunction('')"
+                    (focus)="focusFunction('walletName')" [(ngModel)]="walletDetails.walletName" #walletName="ngModel"
+                     required [disabled]="iseditable" />
+
+                  <label [class.activeLabel]="focusedElement=='walletName'" [class.lableTop]="(walletDetails.walletName!='') && (walletName.touched==true || walletName.valid==true|| walletName.valid==false)"
+                    [class.inputSuccess]="walletName.valid==true" [class.inputError1]="walletName.valid==false && walletName.touched==true"
+                    [class.inputError]="focusedElement!=='walletName' && walletName.valid==false && walletName.touched==true"
+                    for="walletName">Wallet Name <span class="mandatory">*</span></label>
+                  <div *ngIf="walletDetails.walletName === '' && walletName.touched === true" class="help-block caution">wallet name required</div>
+                </div>
+                <div class="group" [ngClass]="{ 'has-error': f.submitted && !coinType.valid}">
+                    <input class="form-control" type="text"  name="coinType" (focusout)="focusFunction('')"
+                    (focus)="focusFunction('coinType')" [(ngModel)]="walletDetails.coinType" #coinType="ngModel"
+                     required [disabled]="true" />
+                    <label [class.activeLabel]="focusedElement=='coinType'" [class.lableTop]="(walletDetails.coinType!='') && (coinType.touched==true || coinType.valid==true|| coinType.valid==false)"
+                      [class.inputSuccess]="coinType.valid==true" for="coinType">Coin
+                    </label>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="row">
+          <div class="col-md-12">
+            <div class="user-name khulaRegular">
+              <div class="fus-name">
+                <div class="group" [ngClass]="{ 'has-error': f.submitted && !noOfUsers.valid}">
+                  <input class="form-control" type="text" step="1" min="1" name="noOfUsers" (focusout)="focusFunction('')"
+                    (focus)="focusFunction('noOfUsers')" [(ngModel)]="walletDetails.noOfUsers" #noOfUsers="ngModel"
+                    (ngModelChange)="onnumberuserChange($event)" maxlength="2" pattern="^[1-9]\d*$" required [disabled]="iseditable" />
+                  <label [class.activeLabel]="focusedElement=='noOfUsers'" [class.lableTop]="(walletDetails.noOfUsers !== '') && (noOfUsers.touched === true || noOfUsers.valid==true|| noOfUsers.valid === false)"
+                    [class.inputSuccess]="noOfUsers.valid === true" [class.inputError1]="noOfUsers.valid === false && noOfUsers.touched === true"
+                    [class.inputError]="focusedElement!=='noOfUsers' && noOfUsers.valid === false && noOfUsers.touched === true"
+                    for="noOfUsers">Number of User/s 
+                    <span class="mandatory">*</span>
+                  </label>
+                  <div *ngIf="walletDetails.noOfUsers === '' && noOfUsers.touched === true" class="help-block caution">Number
+                    of
+                    users required</div>
+                  <div *ngIf="walletDetails.noOfUsers !== '' && walletDetails.noOfUsers.errors?.pattern" class="help-block caution">Please
+                    enter numerical values (1 to 99)</div>
+                </div>
+                <div class="group" [ngClass]="{ 'has-error': f.submitted && !noOfSignatures.valid}">
+                  <input class="form-control" type="text" name="noOfSignatures" (focusout)="focusFunction('')" (focus)="focusFunction('noOfSignatures')"
+                    [(ngModel)]="walletDetails.noOfSignatures" #noOfSignatures="ngModel" (ngModelChange)="onsignatureChange($event)"
+                    maxlength="2" pattern="^[1-9]\d*$" required [disabled]="iseditable" />
+                  <label [class.activeLabel]="focusedElement=='noOfSignatures'" [class.lableTop]="(walletDetails.noOfSignatures !== '') && (noOfSignatures.touched === true || noOfSignatures.valid==true|| noOfSignatures.valid === false)"
+                    [class.inputSuccess]="noOfSignatures.valid === true" [class.inputError1]="noOfSignatures.valid === false && noOfSignatures.touched === true"
+                    [class.inputError]="focusedElement!=='noOfSignatures' && noOfSignatures.valid === false && noOfSignatures.touched === true"
+                    for="noOfSignatures">Required Number of Signature/s 
+                    <span class="mandatory">*</span>
+                  </label>
+                  <div *ngIf="erroinsignsture" class="help-block caution">Signatures cannot be more than number of
+                    user/s</div>
+                  <div *ngIf="(noOfUsersAvail && !walletDetails.noOfSignatures)||!noOfSignatures.valid && noOfSignatures.touched === true && walletDetails.noOfSignatures === ''"
+                    class="help-block caution">Signatures Required</div>
+                  <div *ngIf="walletDetails.noOfSignatures !== '' && noOfSignatures.errors?.pattern" class="help-block caution">Please
+                    enter numerical values (1 to 99)</div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- <div class="row ">
+          <div class="col-md-12">
+            <div class="user-name khulaRegular">
+              <div class="fus-name">
+
+                <div class="group" [ngClass]="{ 'has-error': f.submitted && !coinType.valid}">
+                  <label [class.activeLabel]="focusedElement=='coinType'" [class.lableTop]="(walletDetails.coinType!='') && (coinType.touched==true || coinType.valid==true|| coinType.valid==false)"
+                    [class.inputSuccess]="coinType.valid==true" for="coinType">Coin
+                    <span class="mandatory">*</span>
+                  </label>
+                  <select class="form-control" name="coinType" (focusout)="focusFunction('')" (focus)="focusFunction('coinType')"
+                    [(ngModel)]="walletDetails.coinType" (change)="coinSelected(walletDetails.coinType);" #coinType="ngModel"
+                    required [disabled]="true">
+                    <option [value]="undefined" [attr.selected]="true" disabled>Select Coin</option>
+                    <option *ngFor="let item of coinlist;let i= index">{{item}}</option>
+
+                  </select>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div> -->
+
+
+
+      </div>
+
+
+      <div class="wallet-info-wrapper">
+        <div class="khulaRegular">
+          Add User
+        </div>
+        <form name="addUserForm" #addUserForm="ngForm" class="notmaterial" novalidate>
+          <div class=" row" *ngFor="let user of walletuserList;let userindex = index">
+            <div class="col-md-6 group">
+              <input type="text" name="userId{{userindex}}" [value]="user.username" required readonly />
+              <label class="group_label">Email ID</label>
+
+            </div>
+            <div class="col-md-6 group">
+              <!-- <input type="text" name="roleId" [value]="user.roleName" readonly /> -->
+              <label class="group_label">Role</label>
+              <select class="form-control" name="userrole{{userindex}}" (focusout)="focusFunction('')" (focus)="focusFunction('role')"
+              [(ngModel)]="user.role" (change)="roleuserSelected($event.target.value, userindex)" #role="ngModel" [disabled]="iseditable" required>
+              <option *ngFor="let item of roleList;let i= index;" [value]="item.value">{{item.name}}</option>
+
+            </select>
+
+            </div>
+            <!-- <div class="col-md-1 group"> -->
+            <span class="deleteimg-outer">
+              <img *ngIf="walletuserupdate" class="deleteimg_update" src="./assets/images/personalwallet/smalldelete.svg"
+                alt="" (click)="deleterow(userindex)">
+            </span>
+            <!-- </div> -->
+          </div>
+          <div class="row" *ngIf="initialfslde">
+            <div class="col-md-6 group">
+              <mat-form-field class="material-half-width">
+                <input type="text" class="group_input arrow override" required placeholder="Email ID" aria-label="String"
+                  matInput name="username" [matAutocomplete]="auto" [(ngModel)]="model.username" (ngModelChange)="uiautoserach($event)"
+                  #username="ngModel" required><span></span>
+                <mat-error *ngIf="'username'">
+                  UserName is <strong>required</strong>
+                </mat-error>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="userSelected($event)">
+                  <mat-option *ngFor="let item of autosearchresult1" [value]="item">
+                    {{item}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6 group role_div">
+              
+              <label [class.activeLabel]="focusedElement=='role'" [class.lableTop]="(model.role!='' || model.role !== null) && (role.touched==true || role.valid==true || role.valid==false)"
+                [class.inputSuccess]="role.valid==true" [class.inputError1_role]="role.valid==false && role.touched==true"
+                [class.inputError_role]="focusedElement!=='role' && role.valid==false && role.touched==true" for="role">Role
+                 <span class="mandatory">*</span>
+              </label>
+              
+              <select class="form-control" name="application" (focusout)="focusFunction('')" (focus)="focusFunction('role')"
+              [(ngModel)]="model.role" (change)="roleSelected($event.target.value)" #role="ngModel" required>
+              <option *ngFor="let item of roleList;let i= index;" [value]="item.value">{{item.name}}</option>
+
+            </select>
+
+
+              <!-- <input class="form-control" name="application" [(ngModel)]="model.roleName" #role="ngModel" readonly> -->
+              <div *ngIf="!role.valid && role.touched==true" class="help-block caution errclass">Role is required</div>
+            </div>
+            <!-- <div class="col-md-1 group"> -->
+            <span class="deleteimg-outer">
+              <img class="deleteimg_update" src="./assets/images/personalwallet/smalldelete.svg" alt="" (click)="deleteextrarow()">
+            </span>
+            <!-- </div> -->
+          </div>
+
+          <div class="add-more-user" (click)=" addUser();" *ngIf="walletuserupdate">
+            <!-- addUserForm.form.valid && addUserForm -->
+            <img *ngIf="(walletuserList.length < walletDetails.noOfUsers) && adduserStatus" class="imgcls" src="./assets/images/addUserNew.svg"
+              alt="">
+          </div>
+          <!-- <div>
+              </div> -->
+          <!-- </div> -->
+          <!-- </div> -->
+        </form>
+
+      </div>
+      <!-- <div class="user-action-box"> -->
+      <!-- <input type="submit" class="sub-btn-info khulaSemiBold" [disabled]='!f.form.valid' value="UPDATE"> -->
+
+      <!-- </div> -->
+    </form>
+  </div>
+
+
+
+
+</div>
+<div class="userList" *ngIf="auditdiv">
+  <div class="">
+    <ng2-smart-table [settings]="auditsettings" [source]="auditTraillist"></ng2-smart-table>
+  </div>
+  <pagination *ngIf="auditTraillist.length!==0" [boundaryLinks]="true" [totalItems]="auditlistLength" [itemsPerPage]="20"
+    (pageChanged)="pageChangedaudit($event)" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+  </pagination>
+
+</div>
+<div class="userList" *ngIf="taskdiv">
+  <ng2-smart-table *ngIf="NoDataFound === false" [settings]="tasksetting" [source]="tasklistinfo" (userRowSelect)="onUserRowSelect($event, confirmchecking)"></ng2-smart-table>
+  <div class=" wellcome-msg" *ngIf="NoDataFound === true">
+    <h4 class="khulaLite">No transactions to approve</h4>
+    <!-- <p class="khulaSemiBold" >perform some transactions</p> -->
+  </div>
+</div>
+<div class="userList form-wrapper" *ngIf="policydiv">
+  <form #globalpolicy="ngForm">
+    <div class="edit-cancel-btnGrp" *ngIf="!showupdatebtn">
+      <span class="spncls1">
+        <span *ngIf="showexpandall" class="expndalbtn" (click)="expandAll()">
+          <img class="expndAlimg" src="assets/images/personalwallet/expandAll.svg" alt="">
+          <button class="expndAltxt">Expand All</button>
+        </span>
+        <span *ngIf="!showexpandall" class="expndalbtn" (click)="collapseAll()">
+          <img class="expndAlimg" src="assets/images/personalwallet/collapsAll.svg" alt="">
+          <button class="expndAltxt">Collapse All</button>
+        </span>
+      </span>
+      <span class="spncls" *ngIf="currWalletStatus ===  'Completed'">
+        <button class="btn-orange khulaSemiBold" (click)="editPolicy()">EDIT</button>
+      </span>
+    </div>
+    <div class="edit-cancel-btnGrp" *ngIf="showupdatebtn">
+      <span class="spncls2">
+        <span *ngIf="showexpandall" class="expndalbtn" (click)="expandAll()">
+          <img class="expndAlimg" src="assets/images/personalwallet/expandAll.svg" alt="">
+          <button class="expndAltxt">Expand All</button>
+        </span>
+        <span *ngIf="!showexpandall" class="expndalbtn" (click)="collapseAll()">
+          <img class="expndAlimg" src="assets/images/personalwallet/collapsAll.svg" alt="">
+          <button class="expndAltxt">Collapse All</button>
+        </span>
+      </span>
+      <span class="spncls3">
+        <button class="cancel khulaSemiBold" (click)="cancelPolicyModifications()">CANCEL</button>
+        <button class="btn-orange khulaSemiBold" (click)="authPublic(auth,'policy')" [disabled]="!globalpolicy.form.valid || validateTimeZone || !isWalletValid || uitofmeasureerror || timestamperror || endtimestamperror || starttimeerror || endtimeerror">REQUEST</button>
+      </span>
+    </div>
+    <mat-card class="matCard-border">
+      <mat-tab-group>
+        <mat-tab class="testingPolicy" label="Policy Configuration">
+          <ng-template matTabContent>
+            <div class="info__right__details " *ngIf="policy">
+              <!-- <mat-accordion> -->
+              <mat-expansion-panel class="expPannel" [expanded]="allExpandState">
+                <mat-expansion-panel-header class="panal-layout openHeader backgrnd">
+                  <mat-panel-title class="khulaSemiBold "><img class="policyimg" src="assets/images/userpolicy/transaction-hours.png" alt="">
+                    Transaction Hours Limit
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text  example-third-width ">Transaction Hours Limit ( 24 hrs )</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Start Time" autocomplete="off" name="transactionTimeStart" [(ngModel)]="policylist.transactionTimeStart"
+                      #transactionTimeStart="ngModel" (ngModelChange)="timestampvalidation()"  required
+                      [disabled]="makeitedit">
+                    <mat-error *ngIf="policylist.transactionTimeStart === ''">
+                      Transaction Start Time End is <strong>required</strong>
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="End Time" autocomplete="off" name="transactionTimeEnd" [(ngModel)]="policylist.transactionTimeEnd"
+                      #transactionTimeEnd="ngModel" (ngModelChange)="endtranstampvalidation()"  required
+                      [disabled]="makeitedit" type="tel">
+                    
+                    <mat-error *ngIf="policylist.transactionTimeEnd === ''">
+                      Transaction End Time is <strong>required</strong>
+                    </mat-error>
+                   
+                  </mat-form-field>
+                  <!-- <div class="verifier-text  example-third-width "></div>  -->
+                  <div *ngIf="timestamperror && policylist.transactionTimeStart !== '' && !starttimeerror" class="caution_poliy_strt">Transaction Start Time should be less than Transaction End Time</div>
+                  <div *ngIf="endtimestamperror && policylist.transactionTimeEnd !== '' && !endtimeerror" class="caution_poliy">Transaction End Time Should be greater than Transaction Start time</div>
+
+                  <div *ngIf="starttimeerror &&  policylist.transactionTimeStart !== ''" class="caution_poliy_strt"> Transaction Start Time should be <strong>HH:MM</strong> format</div>
+                  <div *ngIf="endtimeerror && policylist.transactionTimeEnd !== ''" class="caution_poliy"> Transaction End Time should be <strong>HH:MM</strong> format</div>
+                </div>
+                <div class="verifier-box">
+                  <div class="verifier-text  example-third-width maintext">Time Zone</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Time Zone" class="arrow" name="walletTimeZone" [(ngModel)]="policylist.walletTimeZone"
+                      #timezone="ngModel" [matAutocomplete]="auto" (ngModelChange)="getTheValue($event)" required
+                      [disabled]="makeitedit">
+
+                    <!-- [disabled]="editUser" -->
+                    <span></span>
+                    <mat-error *ngIf="'walletTimeZone'">
+                      Time Zone is <strong>required</strong>
+                    </mat-error>
+                    <div *ngIf="validateTimeZone && policylist.walletTimeZone !== ''" class="caution_timezone">Select valid Time Zone</div>
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                      <mat-option class="autocomplete" *ngFor="let item of filteredOptions " [value]="item">
+                        {{item}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+
+
+                </div>
+
+              </mat-expansion-panel>
+              <!-- <mat-expansion-panel class="expPannel">
+                            <mat-expansion-panel-header class="panal-layout openHeader">
+                                <mat-panel-title class="khulaSemiBold"><img
+                                  matTooltip ="Previous valu: {{onbordingDetails.lastName}}" matTooltipPosition="right"   class="policyimg" src="assets/images/userpolicy/ip-address.png">
+                                  IP Address Config
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="verifier-box">
+                                <div class="verifier-text example-third-width">Max Allowed IPs</div>
+                                <mat-form-field class="example-half-width example-third-width">
+                                    <input matInput placeholder="Enter Max Allowed IPs" autocomplete="off">
+                                </mat-form-field>
+                            </div>
+                            <div class="verifier-box">
+                                <div class="verifier-text example-third-width">IP Address Whitelist</div>
+                                <mat-form-field class="example-half-width example-third-width">
+                                    <input matInput placeholder="IP Address" autocomplete="off">
+                                    
+                                </mat-form-field>
+                                <img  (click)="removeipaddress()" src="/assets/images/onbording/bin.svg" class="role-delete">
+                
+                                
+                                <div class="verifier-box" *ngIf="showipaddress">
+                                    <div class="verifier-text example-third-width"></div>
+                                    <mat-form-field class="example-half-width example-third-width">
+                                        <input matInput placeholder="IP Address" autocomplete="off">
+                                        
+                                    </mat-form-field>
+                                    <img  (click)="removeipaddress()" src="/assets/images/onbording/bin.svg" class="role-delete">
+                                </div>
+                            </div>
+                            <div class="verifier-text example-third-width"><button matButton type="submit" class="ADD" (click)="addipaddress()" >+ ADD</button><img class="remove"  src="./assets/images/userpolicy/info.png"></div>
+                             <div class="verifier-text  example-third-width "><img class="remove"  src="./assets/images/userpolicy/info.png"></div> 
+                        </mat-expansion-panel> -->
+              <mat-expansion-panel class="expPannel" [expanded]="allExpandState">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                  <mat-panel-title class="khulaSemiBold"><img class="policyimg" src="assets/images/userpolicy/wallet-address.png" alt="" >
+                    Wallet Address Config
+                  </mat-panel-title>
+
+                </mat-expansion-panel-header>
+                  <div class="nickNameSave" *ngIf="makeitedit &&  walletDetails.walletType !== 'HighFrequency' && WalletAddressWhitelist.length > 0"><button (click)="saveMultiNickName()" class="btn-orange khulaSemiBold">Save NickName</button></div>
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text example-third-width">Maximum Allowed Wallet Address</div>
+                  <mat-form-field class="example-half-width example-third-width" *ngIf="walletDetails.walletType !== 'HighFrequency'">
+                    <input matInput placeholder="Enter Maximum Allowed Wallets" autocomplete="off" name="maximumAllowedWallets"
+                      [(ngModel)]="policylist.maximumAllowedWallets" #maximumAllowedWallets="ngModel" maxlength="2"
+                      pattern="^[1-9]\d*$" required [disabled]="makeitedit">
+                    <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.maximumAllowedWallets.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                    <!-- [(ngModel)]="updatedPolicyDetail.maximumAllowedWallets.newValue" #maximumAllowedWallets="ngModel"  -->
+                    <mat-error *ngIf="policylist.maximumAllowedWallets === ''">
+                      Maximum Allowed Wallets is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="maximumAllowedWallets.errors?.pattern">
+                      Please enter numerical values (1 to 99)
+                    </mat-error>
+                  </mat-form-field>
+                  <!-- heigh frequency wallet -->
+                  <mat-form-field class="example-half-width example-third-width" *ngIf="walletDetails.walletType === 'HighFrequency'">
+                    <input matInput placeholder="Enter Maximum Allowed Wallets" autocomplete="off" name="maximumAllowedWallets"
+                      [(ngModel)]="policylist.maximumAllowedWallets" #maximumAllowedWallets="ngModel" required
+                      [disabled]="true">
+                    <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.maximumAllowedWallets.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                    <!-- [(ngModel)]="updatedPolicyDetail.maximumAllowedWallets.newValue" #maximumAllowedWallets="ngModel" maxlength="2" pattern="^[1-9]\d*$" -->
+                  </mat-form-field>
+                </div>
+                <!-- <div class="verifier-box" *ngFor="let item of updatedPolicyDetail.walletAddressWhitelist.oldValue;let addressindex = index"><img matTooltip ="Previous valu: {{item}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"></div> -->
+                <!-- <div class="verifier-box" *ngFor="let item of WalletAddressWhitelist;let addressindex = index">
+                
+                  <div class="verifier-text example-third-width" [class.walletAddress]="addressindex > 0">Wallet
+                    Address</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Wallet Address {{addressindex +1}}" autocomplete="off" [value]="item"
+                      [disabled]="true">
+                   
+
+                  </mat-form-field>
+                  <img *ngIf="!makeitedit" (click)="removewalletaddress(addressindex)" src="/assets/images/onbording/bin.svg" alt=""
+                    class="role-delete">
+                </div> -->
+               
+               
+               
+               <!-- add -->
+                
+               <div class="verifier-box" *ngFor="let item of WalletAddressWhitelist;let objectindex = index">
+                <div class="verifier-text example-third-width"></div>
+                
+                <mat-form-field class="example-half-width example-third-width">
+                  <input matInput placeholder="Wallet Address {{objectindex +1}}" autocomplete="off" [value]="item.address" class="nickInput" [disabled]="true">
+                </mat-form-field>
+                
+                <mat-form-field class="example-half-width example-third-width">
+                  <input matInput placeholder="Wallet nickname (optional)" autocomplete="off" name="nickname{{objectindex}}" [(ngModel)]="item.nickName" [disabled]="!makeitedit" class="nickInput" (keyup)="onKeyUp(item)">
+                  <!-- <img src="/assets/images/onbording/save.png" alt="" class="saveImg"  *ngIf="item.nickName !== '' &&  item.touched && makeitedit" (click)="saveNickName1(item)"> -->
+                </mat-form-field>
+                <img *ngIf="!makeitedit" (click)="removewalletaddress(objectindex)" title="Delete Row" src="/assets/images/onbording/bin.svg" alt=""
+                  class="role-delete">
+              </div>
+              
+              <!-- add -->
+              
+              
+              <div class="verifier-box" *ngIf="showwalletfield && policylist.maximumAllowedWallets != WalletAddressWhitelist.length">
+                <!-- *ngIf="showwalletfield (focusout)="focusFunction('')"" -->
+                <div class="verifier-text example-third-width"></div>
+                <mat-form-field class="example-half-width example-third-width">
+                  <input matInput placeholder=" Wallet Address" autocomplete="off" name="walletaddress" [(ngModel)]="itemvalue.address"
+                    #walletaddress="ngModel" (ngModelChange)="walletAddressValidation($event)" maxlength="34" pattern="^[^-\s][a-zA-Z0-9_\s-]+$"
+                    required>
+                  <!-- [(ngModel)]="itemvalue.walletaddress" #walletaddress="ngModel" -->
+                  <!-- <mat-error  *ngIf="itemvalue.walletaddress === ''">
+                     Wallets Address is <strong>required</strong>
+                  </mat-error> -->
+                  <!-- <mat-error *ngIf="walletaddress.errors?.pattern">
+                    Please enter valid wallet address                   
+                  </mat-error> -->
+                </mat-form-field>
+                
+                <mat-form-field class="example-half-width example-third-width">
+                  <input matInput placeholder="Wallet nickname (optional)" name="nickName1" class="nickInput" [(ngModel)]="itemvalue.nickName" (ngModelChange)="nickNameInput($event)"> 
+                  <!-- <img src="/assets/images/onbording/save.png" alt="" class="saveImg" (click)="saveNickName(nickName1)"> -->
+                </mat-form-field> 
+                <img (click)="removewalletaddress1()" *ngIf="!makeitedit" src="/assets/images/onbording/bin.svg" alt=""
+                  class="role-delete">
+                <div class="caution_walt_poly" *ngIf="itemvalue.address ==='' &&  walletaddress.touched ">
+                  Wallets Address is <strong>required</strong>
+                </div>
+                <div class="caution_walt_poly" *ngIf="(itemvalue.address === null || itemvalue.address === undefined) && walletaddress.touched ">
+                  Wallets Address is <strong>required</strong>
+                </div>
+              </div>
+              
+              <div *ngIf="!isWalletValid && itemvalue.address !== ''" class="caution_walt_poly">Please enter
+                valid wallet address between 27 to 34 Character's</div>
+              <!-- <div *ngIf="!isWalletValid && itemvalue.walletaddress!==''" class="caution_walt">Please enter valid wallet address between 27 to 34 Character's</div> -->
+              <div class="verifier-text example-third-width" *ngIf="policylist.maximumAllowedWallets != WalletAddressWhitelist.length  || !isWalletValid">
+                <button matButton *ngIf="!makeitedit &&  walletDetails.walletType !== 'HighFrequency'" type="submit"
+                  class="ADD" [disabled]="!isWalletValid" (click)="addwalletaddress()">+ ADD</button></div>
+
+
+
+                
+              </mat-expansion-panel>
+              <mat-expansion-panel class="expPannel" [expanded]="allExpandState">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                  <mat-panel-title class="khulaSemiBold"><img class="policyimg" src="assets/images/userpolicy/transaction-volume.png" alt="" >
+                    Transaction Volume Cap
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text example-third-width">Maximum Allowed Transaction Volume Cap (%)</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Enter Maximum Allowed Transaction Volume Cap" autocomplete="off" name="transactionVolumeCap"
+                      [(ngModel)]="policylist.transactionVolumeCap" #transactionVolumeCap="ngModel" required 
+                      pattern="^(100(?:\.0{1,2})?|(?!^0*$)(?!^0*\.0*$)^\d{1,2}(\.\d{1,2})?)$" [disabled]="makeitedit">
+                    <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.transactionVolumeCap.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                    <!-- [(ngModel)]="updatedPolicyDetail.transactionVolumeCap.newValue" #transactionVolumeCap="ngModel" -->
+                    <mat-error *ngIf="policylist.transactionVolumeCap === ''">
+                      Transaction Volume Cap is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="transactionVolumeCap.errors?.pattern">
+                      Please enter numerical values (1 to 100)
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="verifier-box ">
+                  <div class="verifier-text example-third-width">Transaction Unit of Measure (Mins)</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Transaction Unit of Measure " autocomplete="off" name="transactionUnitOfMeasure"
+                      [(ngModel)]="policylist.transactionUnitOfMeasure" #transactionUnitOfMeasure="ngModel" maxlength="4"
+                      (ngModelChange)="checkunitofmeasure(policyDetails.transactionUnitOfMeasure)" required [disabled]="makeitedit">
+                    <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.transactionUnitOfMeasure.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                    <!-- [(ngModel)]="updatedPolicyDetail.transactionUnitOfMeasure.newValue" #transactionUnitOfMeasure="ngModel" -->
+                    <mat-error *ngIf="policylist.transactionUnitOfMeasure === ''">
+                      Transaction Unit Of Measure is <strong>required</strong>
+                    </mat-error>
+                    <!-- <mat-error *ngIf="transactionUnitOfMeasure.errors?.pattern">
+                      Please enter numerical values (1 to 99)
+                    </mat-error> -->
+                  </mat-form-field>
+                  <div *ngIf="uitofmeasureerror && policylist.transactionUnitOfMeasure !== ''" class="caution_poliy_tm">Please enter numerical values (0 to 1440)</div>
+                </div>
+                <!-- <div class="verifier-text  example-third-width "></div> -->
+              </mat-expansion-panel>
+              <mat-expansion-panel class="expPannel" [expanded]="allExpandState" *ngIf="walletDetails.walletType === 'HighFrequency'">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                  <mat-panel-title class="khulaSemiBold"><img class="policyimg" src="assets/images/userpolicy/frequency-cap.png" alt="">
+                    Frequency Cap
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text example-third-width">Maximum Allowed Frequency Cap</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Enter Maximum Allowed Frequency cap" autocomplete="off" name="transactionLimit"
+                      [(ngModel)]="policylist.transactionLimit" #transactionLimit="ngModel" required [disabled]="true">
+                    <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.transactionLimit.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                    <!-- [(ngModel)]="updatedPolicyDetail.transactionLimit.newValue" #transactionLimit="ngModel" -->
+                    <!-- <mat-error *ngIf="policylist.transactionLimit === ''">
+                        Transaction Limit is <strong>required</strong>
+                      </mat-error> -->
+                    <!-- <mat-error *ngIf="transactionLimit.errors?.pattern">
+                        Please enter numerical values (1 to 99)
+                      </mat-error> maxlength="2" pattern="^[1-9]\d*$"-->
+                  </mat-form-field>
+                </div>
+                <div class="verifier-box">
+                  <div class="verifier-text example-third-width">Frequency Unit of Measure</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Unit of Measure" autocomplete="off" [value]="Daily" [disabled]="true">
+                    <!-- [value]="Daily" -->
+                    <!-- name="TransactionLimit" [(ngModel)]="policylist.TransactionLimit" #TransactionLimit="ngModel" -->
+                  </mat-form-field>
+                </div>
+                <!-- <div class="verifier-text  example-third-width "></div> -->
+              </mat-expansion-panel>
+
+              <mat-expansion-panel class="expPannel" [expanded]="allExpandState" *ngIf="walletDetails.walletType !== 'HighFrequency'">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                  <mat-panel-title class="khulaSemiBold"><img class="policyimg" src="assets/images/userpolicy/frequency-cap.png" alt="">
+                    Frequency Cap
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text example-third-width">Maximum Allowed Frequency Cap</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Enter Maximum Allowed Frequency cap" autocomplete="off" name="transactionLimit"
+                      [(ngModel)]="policylist.transactionLimit" #transactionLimit="ngModel" maxlength="2" pattern="^[1-9]\d*$"
+                      required [disabled]="makeitedit">
+                    <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.transactionLimit.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                    <!-- [(ngModel)]="updatedPolicyDetail.transactionLimit.newValue" #transactionLimit="ngModel" -->
+                    <mat-error *ngIf="policylist.transactionLimit === ''">
+                      Transaction Limit is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="transactionLimit.errors?.pattern">
+                      Please enter numerical values (1 to 99)
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="verifier-box">
+                  <div class="verifier-text example-third-width">Frequency Unit of Measure</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Unit of Measure" autocomplete="off" [value]="Daily" [disabled]="true">
+                    <!-- [value]="Daily" -->
+                    <!-- name="TransactionLimit" [(ngModel)]="policylist.TransactionLimit" #TransactionLimit="ngModel" -->
+                  </mat-form-field>
+                </div>
+                <!-- <div class="verifier-text  example-third-width "></div> -->
+              </mat-expansion-panel>
+              <mat-expansion-panel class="expPannel" [expanded]="allExpandState">
+                <mat-expansion-panel-header class="panal-layout openHeader">
+                  <mat-panel-title class="khulaSemiBold"><img class="policyimg" src="assets/images/userpolicy/wallet-address.png" alt="" >
+                    Minimum Balance
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text example-third-width">Transaction Minimum Balance (%)</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Transaction Minimum Balance" autocomplete="off" name="minimumBalance"
+                      [(ngModel)]="policylist.minimumBalance" #minimumBalance="ngModel" required pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$"
+                      [disabled]="makeitedit1">
+                    <!-- <img matTooltip ="Previous valu: {{updatedPolicyDetail.transactionLimit.oldValue}}" matTooltipPosition="right" class="remove"  src="./assets/images/userpolicy/info.png"> -->
+                    <!-- [(ngModel)]="updatedPolicyDetail.transactionLimit.newValue" #transactionLimit="ngModel" -->
+                    <mat-error *ngIf="policylist.minimumBalance === ''">
+                      Minimum Balance Limit is <strong>required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="minimumBalance.errors?.pattern">
+                      Please enter numerical values (0 to 99.99)
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <!-- <div class="verifier-text  example-third-width "></div> -->
+              </mat-expansion-panel>
+              <mat-expansion-panel class="expPannel" [expanded]="allExpandState">
+                <mat-expansion-panel-header class="panal-layout openHeader backgrnd">
+                  <mat-panel-title class="khulaSemiBold "><img class="policyimg" src="assets/images/userpolicy/reportconfig@2x.png" alt="">
+                    Billing
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="verifier-box fieldstyle">
+                  <div class="verifier-text example-third-width">Billing</div>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Fusang Fee (%)" autocomplete="off" name="fusangfee" [(ngModel)]="policylist.serviceCharge"
+                      #fusangfee="ngModel"  pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$" [disabled]="makeitedit1" required>
+
+                    <mat-error *ngIf="policylist.serviceCharge === ''">
+                      Fusang Fee is <strong>Required</strong>
+                      [disabled]="makeitedit"
+                    </mat-error>
+                    <mat-error *ngIf="fusangfee.errors?.pattern">
+                      Please enter numerical values (0 to 99.99)
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field class="example-half-width example-third-width">
+                    <input matInput placeholder="Holding Fee (%)" autocomplete="off" name="neworkfee" [(ngModel)]="policylist.subcriptionCharge"
+                      #neworkfee="ngModel"  pattern="^(?=.*[0-9])\d{0,2}(?:\.\d{0,2})?$" [disabled]="makeitedit1" required >
+
+                    <mat-error *ngIf="policylist.subcriptionCharge === ''">
+                      Holding Fee is <strong>Required</strong>
+                    </mat-error>
+                    <mat-error *ngIf="neworkfee.errors?.pattern">
+                     Please enter numerical values (0 to 99.99)
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </mat-expansion-panel>
+              <!-- <mat-expansion-panel class="expPannel">
+                            <mat-expansion-panel-header class="panal-layout openHeader">
+                                <mat-panel-title class="khulaSemiBold"><img
+                                  class="policyimg" src="assets/images/userpolicy/new-device.png">
+                                  New Device Access
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="verifier-box ">
+                                <div class="verifier-text example-third-width">Trans Unit of Measure</div>
+                                <mat-form-field class="example-half-width example-third-width">
+                                    <input matInput placeholder="Enter Max Allowed Devices" autocomplete="off">
+                                    
+                                </mat-form-field>
+                            </div>
+                            <div class="verifier-box">
+                                <div class=" verifier-text example-third-width">Type of Devices</div>
+                                
+                                <button matButton type="submit" class="laptopbtn">Laptop</button>
+                                    <button matButton type="submit" class="Desktopbtn">Desktop</button>
+                                
+                            </div>
+                            <div class="verifier-text  example-third-width "><img class="remove"  src="./assets/images/userpolicy/info.png"></div>
+                        </mat-expansion-panel> -->
+              <!-- </mat-accordion> -->
+            </div>
+
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+
+
+
+    <!-- Policy Manegement end -->
+  </form>
+</div>
+
+
+<ng-template #bittransfer>
+  <div id="send-btc" class="modal-header">
+    <div class="modal-header-wrapper">
+      <div class="modal-header-box font24 khulaSemiBold">Send Funds</div>
+      <button type="button" class="close font24 pull-right" aria-label="Close" (click)="modalRef.hide(); clearefund()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <!-- <div class=""> -->
+  <!-- <div class="form-container"> -->
+  <form name="form" (ngSubmit)="f.form.valid && transaction(successtemplate);" #f="ngForm" class="notmaterial"
+    novalidate>
+    <div class="row dv_hight">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 frm_walt_div frm_walt_div2">
+        <div class="circle"><img src="/assets/images/personalwallet/rightarrow.svg" alt="" class="rightarow_sndfnd"></div>
+        <label class="frm_walt">From Wallet</label>
+        <div class="group sndfndwltdiv">
+          <label class="credential-label inputSuccess">From Wallet Address &nbsp;
+            <!-- <span class="mandatory">*</span> -->
+          </label>
+          <input type="text" class="form-control inputTxt" name="username" placeholder="User Name" [(ngModel)]=" itemVlue.fromwalletAddress"
+            #username="ngModel" readonly>
+        </div>
+        <div class="group sndfndwltdiv">
+          <label class="credential-label inputSuccess">From Wallet Name &nbsp;
+            <!-- <span class="mandatory">*</span> -->
+          </label>
+          <label></label>
+          <input type="text" class="form-control inputTxt" name="fromwalletAddress" placeholder="From wallet address"
+            [(ngModel)]="itemVlue.username" #fromwalletAddress="ngModel" readonly>
+        </div>
+        
+
+
+        <div class="transactionLimit">
+          <div class="row">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+              <p class="tLimit">Transaction Limit ( % )</p>
+              <p class="tCondition"><strong class="tStrong">{{policylist.transactionVolumeCap}}% </strong> of available balance</p>
+  
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+              <input type="number" id="numInput" class="numInput number1" name="transactionAmount" [(ngModel)]="TrasactionvalumeCap" min="1" max="{{policylist.transactionVolumeCap}}" (keyup)="getTransactionAmount($event)" (keypress)="getTransactionAmount($event)">
+            </div>
+          </div>
+          <div *ngIf="transalimit" class="transLimit"> <span class="transLimitstr" > * </span>Crossed Max Transaction Limit </div>
+        </div>
+
+
+
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 to_walt_div frm_walt_div2">
+        <label class="to_walt">To Wallet</label>
+
+
+
+        <div class="group sndfndwltdiv1">
+          <!-- <mat-form-field class="matField">
+            <mat-select placeholder="Wallet Nickname" [(ngModel)]="selectedName" name="selectedName" (selectionChange)="getAddress()">
+             
+              <mat-option *ngFor="let item of  WalletName;let roleindex= index" [value]="item.address" >
+                {{item.nickName}}
+              </mat-option>
+            </mat-select>
+            
+          </mat-form-field> -->
+          <mat-form-field class="matField">
+
+            <input id="nicInp" matInput class="arrow" placeholder="Wallet Nickname" [(ngModel)]="selectedName" name="nickName"
+            #nickName="ngModel" [matAutocomplete]="auto" (ngModelChange)="nickNameInput1(selectedName)" [disabled]="TempNickNameOption.length === 0">
+ 
+              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="autoComplete($event)">
+                <mat-option class="autocomplete" *ngFor="let item of  nickNameOption" [value]="item" >
+                  {{item}}
+                </mat-option>
+              </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+
+
+
+        <div class="group sndfndwltdiv2" [ngClass]="{ 'has-error': f.submitted && !toaddress.valid}">
+          <label [class.activeLabel]="focusedElement=='toaddress'" [class.lableTop]="(itemVlue.toaddress!='') && (toaddress.touched==true || toaddress.valid==true|| toaddress.valid==false)"
+            [class.inputSuccess]="toaddress.valid==true" [class.inputError1]="toaddress.valid==false && toaddress.touched==true"
+            [class.inputError]="focusedElement!=='toaddress' && toaddress.valid==false && toaddress.touched==true" for="toaddress">To
+            Wallet Address
+            <span class="mandatory">*</span>
+          </label>
+          <input type="text" class="form-control inputTxt" name="toaddtress" (focusout)="focusFunction('')" maxlength="34"
+            (focus)="focusFunction('toaddress')" [(ngModel)]="itemVlue.toaddress" #toaddress="ngModel" (ngModelChange)="getwalletaddress()"
+            required>
+          <!-- [class.lableTop]="(model.repassword!=='') && (repassword.touched==true || repassword.valid==true|| repassword.valid==false)" [class.inputSuccess]="repassword.valid==true"  [class.inputError1]="repassword.valid==false && repassword.touched==true" [class.inputError]="focusedElement!=='repassword' && repassword.valid==false && repassword.touched==true" -->
+          <!-- <div *ngIf="f.submitted && !toaddress.valid" class="help-block caution">To address is required</div> -->
+          <span *ngIf="!toaddress.valid && toaddress.touched === true" class="help-block_sndfnd caution">To address is
+            required</span>
+          <span *ngIf="invaliWalletAddress && itemVlue.toaddress!==''" class="caution_walt">Please enter valid wallet
+            address between 27 to 34 Character's</span>
+          <span *ngIf="samewallet" class="caution_walt">Transaction can't be initiated for the same wallet</span>
+        </div>
+        <div class="group sndfndwltdiv2 " [ngClass]="{ 'has-error': f.submitted && !toWalletname.valid}">
+          <label [class.activeLabel]="focusedElement=='toWalletname'" [class.lableTop]="(itemVlue.toWalletname!='') && (toWalletname.touched==true || toWalletname.valid==true|| toWalletname.valid==false)"
+            [class.inputSuccess]="toWalletname.valid==true" [class.inputError1]="toWalletname.valid==false && toWalletname.touched==true"
+            [class.inputError]="focusedElement!=='toWalletname' && toWalletname.valid==false && toWalletname.touched==true"
+            for="toWalletname">To
+            Wallet Name
+            <!-- <span class="mandatory">*</span> -->
+          </label>
+          <input type="email" class="form-control inputTxt" name="toWalletname" (focusout)="focusFunction('')" (focus)="focusFunction('toWalletname')"
+            [(ngModel)]="itemVlue.toWalletName" #toWalletname="ngModel" [disabled]="true" required>
+
+          <span *ngIf="!toWalletname.valid && toWalletname.touched === true" class="help-block_sndfnd">Walletname is
+            required</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 14px;">
+
+
+      <!-- Transaction test ends -->
+
+      <div class="row transactionRow">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <div class="group valu_div">
+
+            <h6 class="Transaction-Amount Transaction-AmounttM">Transaction Amount <span class="mandatory">*</span></h6>
+
+          </div>
+          <div class=" row group valu_div_drop">
+            <div class="">
+              <h6 class="Transaction-Amount Transaction-AmountNf">Network Fee <span class="mandatory">*</span></h6>
+            </div>
+            <div class="fee_div1">
+              <select class="form-control" name="trnsFee" (focusout)="focusFunction('')" (focus)="focusFunction('coinType')"
+                [(ngModel)]="trnsfee" (change)="feeSelected(trnsfee);" #trnsFee="ngModel" required>
+                <!-- <option [value]="undefined" [attr.selected]="true" disabled>Select fee</option> -->
+                <option *ngFor="let item of feelist;let i= index" value="{{item.value}}">{{item.name}}</option>
+
+              </select></div>
+          </div>
+          <div class="group valu_div">
+
+            <h6 class="Transaction-Amount Transaction-Amountff">Fusang Fee ( {{policylist.serviceCharge}}% )</h6>
+
+          </div>
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <div class="seconddiv "><img src="/assets/images/personalwallet/twowayarrow.svg" alt="" class="righlefttarow_sndfnd"></div>
+          <h6 class="BTC_header">BTC</h6>
+          <div class="group valu_div" [ngClass]="{ 'has-error': f.submitted && !coin.valid}">
+            <label [class.activeLabel]="focusedElement=='coin'" [class.lableTop]="(itemVlue.coin !== '') && (coin.touched === true || coin.valid==true|| coin.valid === false)"
+              [class.inputSuccess]="coin.valid === true" [class.inputError1]="coin.valid === false && coin.touched === true"
+              [class.inputError]="focusedElement!=='coin' && coin.valid === false && coin.touched === true" for="coin">
+
+            </label>
+
+            <input type="text" class="form-control inputTxt_fund " name="coin" (focusout)="focusFunction('')" (focus)="focusFunction('coin')"
+              [(ngModel)]="itemVlue.coin" #coin="ngModel" (ngModelChange)="onChange($event)" pattern="^(\d*\.)?\d{1,8}$"
+              required>
+
+            <span *ngIf="coin.touched === true && itemVlue.coin ==='' && !policyviolation" class="caution">Coins is
+              required</span>
+            <span *ngIf="!coin.valid  && itemVlue.coin !=='' && !policyviolation" class="caution">Only 8 decimal points
+              allowed</span>
+            <span *ngIf="policyviolation " class="caution">Enter more than 0.00000545</span>
+            <!-- && itemVlue.coin !=='' && coin.valid -->
+          </div>
+          <div class="group valu_div">
+
+            <!-- <div class="fee_div fee_div1" >  -->
+            <input type="text" class="form-control inputTxt_fund" name="transactionFee" #transactionFee="ngModel"
+              [(ngModel)]="itemVlue.transactionFee" (ngModelChange)="feeSelected1($event)" pattern="^(\d*\.)?\d{1,8}$"
+              required>
+              <span *ngIf="transactionFee.touched === true && itemVlue.transactionFee ==='' && !transactinfeeerror" class="caution">Network Fee is
+                  required</span>
+                <span *ngIf="!transactionFee.valid  && itemVlue.transactionFee !=='' && !transactinfeeerror" class="caution">Only 8 decimal points allowed</span>
+                <span *ngIf="transactinfeeerror"class="caution">Enter more than 0.00000646</span>
+            <!-- </div> -->
+
+            <!-- [value]="itemVlue.username -->
+
+          </div>
+          <div class="group valu_div">
+
+            <input type="text" class="form-control inputTxt_fund " name="username" [value]="fusanfee" [disabled]="true">
+          </div>
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <h6 class="BTC_header">USD <span class="mandatory"><img src="/assets/images/personalwallet/information.svg" alt=""
+                class="font_icon"></span></h6>
+          <div class="group valu_div">
+
+            <input type="text" class="form-control inputTxt_fund " name="username" [value]="usdInfo" [disabled]="true">
+          </div>
+          <div class="group valu_div">
+
+            <input type="text" class="form-control inputTxt_fund" name="username" [value]="netfeeusd" [disabled]="true">
+          </div>
+          <div class="group valu_div">
+
+            <input type="text" class="form-control inputTxt_fund" name="username" [value]="fusangusd" [disabled]="true">
+          </div>
+
+        </div>
+      </div>
+      <div class="row transactionIDRow">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <h6 class="Transaction-Amount_total">Total Amount</h6>
+
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <!-- <h6 class="Transaction-Amount_total">{{totalBTC}}</h6> -->
+          <h6 class="Transaction-Amount22">{{totalBTC}}</h6>
+
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <!-- <h6 class="Transaction-Amount_total">${{totalusd}}</h6> -->
+          <h6 class="Transaction-Amount22">${{totalusd}}</h6>
+
+
+        </div>
+      </div>
+      <div class="row totoal_amount">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <div class="seconddiv_total "><img src="/assets/images/personalwallet/twoway.svg" alt="" class="righlefttarow_sndfnd_total"></div>
+          <h6 class="Transaction-Amount_avl">Available Balance</h6>
+
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <h6 class="Transaction-Amount_avl1">{{walletDetails.avilableBtc}}</h6>
+
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+          <h6 class="Transaction-Amount_avl1">${{walletDetails.avilableUsd}}</h6>
+
+        </div>
+      </div>
+
+      <!-- <div class="group" [ngClass]="{ 'has-error': f.submitted && !coin.valid}">
+            <label [class.activeLabel]="focusedElement=='coin'" [class.lableTop]="(itemVlue.coin !== '') && (coin.touched === true || coin.valid==true|| coin.valid === false)"
+              [class.inputSuccess]="coin.valid === true" [class.inputError1]="coin.valid === false && coin.touched === true"
+              [class.inputError]="focusedElement!=='coin' && coin.valid === false && coin.touched === true" for="coin">BTC
+              &nbsp;
+              <span class="mandatory">*</span>
+            </label>
+            <div class="row currency-col">
+
+
+              <div class="col-md-6">
+                <input type="number" class="form-control inputTxt" name="coin" (focusout)="focusFunction('')" (focus)="focusFunction('coin')"
+                  [(ngModel)]="itemVlue.coin" #coin="ngModel" (ngModelChange)="onChange($event)" pattern="\d+(\.\d*)?|\.\d+"
+                  required>
+                <button class="btcstyle credential-label">BTC</button>
+              </div>
+              
+              <div class="col-md-6">
+                <input style="width: 119%" type="number" class="form-control inputTxt" name="userEmailid" [value]="usdInfo"
+                  readonly>
+                <button class="btcstyle btcstyle-l credential-label">USD</button>
+                <div class="help-block2 txtstyle"><span class="strclr">*</span> Indicative Price Only</div>
+              </div>
+            </div>
+           
+            <div *ngIf="!coin.valid && coin.touched === true && itemVlue.coin===''" class="help-block caution">Coins is
+              required</div>
+            <div *ngIf="!coin.valid && coin.touched === true && itemVlue.coin!==''" class="help-block caution">Please
+              provide a valid BTC value</div>
+          </div> -->
+
+      <!-- <div class="group" [ngClass]="{ 'has-error': f.submitted && !transactionFee.valid}">
+            <label [class.activeLabel]="focusedElement=='transactionFee'" [class.lableTop]="(itemVlue.transactionFee!='') && (transactionFee.touched==true || transactionFee.valid==true|| toaddress.valid==false)"
+              [class.inputSuccess]="transactionFee.valid==true" [class.inputError1]="transactionFee.valid==false && transactionFee.touched==true"
+              [class.inputError]="focusedElement!=='transactionFee' && transactionFee.valid==false && transactionFee.touched==true"
+              for="transactionFee">Transaction Fee &nbsp;
+            
+            </label>
+            <input type="number" class="form-control inputTxt" name="transactionFee" (focusout)="focusFunction('')"
+              (focus)="focusFunction('transactionFee')" [(ngModel)]="itemVlue.transactionFee" #transactionFee="ngModel">
+            
+            <div *ngIf="!transactionFee.valid && transactionFee.touched === true" class="help-block caution">Transaction
+              Fee is required</div>
+            
+          </div> -->
+      <div class="group labl_div">
+        <!-- <label [class.activeLabel]="focusedElement=='note'" [class.lableTop_note]="(itemVlue.note !=='') && (note.touched==true)">Enter
+              the Note</label>
+            <input type="text" class="form-control inputTxt" (focusout)="focusFunction('')" (focus)="focusFunction('note')"
+              [(ngModel)]="itemVlue.note" #note="ngModel" name="note"> -->
+
+        <mat-form-field class="notefield example-half-width">
+          <!-- <input matInput placeholder="Enter Your Notes" autocomplete="off" name="approveVal"  [(ngModel)]="approve" #approveVal = "ngModel" > -->
+          <textarea matInput placeholder="Enter Your Notes" autocomplete="off" #note="ngModel" name="note" [(ngModel)]="itemVlue.note"></textarea>
+        </mat-form-field>
+
+      </div>
+    </div>
+    <div class="send-btn">
+      <button class="btcbutton cmn-btn" [class.disabled]="!f.form.valid || policyviolation || transactinfeeerror || transalimit">SEND</button>
+      <span class="strclr"><img src="/assets/images/personalwallet/information.svg" alt="" class="txxt_icon">Indicative USD
+        price only</span>
+    </div>
+
+  </form>
+
+
+
+</ng-template>
+<!-- templet for share wallet address -->
+<ng-template #walletAddress class="share_modal_content">
+  <div class="modal-header ">
+    <div class="modal-title qrcode_header">Share QR</div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="QrmodalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body qrcode_body ">
+    <div class="form-container">
+      <div class="col-md-12 row">
+        <div class="col-md-2">
+
+        </div>
+        <div class="col-md-8">
+          <div class="col-md-12 row">
+            <div class="col-md-4">
+              <a href="https://mail.google.com" target="_blank">
+                <img class="Shape_qr" src="assets/images/personalwallet/gmail.png" alt="" >
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a href="https://facebook.com" target="_blank">
+                <img class="Shape_qr" src="assets/images/personalwallet/facebook.png" alt="" >
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a href="https://web.whatsapp.com/" target="_blank">
+                <img class="Shape_qr" src="assets/images/personalwallet/whatsapp.png" alt="" >
+              </a>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-2">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- confirm template statts -->
+<ng-template #confirmchecking class="invite succesmodal">
+  <div class="modal-header  border-top3954e5">
+    <div class="modal-title trans-confirm">Sign Transaction Request</div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeApprove()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="info__right__detail_sin">
+    <div class="row transactionRow">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 frm_walt_div">
+        <div class="circle"><img src="/assets/images/personalwallet/rightarrow.svg" alt="" class="rightarow"></div>
+        <label class="frm_walt">From Wallet</label>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <h6 class="transTitle">From Wallet Address</h6>
+          <span class="transValue">{{transactionDetailsStatus.fromAddress}}</span>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <h6 class="transTitle">From Wallet Name</h6>
+          <span class="transValue">{{transactionDetailsStatus.fromWalletName}}</span>
+        </div>
+
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 to_walt_div">
+        <label class="to_walt">To Wallet</label>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <h6 class="transTitle">To Wallet Address</h6>
+          <span class="transValue">{{transactionDetailsStatus.toAddress}}</span>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <h6 class="transTitle">To Wallet Name</h6>
+          <span class="transValue">{{transactionDetailsStatus.toWalletName}}</span>
+        </div>
+
+      </div>
+    </div>
+    <div class="row transactionRow">
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+        <h6 class="Transaction-Amount1">test</h6>
+        <h6 class="Transaction-Amount">Transaction Amount</h6>
+        <h6 class="Transaction-Amount">Network Fee</h6>
+        <h6 class="Transaction-Amount">Fusang Fee ( {{policylist.serviceCharge}}% )</h6>
+
+        <!-- <span class="transValue feeColor">{{showtransactiondetails.amount}}</span> -->
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <div class="seconddiv"><img src="/assets/images/personalwallet/twowayarrow.svg" alt="" class="righlefttarow_sin"></div>
+        <h6 class="BTC_header">BTC</h6>
+        <h6 class="value_disply1">{{transactionDetailsStatus.amount}}</h6>
+        <h6 class="value_disply1">{{transactionDetailsStatus.transactionFee}}</h6>
+        <h6 class="value_disply1">{{transactionDetailsStatus.serviceCharge}}</h6>
+
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <h6 class="BTC_header">USD<span class="mandatory"><img src="/assets/images/personalwallet/information.svg" alt=""
+              class="font_icon"></span></h6>
+        <h6 class="value_disply">{{transactionDetailsStatus.toUsd}}</h6>
+        <h6 class="value_disply">{{transactionDetailsStatus.transactionFeeUsd}}</h6>
+        <h6 class="value_disply">{{transactionDetailsStatus.serviceChargeUsd}}</h6>
+        <!-- <h6 class="transTitle">USD</h6> -->
+        <!-- <span class="transValue feeColor">{{USDAmount}}</span> -->
+        <!-- <div class="help-block2 txtstyle"><span class="strclr">*</span> Indicative Price Only</div> -->
+      </div>
+    </div>
+    <div class="row transactionIDRow">
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <h6 class="Transaction-Amount">Total Amount</h6>
+
+
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <h6 class="Transaction-Amount_sign">{{transactionDetailsStatus.netAmount}}</h6>
+
+
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        <h6 class="Transaction-Amount_sign">${{transactionDetailsStatus.netUsd}}</h6>
+
+
+      </div>
+    </div>
+
+    <!-- <div class="verifier-box">
+      <mat-form-field class="notefield example-half-width">
+        <input matInput placeholder="From Wallet Address" autocomplete="off" name="fromAddress" [(ngModel)]="transactionDetailsStatus.fromAddress"
+          #fromAddress="ngModel" readonly>
+      </mat-form-field>
+      <mat-form-field class="example-half-width">
+          <input matInput placeholder="From Wallet Name" autocomplete="off" name="fromWalletName" [(ngModel)]="transactionDetailsStatus.fromWalletName"
+            #fromWalletName="ngModel" readonly>
+        </mat-form-field>
+    </div>
+    <div class="verifier-box">
+      <mat-form-field class="example-half-width">
+        <input matInput placeholder="To Wallet Address" autocomplete="off" name="toAddress" [(ngModel)]="transactionDetailsStatus.toAddress"
+          #toAddress="ngModel" readonly>
+      </mat-form-field>
+
+      <mat-form-field class="example-half-width ">
+        <input matInput placeholder="To Wallet Name" autocomplete="off" name="toWalletName" [(ngModel)]="transactionDetailsStatus.toWalletName"
+          #toWalletName="ngModel" readonly>
+      </mat-form-field>
+    </div>
+    <div class="verifier-box">
+      <mat-form-field class="example-half-width ">
+        <input matInput placeholder="USD" autocomplete="off" name="USD" [value]='usd' readonly>
+        <div class="help-block3 txtstyle1"><span class="strclr">*</span> Indicative Price Only</div>
+      </mat-form-field>
+
+      <mat-form-field class="example-half-width ">
+        <input matInput placeholder="BTC" autocomplete="off" name="amount" [(ngModel)]="transactionDetailsStatus.amount"
+          #amount="ngModel" readonly>
+      </mat-form-field>
+    </div>
+    <div class="verifier-box">
+      <mat-form-field class="notefield">
+        <input matInput placeholder="Transaction Fee (BTC)" autocomplete="off" name="transactionFee" [(ngModel)]="transactionDetailsStatus.transactionFee"
+          #transactionFee="ngModel" readonly>
+      </mat-form-field>
+    </div>
+    <div class="verifier-box">
+      <mat-form-field class="notefield ">
+        <input matInput placeholder="Note from Initiator" autocomplete="off" name="note" [(ngModel)]="transactionDetailsStatus.note"
+          #amount="ngModel" readonly>
+      </mat-form-field>
+    </div> -->
+    <div class="verifier-box signatory-bg1" *ngIf="!intialtedApprove">
+      <label class="Signature-Status">Initiated By</label>
+      <div>
+        <label class="userclas">
+               {{transactionDetailsStatus.initiatedBy}}
+        </label><br>
+        <label class="Few-of-the-violation"><img *ngIf="transactionDetailsStatus.note" class="ststuscls" src="assets/images/userpolicy/codes.png" alt="">&nbsp;&nbsp;
+          {{transactionDetailsStatus.note}}</label>
+      </div>
+  
+    </div>
+    <div class="verifier-box signatory-bg_sin">
+      <label class="Signature-Status">Signature Status</label>
+      <label style="float: right" class="Approved-text lbl_stas"><span class="txtstlye">{{closedstsudata.length}}</span>
+        out of
+        {{transactionDetailsStatus.signatory.length}} Approved <span class="createdata_sty">{{transactionDetailsStatus.createdDate
+          | date :'dd-MMM-yyyy'}}</span></label>
+      <!-- <label class="Signature-Status">{{transactionDetailsStatus.createdDate | date :'yyyy-MM-dd HH:mm:ss'}}</label> -->
+      <div *ngFor="let item of transactionDetailsStatus.signatory">
+        <label class="userclas" [class.activecls]="item.ticketStatus !== 'Close'">{{item.emailId}}
+          <img *ngIf="item.ticketStatus === 'Close'" class="ststuscls"
+            src="assets/images/userpolicy/success.png" alt="">
+          <img *ngIf="item.ticketStatus === 'Reject'" class="ststuscls" src="assets/images/userpolicy/reject.png" alt="" >
+          <span class="Intiated" *ngIf="transactionDetailsStatus.initiatedBy === item.emailId">Initiated</span>
+        </label><br>
+        <label class="Few-of-the-violation"><img *ngIf="item.note" class="ststuscls" src="assets/images/userpolicy/codes.png" alt="" >&nbsp;&nbsp;
+          {{item.note}}</label>
+      </div>
+
+    </div>
+    <div class="verifier-box">
+      <mat-form-field class="notefield example-half-width">
+        <!-- <input matInput placeholder="Enter Your Notes" autocomplete="off" name="approveVal"  [(ngModel)]="approve" #approveVal = "ngModel" > -->
+        <textarea matInput placeholder="Enter Your Notes" autocomplete="off" name="approveVal" [(ngModel)]="approve"
+          #approveVal="ngModel"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="verifier-box marginleft15">
+
+      <!-- <button class="approve-button" (click)="approvetask()">APPROVE</button>
+      <button class="rejecct-button" (click)="rejecttask()">REJECT</button> -->
+      <button class="approve-button" (click)="authPublic(auth,'Close')">APPROVE</button>
+      <button class="rejecct-button" (click)="authPublic(auth,'Reject')">REJECT</button>
+      <span class="strclr"><img src="/assets/images/personalwallet/information.svg" alt="" class="txxt_icon">Indicative USD
+        price only</span>
+    </div>
+
+
+
+
+  </div>
+
+
+</ng-template>
+<!-- confirm template ends -->
+<!-- Transaction istiation popup starts -->
+<ng-template #successtemplate class="dashbard ">
+
+  <!-- <ng-template  #template class="dashbard "> -->
+  <div class="successpoup">
+    <div class="modal-header">
+
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalrefrence.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body dashbard succesmodal">
+      <div>
+        <div class="form-container">
+          <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+          <img src="/assets/images/userpolicy/transpopup.png" alt="" class="successimg">
+        </div>
+        <div style="text-align:  center">
+          <label class="User-invited-succesf">Are you sure you want to initiate the transaction?</label>
+        </div>
+        <div>
+          <button type="submit" class="invitemoreBtn" (click)="modalrefrence.hide();">CANCEL</button>
+          <!-- <button class="successBtn" aria-label="Close" (click)="sendbtc()">PROCEED</button> -->
+          <button class="successBtn" aria-label="Close" (click)="authPublic(auth,'proceed')">PROCEED</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- Transaction istiation popup ends -->
+<!-- Transaction istiation popup starts -->
+<ng-template #whitelistpop class="dashbard ">
+
+  <!-- <ng-template  #template class="dashbard "> -->
+  <div class="successpoup">
+    <div class="modal-header">
+
+      <button type="button" class="close pull-right" aria-label="Close" (click)="whitelistrefrence.hide()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body dashbard succesmodal">
+      <div>
+        <div class="form-container">
+          <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+          <img src="/assets/images/userpolicy/whitelist.png"  alt="" class="successimg">
+        </div>
+        <div style="text-align:  center;padding-bottom: 10px">
+          <label class="User-invited-succesf">You have not whitelisted any wallet addresses. Would you like to whitelist one now?</label>
+        </div>
+        <div>
+          <button type="submit" class="invitemoreBtn" (click)="whitelistrefrence.hide();">CANCEL</button>
+          <button class="successBtn" aria-label="Close" (click)="whitelist()">PROCEED</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- Transaction istiation popup ends -->
+
+
+<ng-template #transactionDetails>
+  <!-- <div class="modalBorder"> -->
+  <div class="modal-header transactionModel">
+    <h4 class="modal-title pull-left transactionHeader">Transaction Details</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeTransaction()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <!-- <div class="">` -->
+  <div class="transactionIDRow row">
+    <!-- *ngIf="showtransactiondetails.transactionId !== undefined && showtransactiondetails.transactionId !== null" -->
+    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+      <h6 class="Transaction-ID ">Transaction ID</h6>
+    </div>
+    <!-- <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"> <p class="transValueId"><a href="https://vault-node.fusang.co/tx/{{showtransactiondetails.transactionId}}" target="_blank">{{showtransactiondetails.transactionId}}</a></p></div> -->
+    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"> <p class="transValueId"><a href="http://vault-staging-node.fusang.co/tx/{{showtransactiondetails.transactionId}}" target="_blank">{{showtransactiondetails.transactionId}}</a></p></div>
+    <!-- <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9"> <p class="transValueId"><a href="http://testnet-node.fusang.co/tx/{{showtransactiondetails.transactionId}}" target="_blank">{{showtransactiondetails.transactionId}}</a></p></div> -->
+
+  </div>
+
+  <div class="row transactionRow">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 frm_walt_div">
+      <div class="circle"><img src="/assets/images/personalwallet/rightarrow.svg" alt="" class="rightarow"></div>
+      <!-- <label class="frm_walt">From Wallet</label> -->
+      <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="myBtn">
+        <h6 class="transTitle">test-insight</h6>
+        <p class="transValue">test-insight</p>
+      </div> -->
+      <label class="frm_walt">From Wallet</label>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h6 class="transTitle">From Wallet Address</h6>
+        <p class="transValue">{{showtransactiondetails.fromWalletAddress}}</p>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h6 class="transTitle">From Wallet Name</h6>
+        <p class="transValue">{{showtransactiondetails.fromWalletName}}</p>
+      </div>
+
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 to_walt_div">
+        <!-- <label class="frm_walt">From Wallet</label> -->
+        <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="item" #mainScreen>
+          <h6 class="transTitle">Wallet NickName</h6>
+          <p class="transValue">Test</p>
+        </div> -->
+      <label class="to_walt">To Wallet</label>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h6 class="transTitle">To Wallet Address</h6>
+        <p class="transValue">{{showtransactiondetails.toAddress}}</p>
+      </div>
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h6 class="transTitle">To Wallet Name</h6>
+        <p class="transValue">{{showtransactiondetails.toWalletName}}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row transactionRow">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+      <h6 class="Transaction-Amount1">test</h6>
+      <h6 class="Transaction-Amount">Transaction Amount</h6>
+      <h6 class="Transaction-Amount" *ngIf="showtransactiondetails.type === 'Sent'">Network Fee</h6>
+      <h6 class="Transaction-Amount" *ngIf="showtransactiondetails.type === 'Sent'">Fusang Fee (
+        {{showtransactiondetails.transactionPercentage}}% )</h6>
+
+      <!-- <span class="transValue feeColor">{{showtransactiondetails.amount}}</span> -->
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <div class="seconddiv" *ngIf="showtransactiondetails.type === 'Sent'"><img src="/assets/images/personalwallet/twowayarrow.svg" alt=""
+          class="righlefttarow"></div>
+      <div class="recived_arrow" *ngIf="showtransactiondetails.type !== 'Sent'"><img src="/assets/images/personalwallet/twowayarrow.svg" alt=""
+          class="righlefttarow"></div>
+      <h6 class="BTC_header">BTC</h6>
+      <h6 class="value_disply1">{{showtransactiondetails.amount}}</h6>
+      <h6 class="value_disply1" *ngIf="showtransactiondetails.type === 'Sent'">{{showtransactiondetails.transactionFee}}</h6>
+      <h6 class="value_disply1" *ngIf="showtransactiondetails.type === 'Sent'">{{showtransactiondetails.serviceCharge}}</h6>
+
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <h6 class="BTC_header">USD</h6>
+      <h6 class="value_disply">{{showtransactiondetails.toUsd}}</h6>
+      <h6 class="value_disply" *ngIf="showtransactiondetails.type === 'Sent'">{{showtransactiondetails.transactionFeeUsd}}</h6>
+
+      <h6 class="value_disply" *ngIf="showtransactiondetails.type === 'Sent'">{{showtransactiondetails.serviceChargeUsd}}</h6>
+      <!-- <h6 class="transTitle">USD</h6> -->
+      <!-- <span class="transValue feeColor">{{USDAmount}}</span> -->
+      <!-- <div class="help-block2 txtstyle"><span class="strclr">*</span> Indicative Price Only</div> -->
+    </div>
+  </div>
+  <div class="row transactionIDRow" *ngIf="showtransactiondetails.type === 'Sent'">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <h6 class="Transaction-Amount">Total Amount</h6>
+
+
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <h6 class="Transaction-Amount22">{{showtransactiondetails.netAmount}}</h6>
+
+
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+      <h6 class="Transaction-Amount22">${{showtransactiondetails.netUsd}}</h6>
+
+
+    </div>
+  </div>
+  <!-- <div class="row transactionRow">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+          <h6 class="transTitle">Status</h6>
+          <span class="transValue">{{showtransactiondetails.transactionStatus}}</span>
+        </div>
+      </div> -->
+  <!-- <div class="insightsDiv">
+        <a [class.insightdisable]="disableInsight===true" href="https://test-insight.bitpay.com/tx/{{showtransactiondetails.transactionId}}"
+          target="_blank" class="insights">INSIGHTS</a>
+      </div> -->
+  <!-- </div> -->
+  <div class="verifier-box signatory-bg1" *ngIf="!InitiatedBy && showtransactiondetails.type === 'Sent'">
+    <label class="Signature-Status">Initiated By</label>
+    <div>
+      <label class="userclas">
+             {{showtransactiondetails.emailId}}
+      </label><br>
+      <label class="Few-of-the-violation"><img *ngIf="showtransactiondetails.note" class="ststuscls" src="assets/images/userpolicy/codes.png" alt="">&nbsp;&nbsp;
+        {{showtransactiondetails.note}}</label>
+    </div>
+
+  </div>
+  <div class="verifier-box signatory-bg1" *ngIf="showtransactiondetails.type === 'Sent'">
+    <label class="Signature-Status">Signature Status</label>
+    <label style="float: right" class="Approved-text_trns"><span class="txtstlye"> {{closedsts.length}}</span> out of
+      {{showtransactiondetails.signatory.length}} Approved <span class="createdata_sty_trns">{{showtransactiondetails.createdDate
+        | date :'dd-MMM-yyyy'}}</span></label>
+    <div *ngFor="let item of showtransactiondetails.signatory">
+      <label class="userclas" [class.activecls]="item.ticketStatus !== 'Close'">{{item.emailId}}
+        <img *ngIf="item.ticketStatus === 'Close'" class="ststuscls"
+          src="assets/images/userpolicy/success.png" alt="">
+        <img *ngIf="item.ticketStatus === 'Reject'" class="ststuscls" src="assets/images/userpolicy/reject.png" alt="">
+        <span class="Intiated" *ngIf="showtransactiondetails.emailId === item.emailId">Initiated</span>
+      </label><br>
+      <label class="Few-of-the-violation"><img *ngIf="item.note" class="ststuscls" src="assets/images/userpolicy/codes.png" alt="" >&nbsp;&nbsp;
+        {{item.note}}</label>
+    </div>
+
+  </div>
+  
+  <!-- </div> -->
+</ng-template>
+<ng-template #auth class="invite succesmodal">
+  <div class="invitepopup">
+    <div class="modal-header">
+      <div class="modal-header-wrapper">
+        <div class="modal-header-box font24 khulaSemiBold">Verification</div>
+        <button type="button" class="close font24 pull-right" aria-label="Close" (click)="CloseAuth()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body invite">
+      <!-- <div class="invite-tabs">
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="googleAuth" (click)="showgooleAuth()"></div> -->
+      <!-- <div class="Information-box font14 khulaRegular tabDesabled" [class.activeTab]="Yubikey" (click)="showyubikey()">Yubikey</div> -->
+      <!-- </div> -->
+      <div class="basic-info-wrapper">
+        <div class="form-wrapper">
+          <form class="example-form" (ngSubmit)="f.form.valid && validate(bittransfer,Policyviolation)" #f="ngForm"
+            novalidate>
+            <div class="inner-form">
+              <div class="modal-header-box font18 khulaSemiBold auth-headding">Google Authenticator</div>
+              <mat-form-field class="example-half-width">
+                <input matInput placeholder="Enter your Code" (keypress)="numberOnly($event)" required [(ngModel)]="authmodel.googleCode"
+                  name="authcode" autocomplete="off" maxlength="6" (ngModelChange)="vcValidation($event)">
+              </mat-form-field>
+            </div>
+            <div class="linebottom"></div>
+            <button type="submit" class="btn btn-orange_auth" [disabled]="!verificationCodeValid">Verify</button>
+          </form>
+        </div>
+      </div>
+      <div class="basic-info-wrapper" *ngIf="Yubikey">
+        <div class="form-wrapper">
+          <form class="example-form" #f="ngForm" novalidate>
+            <div class="inner-form">
+              <div class="modal-header-box font18 khulaSemiBold auth-headding">Yubikey</div>
+              <div>
+                <button mat-raised-button class="yubi-btn-outer"><img src="/assets/images/lockedyubi.svg" alt="" ></button>
+                <span class="yubi-btn-text khulaRegular">Waiting for yubikey</span>
+              </div>
+            </div>
+          </form>
+          <div class="linebottom"></div>
+          <button class="btn-orange">Verify</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #walletPolicy class="invite succesmodal">
+  <div class="modal-header ">
+    <div class="modal-header-box font24 khulaSemiBold polcyhding">Upgrade Wallet</div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="walletpolicyRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="row">
+    <div class="col-md-4" id="secureStorage">
+      <div class="cardstlye">
+        <div class="col-md-12 row securestorage-image">
+          <div class="headertext row center">
+            <span>SECURE STORAGE</span>
+            <img src="./assets/images/userpolicy/information.png" alt="" class="information">
+            <!-- <div class="type-tooltip">The Intellectual Property disclosure will inform users that the contents, logo
+              and other visual media you.</div> -->
+          </div>
+          <div class="col-md-12 row">
+            <img src="./assets/images/userpolicy/securestorage.png" alt="" class="database">
+          </div>
+        </div>
+        <div class="col-md-12 row thrddivstyle">
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction
+              Hours</label>
+            <label class="datastyle">{{secureStorage['rules'].transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{secureStorage.transactionTimeEnd}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/ip-address.png" alt="" class="editicon">&nbsp;Maximum
+              allowed IPs</label>
+            <label class="datastyle">{{secureStorage['rules'].maximumAllowedIp}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum
+              allowed wallets</label>
+            <label class="datastyle">{{secureStorage['rules'].maximumAllowedWallets}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-volume.png" alt=""  class="editicon">&nbsp;Transaction
+              Max Allowed Volume Cap</label>
+            <label class="datastyle">{{secureStorage['rules'].transactionVolumeCap}}%</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/frequency-cap.png" alt="" class="editicon">&nbsp;Maximum
+              Allowed Frequency Cap </label>
+            <label class="datastyle">{{secureStorage['rules'].transactionLimit}} &nbsp; Per day</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction
+              Mimimum Balance </label>
+            <label class="datastyle">{{secureStorage['rules'].minimumBalance}}%</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction
+              Unit of Measure </label>
+            <label class="datastyle">Per&nbsp;{{secureStorage['rules'].transactionUnitOfMeasure}}&nbsp;mins</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 row selct-type">
+        <button type="submit" class="selectbtn" (click)="gotosignup(secureStorage.id)">SELECT</button>
+      </div>
+    </div>
+    <div class="col-md-4" id="deepStorage">
+      <div class="cardstlye">
+        <div class="col-md-12 row  deepstorage-image">
+          <div class="headertext row center">
+            <span> DEEP STORAGE</span>
+            <img src="./assets/images/userpolicy/information.png" alt="" class="information">
+            <!-- <div class="type-tooltip">The Intellectual Property disclosure will inform users that the contents, logo
+              and other visual media you.</div> -->
+          </div>
+          <div class="col-md-12 row">
+            <img src="./assets/images/userpolicy/deep-storage.png" alt="" class="database">
+          </div>
+        </div>
+        <div class="col-md-12 row thrddivstyle">
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction
+              Hours</label>
+            <label class="datastyle">{{deepStorage['rules'].transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{deepStorage.transactionTimeEnd}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/ip-address.png" alt="" class="editicon">&nbsp;Maximum
+              allowed IPs</label>
+            <label class="datastyle">{{deepStorage['rules'].maximumAllowedIp}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum
+              allowed wallets</label>
+            <label class="datastyle">{{deepStorage['rules'].maximumAllowedWallets}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-volume.png" alt="" class="editicon">&nbsp;Transaction
+              Max Allowed Volume Cap</label>
+            <label class="datastyle">{{deepStorage['rules'].transactionVolumeCap}} %</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/frequency-cap.png" alt="" class="editicon">&nbsp;Maximum
+              Allowed Frequency Cap </label>
+            <label class="datastyle">{{deepStorage['rules'].transactionLimit}}&nbsp; Per day </label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction
+              Mimimum Balance </label>
+            <label class="datastyle">{{deepStorage['rules'].minimumBalance}}%</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction
+              Unit of Measure </label>
+            <label class="datastyle">Per&nbsp;{{deepStorage['rules'].transactionUnitOfMeasure}}&nbsp;mins</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 row selct-type">
+        <button type="submit" class="selectbtn" (click)="gotosignup(deepStorage.id)">SELECT</button>
+      </div>
+    </div>
+    <div class="col-md-4" id="highFrequency">
+      <div class="cardstlye">
+        <div class=" col-md-12 row example-header-image">
+          <div class="headertext row center">
+            <span>HIGH FREQUENCY</span>
+            <img src="./assets/images/userpolicy/information.png" alt="" class="information">
+            <!-- <div class="type-tooltip">The Intellectual Property disclosure will inform users that the contents, logo
+              and other visual media you.</div> -->
+          </div>
+          <div class="col-md-12 row">
+            <img src="./assets/images/userpolicy/highfrequency.png" alt="" class="database">
+          </div>
+        </div>
+        <div class="col-md-12 row thrddivstyle">
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction
+              Hours</label>
+            <label class="datastyle">{{highFrequency['rules'].transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{highFrequency.transactionTimeEnd}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/ip-address.png" alt="" class="editicon">&nbsp;Maximum
+              allowed IPs</label>
+            <label class="datastyle">{{highFrequency['rules'].maximumAllowedIp}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum
+              allowed wallets</label>
+            <label class="datastyle">{{highFrequency['rules'].maximumAllowedWallets}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/transaction-volume.png" alt="" class="editicon">&nbsp;Transaction
+              Max Allowed Volume Cap</label>
+            <label class="datastyle">{{highFrequency['rules'].transactionVolumeCap}}%</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/frequency-cap.png" alt=""  class="editicon">&nbsp;Maximum
+              Allowed Frequency Cap </label>
+            <label class="datastyle">{{highFrequency['rules'].transactionLimit}}</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction
+              Mimimum Balance </label>
+            <label class="datastyle">{{highFrequency['rules'].minimumBalance}}%</label>
+          </div>
+          <div class="col-md-12 row rowclss">
+            <label class="text-style-1"><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction
+              Unit of Measure </label>
+            <label class="datastyle">Per&nbsp; {{highFrequency['rules'].transactionUnitOfMeasure}}&nbsp; mins</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 row selct-type">
+        <button type="submit" class="selectbtn" (click)="gotosignup(highFrequency.id)">SELECT</button>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+<ng-template #Policyviolation>
+  <div class="modal-header ">
+    <div class="modal-title policyhdr">Policy Violation</div>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefpolicyvoilation.hide()">
+      <span aria-hidden="true">
+        <img class="closeimg" src="/assets/images/close.png" alt="">
+      </span>
+    </button>
+  </div>
+  <div class="">
+    <mat-expansion-panel class="" [expanded]="true" *ngFor="let policylist of ploicyinsightDetails let j=index">
+      <!--  -->
+      <mat-expansion-panel-header class="panal-layout openHeaderpolicy ">
+        <mat-panel-title class="khulaSemiBold ">
+          <!-- <img  src="./assets/images/userpolicy/frequency-cap.png" class="editicon">
+                <img src="./assets/images/userpolicy/frequency-cap.png" class="editicon">
+                <img src="./assets/images/userpolicy/frequency-cap.png" class="editicon">
+                <img src="./assets/images/userpolicy/frequency-cap.png" class="editicon">
+                <img src="./assets/images/userpolicy/frequency-cap.png" class="editicon"> -->
+          {{policylist.policyViolationKey}} violation
+
+        </mat-panel-title>
+
+
+      </mat-expansion-panel-header>
+      <span class="errtext">{{policylist.message}}</span>
+      <div class="verifier-box divstyl ">
+        <mat-form-field class="example-half-width" *ngIf="policylist.policyViolationKey !== 'walletAddressWhitelist'">
+          <input matInput placeholder="Actual Value" autocomplete="off" name="transactionTimeStart" [value]="policylist.expectedValue"
+            [disabled]="true">
+
+        </mat-form-field>
+
+        <mat-form-field class="example-half-width ">
+          <input matInput placeholder="Violated Value" autocomplete="off" name="transactionTimeEnd" [value]="policylist.actualValue"
+            [disabled]="true">
+
+        </mat-form-field>
+      </div>
+
+
+    </mat-expansion-panel>
+    <mat-action-row>
+
+      <button class="cancel khulaSemiBold" (click)="modalRefpolicyvoilation.hide()">CANCEL</button>
+      <button class="btn sub-btn-info" (click)="newTransaction(bittransfer,whitelistpop)">NEW TRANSACTION</button>
+
+    </mat-action-row>
+
+
+  </div>
+</ng-template>
+<ng-template #wallettemplate class="dashbard ">
+
+  <!-- <ng-template  #template class="dashbard "> -->
+  <div class="successpoup">
+    <div class="modal-header">
+
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefwallet.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body dashbard succesmodal">
+      <div>
+        <div class="form-container">
+          <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+          <img src="/assets/images/personalwallet/success.svg" alt="" class="successimg">
+        </div>
+        <div style="text-align:  center">
+          <label class="User-invited-succesf">Are you sure you want to update wallet?</label>
+        </div>
+        <div>
+          <button type="submit" class="invitemoreBtn" (click)="modalRefwallet.hide();">CANCEL</button>
+          <!-- <button class="successBtn" aria-label="Close" (click)="sendbtc()">PROCEED</button> -->
+          <button class="successBtn" aria-label="Close" (click)="authPublic(auth,'UpdateWallet'); modalRefwallet.hide()">CONFIRM</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<ng-template #walletfreeztemplate class="dashbard ">
+
+  <!-- <ng-template  #template class="dashbard "> -->
+  <div class="successpoup">
+    <div class="modal-header">
+
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRefwalletfreez.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body dashbard succesmodal">
+      <div>
+        <div class="form-container">
+          <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+          <img src="/assets/images/personalwallet/success.svg" alt="" class="successimg">
+        </div>
+        <div style="text-align:  center" *ngIf="currWalletStatus ===  'Completed'">
+          <label class="User-invited-succesf">Are you sure you want to freeze the wallet?</label>
+        </div>
+        <div style="text-align:  center" *ngIf="currWalletStatus ===  'Freezed'">
+          <label class="User-invited-succesf">Are you sure you want to unfreeze the wallet?</label>
+        </div>
+        <div>
+          <button type="submit" class="invitemoreBtn" (click)="modalRefwalletfreez.hide();">CANCEL</button>
+          <!-- <button class="successBtn" aria-label="Close" (click)="sendbtc()">PROCEED</button> -->
+          <button *ngIf="currWalletStatus ===  'Freezed'" class="successBtn" aria-label="Close" (click)="authPublic(auth, 'unFreeze'); modalRefwalletfreez.hide()">CONFIRM</button>
+          <button *ngIf="currWalletStatus ===  'Completed'" class="successBtn" aria-label="Close" (click)="authPublic(auth, 'Freeze' ); modalRefwalletfreez.hide()">CONFIRM</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

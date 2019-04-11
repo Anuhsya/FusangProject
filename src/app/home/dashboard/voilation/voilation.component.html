@@ -1,0 +1,311 @@
+
+<div class="onboardflow">
+   
+
+  <!-- <div id="mySidebar" class="sidebar" [@changeDivSize]=currentState>
+    <div class="closeDiv">
+        <img class="close" src="../../../assets/images/cancel-4.svg" alt="" title="close" (click)="closeNav()">
+    </div>
+    
+    <pre class="filters">Filters</pre>
+     
+    <div class="content">
+     
+        <select class="select-dropdown filtr_styl" name="userValue" [(ngModel)]="userValue" (change)="SelectUsers(userValue)">
+          <option disabled value= 'null' [selected] = "true">user</option>
+          <option *ngFor="let use of uList" value="{{use.name}}">{{use.name}}</option>
+        </select>
+
+        <select class="select-dropdown filtr_styl" name="walletValue" [(ngModel)]="walletValue" (change)="SelectWallet(walletValue)">
+            <option disabled value= 'null' [selected] = "true">Wallet Name</option>
+            <option *ngFor="let wall of walletList" value="{{wall.id}}">{{wall.name}}</option>
+        </select>
+
+        <select class="select-dropdown filtr_styl" name="polisyValue" [(ngModel)]="polisyValue" (change)="SelectVoilation(polisyValue)">
+            <option disabled value= 'null' [selected] = "true">Polisy Voilated</option>
+            <option *ngFor="let poll of voilationList" value="{{poll.id}}">{{poll.name}}</option>
+        </select>
+
+
+            
+         <div>
+           <input class="select-dropdown filtr_styl" type="text" 
+              ngxDaterangepickerMd 
+              timePicker="true" 
+              timePicker24Hour="true"
+              startKey="start" endKey="end"
+              autocomplete="off" 
+              opens = "left"
+              [ranges]="ranges" 
+              [showCustomRangeLabel]="true" 
+              [(ngModel)]="selected" 
+              placeholder="Select Date Range" 
+              name="selected"  
+              (datesUpdated)="datesUpdated($event)">
+            
+            <img class="calImg" src="../../../assets/images/calendar.svg" alt="">
+          </div> 
+
+        </div>
+      
+      <div class="butto">
+        <div><button id="userPopup" (click)="applyFilter()" class="commonButton fltr_btn">APPLY FILTER</button></div>
+        <div><button class="clear_btn" (click)="clear()">Clear</button></div>
+    </div> 
+      
+     </div>
+   -->
+
+
+    <div id="mySidebar" class="sidebar" *ngIf="opened" [@changeDivSize]="opened">
+      <div class="sidebarbody">
+        <div class="closediv">
+          <img class="close" src="../../../assets/images/cancel-4.svg" alt="" title="close" (click)="closeNav()">
+        </div>
+
+        <div >
+          <h1 class="ftitle">Filters</h1>
+        </div>
+        <div class="seleinfo">
+
+          <select class="select-dropdown filtr_styl" name="userValue" [(ngModel)]="userValue" (ngModelChange)="SelectUsers(userValue)" [disabled]="typeValue === '0'">
+              <option value= 'null' [selected] = "true">All-User</option>
+            <option *ngFor="let use of walletUserLlist" value="{{use.id}}">{{use.name}}</option>
+          </select>
+  
+          <select class="select-dropdown filtr_styl" name="walletValue" [(ngModel)]="walletValue" (ngModelChange)="SelectWallet(walletValue)" [disabled]="typeValue === '0'">
+              <option value= 'null' [selected] = "true">All-WalletName</option>
+              <option *ngFor="let wall of walletNameList" value="{{wall.id}}">{{wall.walletName}}</option>
+          </select>
+  
+          <select class="select-dropdown filtr_styl" name="policyValue" [(ngModel)]="policyValue" (ngModelChange)="SelectVoilation(policyValue)">
+              <option value= 'null' [selected] = "true">All-PolicyViolated</option>
+              <option *ngFor="let poll of polvoi" value="{{poll}}">{{poll}}</option>
+          </select>
+  
+  
+              
+           <div class="inputdiv">
+             <input class="select-dropdown filtr_styl" type="text" 
+                ngxDaterangepickerMd 
+                timePicker="true" 
+                timePicker24Hour="true"
+                startKey="start" endKey="end"
+                autocomplete="off" 
+                opens = "right"
+                [ranges]="ranges" 
+                [showCustomRangeLabel]="true" 
+                [(ngModel)]="selected" 
+                placeholder="Select Date Range" 
+                name="selected"  
+                (datesUpdated)="datesUpdated($event)">
+              
+              <!-- <img class="calImg" src="../../../assets/images/calendar.svg" alt=""> -->
+            </div> 
+          </div>
+
+          <div class="butto">
+            <div><button id="userPopup" (click)="applyFilter()" class="commonButton fltr_btn">APPLY FILTER</button></div>
+            <div><button class="clear_btn" (click)="clear()">Clear</button></div>
+          </div> 
+      </div>
+   </div>
+
+
+
+
+
+    
+   <div class="row ">
+        <div class="col-lg-9 col-sm-9 col-xl-9 col-md-9 "> 
+            <p class="hdr_text">
+                Violation
+            </p>
+        </div>
+
+        <div class="col-lg-3 col-sm-3 col-xl-3 col-md-3 "> 
+
+          
+            <select class="select-dropdown filtr_styl1" name="typeValue" [(ngModel)]="typeValue" (change)="SelectClient(typeValue)">
+              <option value="0" [selected] = "true">All Client</option>
+              <option *ngFor="let role of clientList" value="{{role.id}}">{{role.clientName}}</option>
+            </select>
+
+            <img class="ac-sideclick" src="../../../assets/images/group-14.svg" alt="" title="Filter" (click)="openNav()">
+        
+        </div>
+    </div>
+  <!-- <p class="sub_hdr_text">List of all violation irrespective of wallets and clients. Use the filter to view the violation that is required</p> -->
+
+ 
+ 
+ 
+ 
+ 
+  <!-- <section class="sctin_styl">
+      <select class="select-dropdown filtr_styl" name="typeValue" [(ngModel)]="typeValue" (change)="SelectClient(typeValue)">
+        <option disabled value= 'null' [selected] = "true">Select Client</option>
+        <option *ngFor="let role of clientList" value="{{role.id}}">{{role.clientName}}</option>
+      </select>
+
+      <select class="select-dropdown filtr_styl" name="userValue" [(ngModel)]="userValue" (change)="SelectUsers(userValue)">
+        <option disabled value= 'null' [selected] = "true">user</option>
+        <option *ngFor="let use of uList" value="{{use.name}}">{{use.name}}</option>
+      </select>
+
+      <select class="select-dropdown filtr_styl" name="walletValue" [(ngModel)]="walletValue" (change)="SelectWallet(walletValue)">
+          <option disabled value= 'null' [selected] = "true">Wallet Name</option>
+          <option *ngFor="let wall of walletList" value="{{wall.id}}">{{wall.name}}</option>
+      </select>
+
+      <select class="select-dropdown filtr_styl" name="polisyValue" [(ngModel)]="polisyValue" (change)="SelectVoilation(polisyValue)">
+          <option disabled value= 'null' [selected] = "true">Polisy Voilated</option>
+          <option *ngFor="let poll of voilationList" value="{{poll.id}}">{{poll.name}}</option>
+      </select>
+
+
+      <span>
+          
+        <input class="dateInput" type="text" 
+            ngxDaterangepickerMd 
+            timePicker="true" 
+            timePicker24Hour="true"
+            startKey="start" endKey="end"
+            autocomplete="off" 
+            [ranges]="ranges" 
+            [showCustomRangeLabel]="true" 
+            [(ngModel)]="selected" 
+            placeholder="Select Date Range" 
+            name="selected"  
+            (datesUpdated)="datesUpdated($event)">
+          
+          <img class="calImg" src="../../../assets/images/calendar.svg" alt="">
+
+      </span>
+      
+      <button id="userPopup" (click)="applyFilter()" class="commonButton fltr_btn">APPLY FILTER</button>
+  </section> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+  <div class="filterBar">
+      <section class="sctin_styl">
+         <div class="row ">
+          <div class="col-lg-9 col-sm-9 col-xl-9 col-md-9 "> 
+            <select class="select-dropdown filtr_styl" name="typeValue" [(ngModel)]="typeValue" (change)="SelectClient(typeValue)">
+              <option disabled value= 'null' [selected] = "true">Select Client</option>
+              <option *ngFor="let role of clientList" value="{{role.id}}">{{role.clientName}}</option>
+            </select>
+          </div>
+      
+        </div>
+
+          </section>
+
+            <select class="select-dropdown filtr_styl" name="userValue" [(ngModel)]="userValue" (change)="SelectUsers(userValue)">
+              <option disabled value= 'null' [selected] = "true">user</option>
+              <option *ngFor="let use of uList" value="{{use.name}}">{{use.name}}</option>
+            </select>
+
+            <select class="select-dropdown filtr_styl" name="walletValue" [(ngModel)]="walletValue" (change)="SelectWallet(walletValue)">
+                <option disabled value= 'null' [selected] = "true">Wallet Name</option>
+                <option *ngFor="let wall of walletList" value="{{wall.id}}">{{wall.name}}</option>
+            </select>
+
+            <select class="select-dropdown filtr_styl" name="polisyValue" [(ngModel)]="polisyValue" (change)="SelectVoilation(polisyValue)">
+                <option disabled value= 'null' [selected] = "true">Polisy Voilated</option>
+                <option *ngFor="let poll of voilationList" value="{{poll.id}}">{{poll.name}}</option>
+            </select>
+
+
+            <span>
+                
+              <input class="dateInput" type="text" 
+                  ngxDaterangepickerMd 
+                  timePicker="true" 
+                  timePicker24Hour="true"
+                  startKey="start" endKey="end"
+                  autocomplete="off" 
+                  [ranges]="ranges" 
+                  [showCustomRangeLabel]="true" 
+                  [(ngModel)]="selected" 
+                  placeholder="Select Date Range" 
+                  name="selected"  
+                  (datesUpdated)="datesUpdated($event)">
+                
+                <img class="calImg" src="../../../assets/images/calendar.svg" alt="">
+
+            </span>
+        </div>
+        <div class="col-lg-3 col-sm-3 col-xl-3 col-md-3">
+          <button id="userPopup" (click)="applyFilter()" class="commonButton fltr_btn">APPLY FILTER</button>
+          <img class="ac-clearFilter" src="../../../assets/images/clear.svg" alt="" title="clear filter" (click)="clear()">
+        </div>  -->
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div>
+              <div *ngIf="totalItem !== 0">
+                  <table mat-table [dataSource]="voilationList" matSort class="vtab">
+                    <ng-container *ngFor="let column of newColumns" matColumnDef="{{column.value}}" >
+                      <th  mat-header-cell *matHeaderCellDef mat-sort-header>{{column.name}}</th>
+                      <td  mat-cell *matCellDef="let element">
+                        <span *ngIf="column.value == 'actualValue'" class="voilatedText">{{element[column.value]}}</span> 
+                        <span *ngIf="column.value == 'expectedValue'" tooltip="{{element[column.value]}}" ngxClipboard [cbContent]="element[column.value]" (click)="copy()">{{element[column.value] | slice:0:34}}<span *ngIf="element[column.value].length > 34">...</span></span> 
+                        <span *ngIf="column.value == 'createdDate'">{{element[column.value] | date :'yyyy-MM-dd HH:mm:ss'}}</span> 
+                        <span *ngIf="column.value != 'actualValue' && column.value != 'createdDate' && column.value != 'expectedValue'">{{element[column.value]}}</span> </td>
+                    </ng-container>
+
+                    <tr  mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr class="cont" mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                  </table>
+              </div>
+                  
+              <div class="wellcome-msg" *ngIf="totalItem === 0">
+                <h4 class="khulaLite">No results found</h4>
+              </div>
+              
+             
+              <div class="row ">
+                  <div class="col-lg-3 col-sm-3 col-xl-3 col-md-3 "> 
+                     <button *ngIf = "totalItem !== 0" class="exportexcl" (click)="exporttoExcel()"><img class="dwnlod" src="../../../assets/images/excel.svg" alt="">Export Excel</button>
+                  </div>
+
+                  <div class="col-lg-9 col-sm-9 col-xl-9 col-md-9 "> 
+                    <pagination *ngIf = "totalItem !== 0" [boundaryLinks]="true" [totalItems]="totalItem" [itemsPerPage]="20" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"
+                    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                    </pagination>
+                  </div>
+            </div>
+          </div>
+</div>

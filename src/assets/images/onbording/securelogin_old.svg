@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="261" height="159" viewBox="0 0 261 159">
+    <defs>
+        <rect id="a" width="260.458" height="148.027" rx="2"/>
+        <rect id="c" width="260.458" height="148.027" rx="2"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <rect width="260.458" height="148.027" fill="#62B8B0" rx="2" transform="translate(.393 .171)"/>
+        <g transform="translate(.393 .171)">
+            <mask id="b" fill="#fff">
+                <use xlink:href="#a"/>
+            </mask>
+            <g mask="url(#b)">
+                <path fill="#000" d="M-51.408-36.753L320.824 195l-404.242-93.327 32.01-138.426z"/>
+                <path fill="#64C0B7" d="M-51.408-36.753L320.824 195l-404.242-93.327 32.01-138.426z"/>
+            </g>
+        </g>
+        <g transform="translate(.393 .171)">
+            <mask id="d" fill="#fff">
+                <use xlink:href="#c"/>
+            </mask>
+            <g mask="url(#d)">
+                <path fill="#000" d="M-20.067 69.178l319.457 98.19H-20.107l.04-98.189z"/>
+                <path fill="#6AC6BD" d="M-20.067 69.178l319.457 98.19H-20.107l.04-98.189z"/>
+            </g>
+        </g>
+        <path fill="#6AC6BD" fill-rule="nonzero" d="M131 159l-8-11h16z"/>
+    </g>
+</svg>

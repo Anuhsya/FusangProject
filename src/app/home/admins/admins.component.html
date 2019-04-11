@@ -1,0 +1,179 @@
+<div class="wholeTableSection">
+  <div class="row tableRow">
+    <div class="col-lg-3 col-md-3 col-sm-3 paddingZero">
+      <h1 class="headingList" >Fusang Admins</h1>
+      <h4 class="tableHeading">List of all Fusang Admins</h4>
+    </div>
+    <div class="col-lg-9 col-md-9 col-sm-9 paddingZero">
+        <div class="tab-btn khulaSemiBold"><button class="user-btn" [class.tabbackground]="tabValue=='Completed'" (click)="tabClick('Completed')">Completed</button><button class="user-btn" [class.tabbackground]="tabValue=='Onboarding'" (click)="tabClick('Onboarding')">Pending</button></div>
+      <div class="row filterDiv">
+          <img class="ac-clearFilter" src="../../../assets/images/Refresh.svg" alt="" title="Refresh" (click)="refresh()">
+        <span class="search" *ngIf="showSearch">
+        <input placeholder="Search based on Username" class="search-input" [(ngModel)]="searchValue" (keydown.enter)="searchUser(searchValue)">
+        <img class="searchImg" title="Search" src="./assets/images/search.svg" alt="">
+        <img class="searchImg searchImg1" src="./assets/images/search-close.svg" title="Clear Filter" (click)="clearfilter()" alt="">
+      </span>
+      <img src="./assets/images/search-icon.svg" class="searchIcon" *ngIf="!showSearch" (click)="searchClick()" alt="" title="Search">
+
+      
+      <span class="search" *ngIf="workflowData==='ticket'">
+      <p-calendar #calendar [(ngModel)]="rangeDates" selectionMode="range" (onClose)="datePickerClose(rangeDates)" (onSelect)="selectDate(rangeDates)" [readonlyInput]="true" placeholder="Select date range"></p-calendar>
+      <img class="calImg" src="./assets/images/calendar.svg" alt="">
+    </span>
+    <select class="select-dropdown" [(ngModel)]="typeValue" (change)="statusChange(typeValue)" *ngIf="workflowData==='ticket'">
+      <option  value='null' [selected] = "true">All-Type</option>
+    <option *ngFor="let typeList of typelist" value="{{typeList}}">{{typeList}}</option>
+    </select>
+
+    <select class="select-dropdown" name="userStatusValue" [(ngModel)]="statusValue" (change)="statusChange(statusValue)">
+            <option [selected] = "true" value='null'>All-Status</option>
+          <option *ngFor="let StatusList of statuslist" value="{{StatusList}}">{{StatusList}}</option>
+    </select>
+
+        <select class="select-dropdown" name="roleValue" [(ngModel)]="userRole" (change)="roleChange(userRole)">
+            <option value='null' [selected] = "true">All-Role</option>
+            <option *ngFor="let role of rolelist" value="{{role}}">{{role}}</option>
+          </select>
+          <!-- <button class="commonButton" (click)="clear()">Clear Filter</button> -->
+          <img class="ac-clearFilter" src="../../../assets/images/clear.svg" alt="" title="clear filter" (click)="clear()">
+          <!-- <button class="commonButton invite" (click)="inviteCustomer()">Invite</button> -->
+        <button id="userPopup" (click)="inviteAdmins(invitetemplate)" class="commonButton invite">INVITE</button>
+      
+      </div>
+      </div>
+  </div>
+    <div [hidden]="isHidden && NoDataFound === true">
+      <app-table-component *ngIf="tabValue=='Completed'" [workflowData]="userValue" [userStatus]="tabValue"></app-table-component>
+      <app-table-component *ngIf="tabValue=='Onboarding'" [workflowData]="userValue" [userStatus]="Onboarding"></app-table-component>
+    
+      <pagination [boundaryLinks]="true" [totalItems]="totalItem" [itemsPerPage]="10" (pageChanged)="pageChanged($event)" [(ngModel)]="pageIndexModel"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+    </div>
+    <div class=" wellcome-msg" *ngIf="filterSearching === true && NoDataFound === true"> 
+        <h4 class="khulaLite" >No results found </h4>      
+    </div>
+
+    <div class=" wellcome-msg" *ngIf="NoDataFound === true && filterSearching === false">
+      <h4 class="khulaLite" > No Admins to be Displayed </h4>     
+   </div>
+    
+</div>
+  <ng-template #invitetemplate class="invite succesmodal">
+      <div class="invitepopup">
+        <div class="modal-header">
+          <div class="modal-header-wrapper">
+              <div class="modal-header-box font24 khulaSemiBold">Invite Fusang Admin</div>
+              <button type="button" class="close font24 pull-right" aria-label="Close" (click)="clearAdmin()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        </div>
+        <div class="modal-body invite">
+          <div class="invite-tabs">
+            <div class="Information-box font14 khulaRegular" [class.activeTab]="basic" (click)="showbasic()">Basic Information</div>
+            <div class="Information-box font14 khulaRegular" [class.activeTab]="assignroles" (click)="showassignroles()" [class.tabDesabled]="!basicForm.valid">Assign Roles</div>
+        </div>
+        <div class="basic-info-wrapper" *ngIf="basic">
+          <div class="form-wrapper">
+              <form class="example-form" [formGroup]="basicForm" (ngSubmit)="nexttab()" #f="ngForm" novalidate>
+                <div class="inner-form">
+                    <mat-form-field class="example-half-width">
+                        <input matInput placeholder="First Name" required formControlName="firstName"  name="firstName" autocomplete="off" >
+                        <mat-error *ngIf="basicForm.get('firstName').touched && basicForm.get('firstName').invalid">
+                            First Name is <strong>required</strong>
+                        </mat-error>
+                      </mat-form-field>
+                    
+                      <mat-form-field class="example-half-width">
+                          <input matInput placeholder="Last Name" required formControlName="lastName"   name="laststName" autocomplete="off">
+                          <mat-error *ngIf="basicForm.get('lastName').touched && basicForm.get('lastName').invalid">
+                              Last Name is <strong>required</strong>
+                          </mat-error>
+                      </mat-form-field>
+                      <!-- <div class="flex-wrap"> -->
+                        <mat-form-field class="example-half-width">
+                          <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput  [matAutocomplete]="auto" (ngModelChange)="changeCountry()" formControlName="country"><span></span>
+                          <mat-error *ngIf="basicForm.get('country').touched && basicForm.get('country').invalid">
+                              Country is <strong>required</strong>
+                          </mat-error>
+                          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                            <mat-option *ngFor="let item of filteredOptions | async" [value]="item" >
+                                {{item}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field class="example-half-width country-code">
+                              <input matInput placeholder="Code" name="code" autocomplete="off" [value]="code||''" disabled>
+                        </mat-form-field>
+                        <mat-form-field class="example-half-width phone-number">
+                            <input matInput placeholder="Phone Number" (keypress)="numberOnly($event)" required name="phoneNo" max="{{countryPhonelen}}"  maxLength="{{countryPhonelen}}" autocomplete="off" formControlName="phoneNumber"
+                             [(ngModel)]="phoneNumber" (ngModelChange)="onChange(phoneNumber)">
+                            <mat-error *ngIf="basicForm.get('phoneNumber').errors?.required">
+                               Phone Number is <strong>required</strong>
+                            </mat-error>
+                             <div *ngIf="invalidphone && phoneNumber!=''" class="help-block1 caution">Please enter {{countryPhonelen}} digit number</div>
+                        </mat-form-field>
+                      <!-- </div> -->
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Email ID" required name="email" autocomplete="off" formControlName="username">
+                            <mat-error *ngIf="basicForm.get('username').errors?.required">
+                                Email ID is <strong>required</strong>
+                            </mat-error>
+                            <mat-error *ngIf="basicForm.get('username').errors?.pattern">
+                                Please type your Email ID in the format <strong>"yourname@example.com"</strong>
+                            </mat-error>
+                        </mat-form-field>
+                </div>
+                <div class="linebottom"></div>
+                <button class="btn btn-orange" [disabled]="!basicForm.valid || invalidphone || invalidCountry">NEXT</button>
+                </form>
+          </div>
+        </div>
+        <div class="basic-info-wrapper" *ngIf="assignroles">
+          <div class="form-wrapper">
+            <form class="example-form" (ngSubmit)="f.form.valid && inviteUser(signupsuccess)" #f="ngForm">
+              <div class="inner-form">
+                <div class="wro-wrapper" *ngFor="let dl of x;let i =index">
+                  <div class="dep-col-wrapper">
+                    <img src="assets/images/inviteuser/{{dl.name.split(' ')[0].toLowerCase()}}.svg" class="acc-image" alt="">
+                    <span>{{dl.name}}</span>
+                  </div>
+                  <div class="role-checkbox">
+                  <mat-checkbox class="margin-check"
+                   *ngFor="let rdl of dl.role;let j =index" 
+                   (change)="test(dl.name,rdl,$event,dl)" [(ngModel)]="model[dl.name.split(' ')[0].toUpperCase() + '_' + rdl.toUpperCase()]" [name]="dl.name.split(' ')[0].toUpperCase() + '_' + rdl.toUpperCase()" [value]="dl.name.split(' ')[0].toUpperCase() + '_' + rdl.toUpperCase()"> {{rdl}}</mat-checkbox>
+                  </div>
+                </div>
+                
+              </div>
+              <div class="linebottom"></div>
+              <button class="btn btn-orange btn-left" type="submit" [disabled]="!f.form.valid || !isenableform">SUBMIT</button>
+            </form>
+          </div>
+        </div>
+        </div>
+        </div>
+      </ng-template>
+      <ng-template #signupsuccess class="invite succesmodal">
+        <div class=" successpopup">
+          <div class="modal-header no-line">
+            <div class="modal-header-wrapper">
+                <div class="modal-header-box font24 khulaSemiBold"></div>
+                <button type="button" class="close font24 pull-right" aria-label="Close" (click)="invitesuccessRef.hide()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+          </div>
+          <div class="modal-body center-box">
+            <img src="assets/images/inviteuser/success.svg" alt="">
+            <div class="sus-contant-box">
+              <p class="font24 khulaSemiBold success-message"> <span class="c-orange"> {{message}} !</span></p>
+              <p class=" khulaRegular c-s-text">Please wait for your account verification from Fusang Team</p>
+              <div>
+                 <button class="btn-orange khulaSemiBold" (click)="invitesuccessRef.hide()">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </ng-template>

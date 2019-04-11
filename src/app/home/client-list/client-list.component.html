@@ -1,0 +1,251 @@
+<div class="wholeTableSection">
+    <div class="row tableRow">
+      <div class="col-lg-3 col-md-3 col-sm-3 paddingZero">
+        <h1 class="headingList" >Fusang Clients</h1>
+        <h4 class="tableHeading">List of all Fusang Clients</h4>
+      </div>
+      <div class="col-lg-9 col-md-9 col-sm-9 paddingZero">
+          <div class="tab-btn khulaSemiBold"><button class="user-btn" [class.tabbackground]="tabValue=='Completed'" (click)="tabClick('Completed')">Completed</button><button class="user-btn" [class.tabbackground]="tabValue=='Onboarding'" (click)="tabClick('Onboarding')">Pending</button></div>
+        <div class="row filterDiv">
+                <img class="ac-clearFilter" src="../../../assets/images/Refresh.svg" alt="" title="Refresh" (click)="refresh()">
+          <span class="search" *ngIf="showSearch">
+                <!-- (focusout)="searchUser(searchValue)" -->
+          <input placeholder="Search based on Client Name" class="search-input" [(ngModel)]="searchValue"  (keydown.enter)="statusChange(searchValue)">
+          <img class="searchImg" src="./assets/images/search.svg" alt="">
+          <img class="searchImg searchImg1" src="./assets/images/search-close.svg" (click)="clearfilter()" alt=""> 
+        </span>
+        <img src="./assets/images/search-icon.svg" class="searchIcon" *ngIf="!showSearch" (click)="searchClick()" alt="" title="Search">
+          <select class="select-dropdown" name="roleValue" [(ngModel)]="userRole" (change)="userstatusChange(userRole)">
+              <option [value]="0" [selected] = "true">All-Status</option>
+              <option *ngFor="let role of filterData;let i = index" >{{role}}</option>
+            </select>
+          <img class="ac-clearFilter" src="../../../assets/images/clear.svg" alt="" title="clear filter" (click)="clearClientData()">
+          <button id="userPopup" (click)="inviteClient(invitetemplate)" class="commonButton invite">INVITE</button>
+        
+        </div>
+        </div>
+    </div>
+      <div [hidden]="isHidden && NoDataFound === true"> 
+        <app-table-component *ngIf="tabValue=='Completed'" [workflowData]="userValue" [userStatus]="tabValue"></app-table-component>
+        <app-table-component *ngIf="tabValue=='Onboarding'" [workflowData]="userValue" [userStatus]="tabValue"></app-table-component>
+        <pagination [boundaryLinks]="true" [totalItems]="totalItem" [itemsPerPage]="10" (pageChanged)="pageChanged($event)" [(ngModel)]="pageIndexModel"
+        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+      </div>
+      <div class=" wellcome-msg" *ngIf="NoDataFound === true && filterSearching === false">
+            <h4 class="khulaLite" >Let's get the ball rolling</h4>
+            <p class="khulaSemiBold" >Invite your first client</p>
+        </div>
+
+        <div class=" wellcome-msg" *ngIf="filterSearching === true && NoDataFound === true"> 
+            <h4 class="khulaLite" >No results found </h4>      
+        </div>
+        
+  </div>
+  <ng-template #invitetemplate class="invite succesmodal">
+      <div class="invitepopup">
+        <div class="modal-header">
+          <div class="modal-header-wrapper">
+              <div class="modal-header-box font24 khulaSemiBold">Invite Fusang Client</div>
+              <button type="button" class="close font24 pull-right" aria-label="Close" (click)="modelClear()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        </div>
+        <div class="modal-body invite">
+          <div class="invite-tabs">
+            <div class="Information-box font14 khulaRegular" [class.activeTab]="basic" (click)="showbasic()">Client Information</div>
+            <div class="Information-box font14 khulaRegular" [class.activeTab]="assignroles" (click)="showassignroles()" [class.tabDesabled]="!basicForm.valid">User Information</div>
+        </div>
+        <div class="basic-info-wrapper form-wrapper" *ngIf="basic">
+          
+              <form class="example-form" [formGroup]="basicForm" (ngSubmit)="nexttab()" #f="ngForm" novalidate>
+                <div class="inner-form">
+                    <mat-form-field class="example-half-width">
+                        <input matInput placeholder="Client Name" required formControlName="clientName"  name="clientName" autocomplete="off" >
+                        <mat-error *ngIf="basicForm.get('clientName').touched && basicForm.get('clientName').invalid">
+                            Client Name is <strong>required</strong>
+                        </mat-error>
+                      </mat-form-field>
+                    
+                      <mat-form-field class="example-half-width">
+                          <input matInput placeholder="Website" formControlName="domainName"   name="domainName" autocomplete="off">
+                          <!-- <mat-error *ngIf="basicForm.get('domainName').errors?.required ">
+                              Website is <strong>required</strong>
+                          </mat-error> -->
+                          <!-- <mat-error *ngIf="basicForm.get('domainName').errors?.pattern">
+                            Please enter Domain in specified format<strong>"www.example.com" </strong>
+                        </mat-error> -->
+                        <!-- <div style="color:red" *ngIf="s_url.value && s_url.invalid">
+                            not a valid URL
+                          </div> -->
+                      </mat-form-field>
+                      <!-- <div class="flex-wrap"> -->
+                        <mat-form-field class="example-full-width">
+                          <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput  [matAutocomplete]="auto" (focus)="allCountry()" formControlName="country"><span><em class="fa fa-caret-down arrowclass"></em></span>
+                          <mat-error *ngIf="basicForm.get('country').touched && basicForm.get('country').invalid">
+                              Country is <strong>required</strong>
+                          </mat-error>
+                          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                            <mat-option *ngFor="let item of filteredOptions| async" [value]="item" >
+                                {{item}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Address" required name="address" autocomplete="off" formControlName="address">
+                            <mat-error *ngIf="basicForm.get('address').errors?.required">
+                                Address is <strong>required</strong>
+                            </mat-error>
+                            
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width">
+                            <input matInput placeholder="Note" required name="notes" autocomplete="off" formControlName="notes">
+                            <mat-error *ngIf="basicForm.get('notes').errors?.required">
+                                Note is <strong>required</strong>
+                            </mat-error>
+                            <!-- <mat-error *ngIf="basicForm.get('username').errors?.emailId">
+                                Please enter username as <strong>emailId format</strong>
+                            </mat-error> -->
+                        </mat-form-field>
+                </div>
+                <!-- <div class="linebottom"></div> -->
+                <button class="btn btn-orange" [disabled]="!basicForm.valid" >Next</button>
+                <!-- [disabled]="!basicForm.valid || invalidphone" -->
+                </form>
+         
+        </div>
+        <div class="basic-info-wrapper form-wrapper" *ngIf="assignroles">
+         <form class="example-form"  (ngSubmit)="inviteUser(signupsuccess)" #f="ngForm" novalidate>
+            <mat-accordion *ngIf="userList.length !== 0">
+                
+                <mat-expansion-panel *ngFor="let itemValue of userList; let i = index" (click)="edituser(i,itemValue)" >
+                    <mat-expansion-panel-header >
+                        <mat-panel-title >
+                         <span>User Information {{i+1}} </span> <span><img src="/assets/images/personalwallet/smalldelete.svg" class="deleteAccordian" alt="" (click)="deleteList($event,i)"></span>
+                        </mat-panel-title>
+                      </mat-expansion-panel-header>
+                      <mat-form-field class="example-half-width">
+                           <input matInput placeholder="First Name" required  [(ngModel)]="itemValue.firstName"  name="firstName{{i}}" autocomplete="off" required>
+                            <mat-error *ngIf="'firstName'+i">
+                                First Name is <strong>required</strong>
+                            </mat-error>
+                      </mat-form-field>
+                      <mat-form-field class="example-half-width">
+                            <input matInput placeholder="Last Name" required  [(ngModel)]="itemValue.lastName"  name="lastName{{i}}"  #lastName="ngModel" autocomplete="off"  >
+                             <mat-error *ngIf="'lastName'+i">
+                                 Last Name is <strong>required</strong>
+                             </mat-error>
+                       </mat-form-field>
+                        <mat-form-field class="example-half-width">
+                            <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput name="country{{i}}" [(ngModel)]="itemValue.country" [matAutocomplete]="countryArr" #country="ngModel" (ngModelChange)="getSavedCountryList(itemValue.country)" (focus)="getSavedCountryList(itemValue.country)"><span><em class="fa fa-caret-down arrowclass"></em></span>
+                            <mat-error *ngIf="'country'+i">
+                                Country is <strong>required</strong>
+                            </mat-error>
+                            <mat-autocomplete #countryArr="matAutocomplete" (optionSelected)="onSelectionChangeduser($event,itemValue)">
+                              <mat-option *ngFor="let item of filteredOptions1" [value]="item" >
+                                  {{item}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width country-code">
+                                <input matInput placeholder="Code" autocomplete="off" [(ngModel)]="itemValue.code"  name="code{{i}}" disabled>
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width phone-number">
+                              <input matInput placeholder="Phone Number" type="text" (keypress)="numberOnly($event)" required name="phoneNo{{i}}" maxlength="{{itemValue.countryPhonelen}}" maxLength="{{itemValue.countryPhonelen}}" autocomplete="off" #phoneNumber="ngModel"
+                               [(ngModel)]="itemValue.phoneNumber" (ngModelChange)="onChangeList(itemValue)">
+                              <mat-error *ngIf="'phoneNo'+i">
+                                 Phone Number is <strong>required</strong>
+                              </mat-error>
+                               <div *ngIf="((itemValue.phoneNumber?.length != itemValue.countryPhonelen) && itemValue.phoneNumber != '')" class="help-block1 caution">Please enter {{itemValue.countryPhonelen}} digit number</div>
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width">
+                                <input matInput placeholder="Email ID" required  name="emailId{{i}}" [(ngModel)]="itemValue.emailId" #emailId="ngModel"  autocomplete="off" >
+                                <mat-error *ngIf="'emailId'+i">
+                                    Email is <strong>required</strong>
+                                </mat-error>
+                                <mat-error *ngIf="userFrom.get('emailId').errors?.pattern">
+                                  Please enter email as <strong>email format</strong>
+                              </mat-error>
+                              </mat-form-field>
+                            <div class="role-checkbox">
+                                <mat-checkbox class="chkbxstly" [checked]="itemValue.superAdmin" [(ngModel)]="itemValue.superAdmin"  name="superAdmin{{i}}"  #superAdmin="ngModel" autocomplete="off">
+                                  Super User
+                                </mat-checkbox>
+                            </div>
+                </mat-expansion-panel>
+               
+            </mat-accordion>
+            <div *ngIf="userlist">
+                    <form class="example-form" [formGroup]="addUserFrom" (ngSubmit)="!validatetset && inviteclient()" #f="ngForm" novalidate>
+                <mat-expansion-panel [expanded]="true">
+                    
+                        <mat-expansion-panel-header >
+                            <mat-panel-title >
+                             User Information
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <mat-form-field class="example-half-width">
+                              <input matInput placeholder="First Name" required formControlName="firstName"  name="firstName" autocomplete="off" >
+                        <mat-error *ngIf="addUserFrom.get('firstName').touched && addUserFrom.get('firstName').invalid">
+                            First Name is <strong>required</strong>
+                        </mat-error>
+                          </mat-form-field>
+                          <mat-form-field class="example-half-width">
+                                <input matInput placeholder="Last Name" required formControlName="lastName"  name="lastName" autocomplete="off" >
+                          <mat-error *ngIf="addUserFrom.get('lastName').touched && addUserFrom.get('lastName').invalid">
+                              Last Name is <strong>required</strong>
+                          </mat-error>
+                            </mat-form-field>
+                          
+                            <mat-form-field class="example-half-width">
+                                <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput  [matAutocomplete]="auto" formControlName="country"><span><em class="fa fa-caret-down arrowclass"></em></span>
+                                <mat-error *ngIf="addUserFrom.get('country').touched && addUserFrom.get('country').invalid">
+                                    Country is <strong>required</strong>
+                                </mat-error>
+                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChangednextuser($event)">
+                                  <mat-option *ngFor="let item of filteredOptions2| async" [value]="item" >
+                                      {{item}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                              <mat-form-field class="example-half-width country-code">
+                                    <input matInput placeholder="Code" name="countrycode" autocomplete="off" [value]="countrycode||''" disabled>
+                              </mat-form-field>
+                              <mat-form-field class="example-half-width phone-number">
+                                  <input matInput placeholder="Phone Number" (keypress)="numberOnly($event)"  required name="phoneNo" max="{{countryPhonelen}}"  maxLength="{{countryPhonelen}}" autocomplete="off" formControlName="phoneNumber"
+                                   [(ngModel)]="phoneNumber" (ngModelChange)="onChange(phoneNumber)">
+                                  <mat-error *ngIf="addUserFrom.get('phoneNumber').errors?.required">
+                                     Phone Number is <strong>required</strong>
+                                  </mat-error>
+                                   <div *ngIf="invalidphone && phoneNumber != ''" class="help-block1 caution">Please enter {{countryPhonelen}} digit number</div>
+                              </mat-form-field>
+                              <mat-form-field class="example-half-width">
+                                    <input matInput placeholder="Email ID" required formControlName="emailId" type="email"  name="emailId" autocomplete="off" >
+                                    <mat-error *ngIf="addUserFrom.get('emailId').errors?.required">
+                                        Email is <strong>required</strong>
+                                    </mat-error>
+                                    <mat-error *ngIf="addUserFrom.get('emailId').errors?.pattern">
+                                        Please type your Email ID in the format <strong>"yourname@example.com"</strong>
+                                  </mat-error>
+                                  </mat-form-field>
+                                <div class="role-checkbox">
+                                    <mat-checkbox class="chkbxstly"  formControlName="superAdmin"  name="superAdmin" autocomplete="off">
+                                      Super User
+                                    </mat-checkbox>
+                                </div>
+                   
+                </mat-expansion-panel>
+            </form>
+                
+        </div>
+            <mat-action-row>
+                    <button mat-button  [disabled]="(!addUserFrom.valid && submitClick) || invalidphone"  (click)="nextStep()"><img class="" src="./assets/images/add-circular-button.svg" alt="">Add User</button>
+                  </mat-action-row> 
+                  <button class="btn btn-orange btn-left"  type="submit" (click)="inviteclient()" [disabled]="(!addUserFrom.valid && Submit) || (!f.form.valid || invalidphone || UserListPhone)">Submit</button>
+            </form>
+          </div>
+        </div>
+        </div>
+       
+      </ng-template>

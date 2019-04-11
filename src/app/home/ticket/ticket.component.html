@@ -1,0 +1,149 @@
+
+<div class="ticketCard">
+    <div class="row">
+        <div class="col-md-3">
+            <h1 class="headingList">Ticket Categories</h1>
+            <h4 class="tableHeading">Select a ticket category to view all the tickets</h4>
+        </div>
+        <div class="col-md-9">
+            <div class="row filterDiv">
+             <img class="ac-clearFilter" src="../../../assets/images/Refresh.svg" alt="" title="Refresh" (click)="refresh()">
+                <select class="select-dropdown" name="name" [(ngModel)]="departmentListvalue" (change)="departmentSelected($event.target.value);" #name="ngModel">
+                     <option [value]="0" [attr.selected]="true">All-Departments</option>
+                <option *ngFor="let item of departmentList;let i= index" [value]="item.id">{{item.name}}</option>
+                  </select>
+                  <img class="ac-clearFilter" src="./assets/images/clear.svg" alt="" title="clear filter" (click)="clear()">
+            </div>
+        </div>
+    </div>
+    <div class="row ticketcard-row">
+        <div class="col-md-3" *ngFor="let ticketListData of ticketListdata">
+            <div class="ticketSignleCard">
+            <h4 class="tableHeading1">{{ticketListData.userRole}}</h4>
+            <div class="row">
+                <div class="col-md-4 ticketcelcol">
+                    <div class="ticket-cellopen ticket-cell" [class.ticketCellActive]="ticketCell=='Open' && ticketid == ticketListData.id" (click)="ticketCellAction('Open',ticketListData.id, ticketListData.userRole)">
+                        <h4 class="ticketopentext ticktCommonhead">Open</h4>
+                        <h4 class="ticketopentext ticktCommoncount">{{ticketListData.open}}</h4>
+                    </div>
+                </div>
+                <div class="col-md-4 ticketcelcol">
+                    <div  class="ticket-cellclaim ticket-cell" [class.ticketCellActive]="ticketCell=='Claimed' && ticketid == ticketListData.id" (click)="ticketCellAction('Claimed',ticketListData.id, ticketListData.userRole)">
+                        <h4 class="tickeclaimtext ticktCommonhead">Claimed</h4>
+                        <h4 class="tickeclaimtext ticktCommoncount">{{ticketListData.claimed}}</h4>
+                    </div>
+                </div>
+                <div class="col-md-4 ticketcelcol">
+                    <div  class="ticket-cellclose ticket-cell" [class.ticketCellActive]="ticketCell=='Closed' && ticketid == ticketListData.id" (click)="ticketCellAction('Closed',ticketListData.id, ticketListData.userRole)">
+                        <h4 class="ticketclosetext ticktCommonhead">Closed</h4>
+                        <h4 class="ticketclosetext ticktCommoncount">{{ticketListData.closed}}</h4>
+                    </div>
+                </div>
+            </div>
+           </div>
+        </div>
+           
+           
+                
+    </div>
+</div>
+
+<div class="wholeTableSection">
+    <div class="row">
+        <div class="col-md-5">
+            <h1 class="headingList">{{userrole}} {{ticketCell}} Tickets</h1>
+        </div>
+        <!-- (onSelect)="selectDate(bsRangeValue)"  (onClose)="datePickerClose(bsRangeValue)" -->
+        <div class="col-md-7">
+            <div class="row filterDiv"> 
+                    <div class="col-xs-12 col-12 col-sm-6 col-md-4 form-group">       
+                      <input type ="text" class="form-control" bsDaterangepicker [(ngModel)]="bsRangeValue" placeholder="Select Date Range" (ngModelChange)="datePickerClose(bsRangeValue)"  placement="bottom" [maxDate]="maxDate">
+                      <img class="calImg" src="./assets/images/calendar.svg" alt="">
+                    </div>  
+                  
+                <select class="select-dropdown" name="workflowType" [(ngModel)]="workFlowDetailsvalue" (change)="workflowtypeSelected($event.target.value);" #workflowType="ngModel" >
+                    <option [value]= 0 [attr.selected]="true">All-Workflow Types</option>
+                    <!-- <option [value]="0" [selected]="true">All</option> -->
+                <option *ngFor="let item of workFlowDetails;let i= index" [value]="item">{{item}}</option>
+                  </select>
+                  <span class="search" *ngIf="showSearch">
+                        <!-- (focusout)="statusChange(searchValue)" -->
+                    <input placeholder="Search based on Info" class="search-input" [(ngModel)]="searchValue"  (keydown.enter)="statusChange(searchValue)">
+                    <img class="searchImg" src="./assets/images/search.svg" alt="">
+                    <img class="searchImg searchImg1" src="./assets/images/search-close.svg" alt="" (click)="clearfilter()">
+                  </span>
+                  <img src="./assets/images/search-icon.svg" alt="" class="searchIcon" *ngIf="!showSearch" (click)="searchClick()" title="Search">
+                  <img class="ac-clearFilter" src="../../../assets/images/clear.svg" alt="" title="clear filter" (click)="clearData()">
+                  <!-- <span class="search">
+                    <p-calendar #calendar [(ngModel)]="rangeDates" selectionMode="range" (onClose)="datePickerClose(rangeDates)" (onSelect)="selectDate(rangeDates)" [readonlyInput]="true" placeholder="Select date range"></p-calendar>
+                    <img class="calImg" src="./assets/images/calendar.svg">
+                  </span> -->
+                
+            </div>
+        </div>
+    </div>  
+    <!-- *ngIf="NoDataFound !== true" -->
+    <div class="tableSection" [hidden]="isHidden" >
+        <table mat-table [dataSource]="data" matSort class="mat-elevation-z8" >
+            <ng-container *ngFor="let column of newColumns;" matColumnDef="{{column.value}}">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.name}} </th>
+              
+              <td mat-cell *matCellDef="let element;let i=index" (click)="showOnboarding(i,element)">  
+                 <span *ngIf="column.value!== 'status' && column.value!== 'createdDate'">{{element[column.value]}}</span>
+                 <span *ngIf="column.value === 'createdDate'">{{element[column.value] | date :'yyyy-MM-dd HH:mm:ss'}}</span>
+                  <!-- <span *ngIf="column.value === 'createdDate'">{{element[column.value] | date :'dd-MMM-yyyy h:mm:ss '}}</span> -->
+                 <span class="tableStatus {{element[column.value].toLowerCase()}}1" *ngIf="column.value === 'status'" (click)="claim($event,successtemplate,element)">{{element[column.value]}}</span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <pagination *ngIf="resultsLength.length!==0" [boundaryLinks]="true" [totalItems]="resultsLength" [itemsPerPage]="10" (pageChanged)="pageChanged($event)"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+        </div>
+
+        <!-- <div class="nodataFound" *ngIf="NoDataFound === true">
+            No Tickets to be Displayed
+        </div> -->
+
+        <div class=" wellcome-msg" *ngIf="NoDataFound === true">
+            <h4 class="khulaLite" > No Tickets to be Displayed </h4>
+            <p class="khulaSemiBold" >You have no {{ticketCell | lowercase }} tickets</p>
+        </div>
+
+        <div class=" wellcome-msg" *ngIf="filterSearching === true"> 
+            <h4 class="khulaLite" > No results found </h4>           
+        </div>
+</div>
+
+<!-- <app-table-component [workflowData]="ticketValue" ></app-table-component> -->
+
+<ng-template #successtemplate class="dashbard ">
+
+    <!-- <ng-template  #template class="dashbard "> -->
+    <div class="successpoup">
+      <div class="modal-header">
+  
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body dashbard succesmodal">
+        <div>
+          <div class="form-container">
+            <!-- <img src="/assets/images/sidebar/success.png" class="successimg"> -->
+            <img src="/assets/images/personalwallet/success.svg" alt="" class="successimg">
+          </div>
+          <div style="text-align:  center">
+            <label class="User-invited-succesf">Are you sure you want to claim this ticket?</label>
+          </div>
+          <div>
+            <button type="submit" class="invitemoreBtn" (click)="modalRef.hide();">CANCEL</button>
+            <!-- <button class="successBtn" aria-label="Close" (click)="sendbtc()">PROCEED</button> -->
+            <button class="successBtn" aria-label="Close"(click)="confirmClaim(); modalRef.hide()" >CONFIRM</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>

@@ -1,0 +1,165 @@
+<div class="row">
+    <div class="col-md-12">
+      <div class="header">
+        <div class="logo-wraper">
+          <img src="assets/images/logoblue/logoblue.jpg" alt="" class="logo">
+        </div>
+        <div class="user-wraper">
+          <img id="loggedInImage" src="assets/images/sidebar/profile.svg" alt="" class="user-picture">
+          <label>Username
+            <span class="fa fa-angle-down"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row center">
+    <div class="col-md-12">
+      <label class="Select-User-Type">Select Client Type</label>
+    </div>
+  </div>
+<div class="user-ype-outer-box">
+  <div class="row">
+    <div class="col-md-4" id="secureStorage">
+      <div class="cardstlye">
+          <div class="col-md-12 row securestorage-image">
+              <div class="headertext row center">
+                <span>SECURE STORAGE</span>
+                <img src="./assets/images/userpolicy/information.png" alt="" class="information" >
+                <!-- <div class="type-tooltip">The Intellectual Property disclosure will inform users that the contents, logo and other visual media you.</div> -->
+              </div>
+              <div class="col-md-12 row">
+                  <img src="./assets/images/userpolicy/securestorage.png" alt="" class="database" >
+              </div>
+          </div>
+          <div class="col-md-12 row thrddivstyle">
+              <div class="col-md-12 row rowclss">
+                  <label class="text-style-1" ><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction Hours</label>
+                  <label class="datastyle">{{secureStorage['rules'].transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{secureStorage.transactionTimeEnd}}</label>
+              </div>
+              <div class="col-md-12 row rowclss">
+                  <label class="text-style-1" ><img src="./assets/images/userpolicy/ip-address.png" alt="" class="editicon">&nbsp;Maximum Allowed IPs</label>
+                  <label class="datastyle">{{secureStorage['rules'].maximumAllowedIp}}</label>
+              </div>
+              <div class="col-md-12 row rowclss">
+                <label class="text-style-1" ><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum Allowed Wallets</label>
+                <label class="datastyle">{{secureStorage['rules'].maximumAllowedWallets}}</label>
+              </div>
+              <div class="col-md-12 row rowclss">
+                  <label class="text-style-1" ><img src="./assets/images/userpolicy/transaction-volume.png" alt="" class="editicon">&nbsp;Transaction Maximum Allowed Volume Cap</label>
+                  <label class="datastyle">{{secureStorage['rules'].transactionVolumeCap}}%</label>
+              </div>
+              <div class="col-md-12 row rowclss">
+                  <label class="text-style-1" ><img src="./assets/images/userpolicy/frequency-cap.png" alt="" class="editicon">&nbsp;Maximum Allowed Frequency Cap </label>
+                  <label class="datastyle">{{secureStorage['rules'].transactionLimit}} &nbsp; Per day</label>
+              </div>
+              <div class="col-md-12 row rowclss">
+                  <label class="text-style-1" ><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Minimum Balance </label>
+                  <label class="datastyle">{{secureStorage['rules'].minimumBalance}}%</label>
+              </div>
+              <div class="col-md-12 row rowclss">
+                <label class="text-style-1" ><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Unit of Measure </label>
+                <label class="datastyle">Per&nbsp;{{secureStorage['rules'].transactionUnitOfMeasure}}&nbsp;mins</label>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-12 row selct-type">
+          <button type="submit" class="selectbtn" (click)="gotosignup(secureStorage.id)">SELECT</button>
+      </div>
+  </div>
+  <div class="col-md-4" id="deepStorage">
+      <div class="cardstlye">
+          <div class="col-md-12 row  deepstorage-image" >
+              <div class="headertext row center">
+                <span> DEEP STORAGE</span>
+                <img src="./assets/images/userpolicy/information.png" alt="" class="information" >
+                <!-- <div class="type-tooltip">The Intellectual Property disclosure will inform users that the contents, logo and other visual media you.</div> -->
+              </div>
+              <div class="col-md-12 row">
+                    <img src="./assets/images/userpolicy/deep-storage.png" alt="" class="database" >
+              </div>
+          </div>
+          <div class="col-md-12 row thrddivstyle">
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction Hours</label>
+                    <label class="datastyle">{{deepStorage['rules'].transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{deepStorage.transactionTimeEnd}}</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/ip-address.png" alt="" class="editicon">&nbsp;Maximum Allowed IPs</label>
+                    <label class="datastyle">{{deepStorage['rules'].maximumAllowedIp}}</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum Allowed Wallets</label>
+                    <label class="datastyle">{{deepStorage['rules'].maximumAllowedWallets}}</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/transaction-volume.png" alt="" class="editicon">&nbsp;Transaction Maximum Allowed Volume Cap</label>
+                    <label class="datastyle">{{deepStorage['rules'].transactionVolumeCap}} %</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/frequency-cap.png" alt="" class="editicon">&nbsp;Maximum Allowed Frequency Cap </label>
+                    <label class="datastyle">{{deepStorage['rules'].transactionLimit}}&nbsp; Per day </label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                      <label class="text-style-1" ><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Minimum Balance </label>
+                      <label class="datastyle">{{deepStorage['rules'].minimumBalance}}%</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                  <label class="text-style-1" ><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Unit of Measure </label>
+                  <label class="datastyle">Per&nbsp;{{deepStorage['rules'].transactionUnitOfMeasure}}&nbsp;mins</label>
+                </div>  
+          </div> 
+      </div> 
+      <div class="col-md-12 row selct-type">
+          <button type="submit" class="selectbtn" (click)="gotosignup(deepStorage.id)">SELECT</button>
+        </div> 
+  </div>
+    <div class="col-md-4" id="highFrequency">
+        <div class="cardstlye">
+            <div class=" col-md-12 row example-header-image">
+                <div class="headertext row center">
+                    <span>HIGH FREQUENCY</span>
+                    <img src="./assets/images/userpolicy/information.png" alt="" class="information" >
+                    <!-- <div class="type-tooltip">The Intellectual Property disclosure will inform users that the contents, logo and other visual media you.</div> -->
+                </div>
+                <div class="col-md-12 row">
+                    <img src="./assets/images/userpolicy/highfrequency.png" alt="" class="database" >
+                </div>
+            </div>
+            <div class="col-md-12 row thrddivstyle">
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/transaction-hours.png" alt="" class="editicon">&nbsp;Transaction Hours</label>
+                    <label class="datastyle">{{highFrequency['rules'].transactionTimeStart}}&nbsp;&nbsp;to&nbsp;&nbsp;{{highFrequency.transactionTimeEnd}}</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                      <label class="text-style-1" ><img src="./assets/images/userpolicy/ip-address.png" alt="" class="editicon">&nbsp;Maximum Allowed IPs</label>
+                      <label class="datastyle">{{highFrequency['rules'].maximumAllowedIp}}</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/wallet-address.png" alt="" class="editicon">&nbsp;Maximum Allowed Wallets</label>
+                    <label class="datastyle">{{highFrequency['rules'].maximumAllowedWallets}}</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/transaction-volume.png" alt="" class="editicon">&nbsp;Transaction Maximum Allowed Volume Cap</label>
+                    <label class="datastyle">{{highFrequency['rules'].transactionVolumeCap}}%</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/frequency-cap.png" alt="" class="editicon">&nbsp;Maximum Allowed Frequency Cap </label>
+                    <label class="datastyle">{{highFrequency['rules'].transactionLimit}}</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Minimum Balance </label>
+                    <label class="datastyle">{{highFrequency['rules'].minimumBalance}}%</label>
+                </div>
+                <div class="col-md-12 row rowclss">
+                    <label class="text-style-1" ><img src="./assets/images/userpolicy/new-device.png" alt="" class="editicon">&nbsp;Transaction Unit of Measure </label>
+                    <label class="datastyle">Per&nbsp; {{highFrequency['rules'].transactionUnitOfMeasure}}&nbsp; mins</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 row selct-type">
+            <button type="submit" class="selectbtn" (click)="gotosignup(highFrequency.id)">SELECT</button>
+        </div>
+    </div>
+  </div>
+</div>

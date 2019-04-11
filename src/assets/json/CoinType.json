@@ -1,0 +1,17 @@
+{
+    "data": {
+      "CoinType": [
+        {
+          "img": "Url",
+          "key": "BTC",
+          "Value": "BitCoin"
+        },
+        {
+          "img": "Url",
+          "key": "ETH",
+          "Value": "Ethereum"
+        }
+      ]
+      
+    }
+  }

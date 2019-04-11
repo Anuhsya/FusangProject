@@ -1,0 +1,602 @@
+<!-- <form (ngSubmit)="inviteCustomer(successtemplate) "> -->
+    <!-- <button (click)="inviteCustomer(invitetemplate) " class="btn-orange">Invite</button>
+    <button (click)="policyInsights(policyinsights) " class="btn-orange">Policy insights</button>
+    <button (click)="complianceInsights(complianceinsights) " class="btn-orange">Compliance insights</button>
+    <button (click)="signupSuccess(signupsuccess) " class="btn-orange">signup Success</button>
+  
+    <button (click)="confirmChecking(confirmchecking) " class="btn-orange">confirm</button>
+    <button (click)="rejectVerification(rejectverification) " class="btn-orange">reject</button>
+  
+
+  <ng-template #invitetemplate class="invite succesmodal">
+  <div class="invitepopup">
+    <div class="modal-header">
+      <div class="modal-header-wrapper">
+          <div class="modal-header-box font24 khulaSemiBold">Invite Fusang Customers</div>
+          <button type="button" class="close font24 pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    </div>
+    <div class="modal-body invite">
+      <div class="invite-tabs">
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="basic" (click)="showbasic()">Basic Information</div>
+        <div class="Information-box font14 khulaRegular" [class.activeTab]="approver" (click)="showapprover()" [class.tabDesabled]="!basicForm.valid">Approver Information</div>
+    </div>
+    <div class="basic-info-wrapper" *ngIf="basic">
+      <div class="form-wrapper">
+          <form class="example-form" [formGroup]="basicForm" (ngSubmit)="nexttab()" #f="ngForm" novalidate>
+            <div class="inner-form">
+                <mat-form-field class="example-half-width">
+                    <input matInput placeholder="First Name" required formControlName="firstName"  name="firstName" autocomplete="off" >
+                  </mat-form-field>
+                
+                  <mat-form-field class="example-half-width">
+                      <input matInput placeholder="Last Name" required formControlName="lastName"   name="laststName" autocomplete="off">
+                  </mat-form-field>
+                    <mat-form-field class="example-half-width">
+                      <input type="text" class="arrow" required placeholder="Country" aria-label="String" matInput  [matAutocomplete]="auto" formControlName="country"><span></span>
+                      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectionChanged($event)">
+                        <mat-option *ngFor="let item of filteredOptions| async" [value]="item" >
+                            {{item}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="example-half-width">
+                        <input matInput placeholder="Phone Number" required name="phoneNo" autocomplete="off" formControlName="phone">
+                    </mat-form-field> -->
+                    <!-- <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Email ID" required name="email" autocomplete="off" formControlName="email">
+                    </mat-form-field>
+            </div>
+            <div class="linebottom"></div>
+            <button class="btn-orange" [disabled]="!basicForm.valid">Next{{basicForm.valid}}</button>
+            </form>
+      </div>
+    </div>
+    <div class="approver-info-wrapper" *ngIf="approver">
+  
+      <div class="form-wrapper">
+          <form class="example-form"  (ngSubmit)="invitedSuccessfull(successtemplate)">
+                  <mat-accordion>
+                          <mat-expansion-panel  (opened)="accountvisibal=true;getAccountMgtList(1)"
+                              (closed)="accountvisibal=false;pushintoarr(1, AccountManagementverifier,AccountManagementchecker,AccountManagementapprover)" [class.expPannel]="accountvisibal">
+                            <mat-expansion-panel-header class="panal-layout" [class.openHeader]="accountvisibal">
+                              <mat-panel-title class="khulaSemiBold" [class.khulaBold]="accountvisibal">
+                                      <img src="assets/images/inviteuser/account.svg" class="acc-image">Account Management
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="verifier-box">
+                                <div class="verifier-text example-third-width">verifier</div>
+                                <mat-form-field class="example-half-width example-third-width">
+                                  <input type="text" class="arrow" [(ngModel)]="AccountManagementverifier.primary" placeholder="Primary verifier" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                                  <mat-autocomplete #auto="matAutocomplete" class="autocomplete" (optionSelected)="onSelectionChanged($event)">
+                                    <mat-option class="autocomplete" *ngFor="let list of departmentLists.verifier| async" [value]="list" >
+                                        {{list.emailId}}
+                                    </mat-option> 
+                                  </mat-autocomplete>
+                                </mat-form-field>
+  
+                                <mat-form-field class="example-half-width example-third-width">
+                                  <input type="text"  class="arrow" [(ngModel)]="AccountManagementverifier.backup" placeholder="Backup verifier" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                                  <mat-autocomplete #auto="matAutocomplete" class="autocomplete" (optionSelected)="onSelectionChanged($event)">
+                                    <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                        {{cont}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="verifier-box">
+                              <div class="verifier-text example-third-width">Checker</div>
+                              <mat-form-field class="example-half-width example-third-width">
+                                <input type="text" class="arrow" [(ngModel)]="AccountManagementchecker.primary"  placeholder="Primary Checker" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                                <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                  <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                      {{list}}
+                                  </mat-option> 
+                                </mat-autocomplete>
+                              </mat-form-field>
+  
+                              <mat-form-field class="example-half-width example-third-width">
+                                <input type="text"  class="arrow" [(ngModel)]="AccountManagementchecker.backup"  placeholder="Backup Checker" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                                <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                  <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                      {{cont}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                          </div>
+                          <div class="verifier-box">
+                            <div class="verifier-text example-third-width">Approver</div>
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text" class="arrow" [(ngModel)]="AccountManagementapprover.primary"  placeholder="Primary Approver" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                    {{list}}
+                                </mat-option> 
+                              </mat-autocomplete>
+                            </mat-form-field>
+  
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text"  class="arrow" [(ngModel)]="AccountManagementapprover.backup"  placeholder="Backup Approver" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                    {{cont}}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                          </mat-expansion-panel>
+                          <mat-expansion-panel (opened)="transactionvisibal=true;getAccountMgtList(2)"
+                              (closed)="transactionvisibal=false;pushintoarr(2, TransactionManagementverifier,TransactionManagementchecker,TransactionManagementapprover)" [class.expPannel]="transactionvisibal">
+                            <mat-expansion-panel-header class="panal-layout" [class.openHeader]="transactionvisibal">
+                              <mat-panel-title class="khulaSemiBold" [class.khulaBold]="transactionvisibal">
+                                      <img src="assets/images/inviteuser/transaction.svg" class="acc-image">Transaction Management
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="verifier-box">
+                                <div class="verifier-text example-third-width">verifier</div>
+                                <mat-form-field class="example-half-width example-third-width">
+                                  <input type="text" class="arrow" [(ngModel)]="TransactionManagementverifier.primary" placeholder="Primary verifier" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                                  <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                    <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                        {{list}}
+                                    </mat-option> 
+                                  </mat-autocomplete>
+                                </mat-form-field>
+  
+                                <mat-form-field class="example-half-width example-third-width">
+                                  <input type="text"  class="arrow" [(ngModel)]="TransactionManagementverifier.backup" placeholder="Backup verifier" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                                  <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                    <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                        {{cont}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="verifier-box">
+                              <div class="verifier-text example-third-width">Checker</div>
+                              <mat-form-field class="example-half-width example-third-width">
+                                <input type="text" class="arrow" [(ngModel)]="TransactionManagementchecker.primary"  placeholder="Primary Checker" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                                <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                  <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                      {{list}}
+                                  </mat-option> 
+                                </mat-autocomplete>
+                              </mat-form-field>
+  
+                              <mat-form-field class="example-half-width example-third-width">
+                                <input type="text"  class="arrow" [(ngModel)]="TransactionManagementchecker.backup" placeholder="Backup Checker" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                                <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                  <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                      {{cont}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                          </div>
+                          <div class="verifier-box">
+                            <div class="verifier-text example-third-width">Approver</div>
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text" class="arrow" [(ngModel)]="TransactionManagementapprover.primary"  placeholder="Primary Approver" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                    {{list}}
+                                </mat-option> 
+                              </mat-autocomplete>
+                            </mat-form-field>
+  
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text"  class="arrow" [(ngModel)]="TransactionManagementapprover.backup"  placeholder="Backup Approver" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                    {{cont}}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                          </mat-expansion-panel>
+                          <mat-expansion-panel (opened)="compliencevisibal=true;getAccountMgtList(3)"
+                          (closed)="compliencevisibal=false;pushintoarr(3, ComplienceManagementverifier,ComplienceManagementchecker,ComplienceManagementapprover)" [class.expPannel]="compliencevisibal">
+                        <mat-expansion-panel-header class="panal-layout" [class.openHeader]="compliencevisibal">
+                          <mat-panel-title class="khulaSemiBold" [class.khulaBold]="compliencevisibal">
+                                  <img src="assets/images/inviteuser/complience.svg" class="acc-image">Complience Management
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="verifier-box">
+                            <div class="verifier-text example-third-width">verifier</div>
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text" class="arrow" [(ngModel)]="ComplienceManagementverifier.primary" placeholder="Primary verifier" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                    {{list}}
+                                </mat-option> 
+                              </mat-autocomplete>
+                            </mat-form-field>
+  
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text"  class="arrow" [(ngModel)]="ComplienceManagementverifier.backup"  placeholder="Backup verifier" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                    {{cont}}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                        <div class="verifier-box">
+                          <div class="verifier-text example-third-width">Checker</div>
+                          <mat-form-field class="example-half-width example-third-width">
+                            <input type="text" class="arrow" [(ngModel)]="ComplienceManagementchecker.primary" placeholder="Primary Checker" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                            <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                              <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                  {{list}}
+                              </mat-option> 
+                            </mat-autocomplete>
+                          </mat-form-field>
+  
+                          <mat-form-field class="example-half-width example-third-width">
+                            <input type="text"  class="arrow" [(ngModel)]="ComplienceManagementchecker.backup"  placeholder="Backup Checker" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                            <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                              <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                  {{cont}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                      </div>
+                      <div class="verifier-box">
+                        <div class="verifier-text example-third-width">Approver</div>
+                        <mat-form-field class="example-half-width example-third-width">
+                          <input type="text" class="arrow" [(ngModel)]="ComplienceManagementapprover.primary" placeholder="Primary Approver" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                          <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                            <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                {{list}}
+                            </mat-option> 
+                          </mat-autocomplete>
+                        </mat-form-field>
+  
+                        <mat-form-field class="example-half-width example-third-width">
+                          <input type="text"  class="arrow" [(ngModel)]="ComplienceManagementapprover.backup"  placeholder="Backup Approver" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                          <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                            <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                {{cont}}
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                          </mat-expansion-panel>
+                          <mat-expansion-panel (opened)="policyvisibal=true;getAccountMgtList(4)"
+                              (closed)="policyvisibal=false;pushintoarr(4, PolicyManagementverifier,PolicyManagementchecker,PolicyManagementapprover)" [class.expPannel]="policyvisibal">
+                            <mat-expansion-panel-header class="panal-layout" [class.openHeader]="policyvisibal">
+                              <mat-panel-title class="khulaSemiBold" [class.khulaBold]="policyvisibal">
+                                      <img src="assets/images/inviteuser/policy.svg" class="acc-image">Policy Management
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="verifier-box">
+                                <div class="verifier-text example-third-width">verifier</div>
+                                <mat-form-field class="example-half-width example-third-width">
+                                  <input type="text" class="arrow" [(ngModel)]="PolicyManagementverifier.primary"  placeholder="Primary verifier" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                                  <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                    <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                        {{list}}
+                                    </mat-option> 
+                                  </mat-autocomplete>
+                                </mat-form-field>
+  
+                                <mat-form-field class="example-half-width example-third-width">
+                                  <input type="text"  class="arrow" [(ngModel)]="PolicyManagementverifier.backup"  placeholder="Backup verifier" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                                  <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                    <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                        {{cont}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="verifier-box">
+                              <div class="verifier-text example-third-width">Checker</div>
+                              <mat-form-field class="example-half-width example-third-width">
+                                <input type="text" class="arrow" [(ngModel)]="PolicyManagementchecker.primary" placeholder="Primary Checker" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                                <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                  <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                      {{list}}
+                                  </mat-option> 
+                                </mat-autocomplete>
+                              </mat-form-field>
+  
+                              <mat-form-field class="example-half-width example-third-width">
+                                <input type="text"  class="arrow" [(ngModel)]="PolicyManagementchecker.backup" placeholder="Backup Checker" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                                <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                  <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                      {{cont}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                          </div>
+                          <div class="verifier-box">
+                            <div class="verifier-text example-third-width">Approver</div>
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text" class="arrow" [(ngModel)]="PolicyManagementapprover.primary" placeholder="Primary Approver" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                    {{list}}
+                                </mat-option> 
+                              </mat-autocomplete>
+                            </mat-form-field>
+  
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text"  class="arrow" [(ngModel)]="PolicyManagementapprover.backup" placeholder="Backup Approver" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                    {{cont}}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                          </mat-expansion-panel>
+                          <mat-expansion-panel (opened)="technicalvisibal=true;getAccountMgtList(5)"
+                              (closed)="technicalvisibal=false;pushintoarr(5, TechnicalManagementverifier,TechnicalManagementchecker,TechnicalManagementapprover)" [class.expPannel]="technicalvisibal">
+                            <mat-expansion-panel-header class="panal-layout" [class.openHeader]="technicalvisibal">
+                              <mat-panel-title class="khulaSemiBold" [class.khulaBold]="technicalvisibal">
+                                      <img src="assets/images/inviteuser/technical.svg" class="acc-image">Technical Management
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="verifier-box">
+                                <div class="verifier-text example-third-width">verifier</div>
+                                <mat-form-field class="example-half-width example-third-width">
+                                  <input type="text" class="arrow" [(ngModel)]="TechnicalManagementapprover.primary"  placeholder="Primary verifier" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                                  <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                    <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                        {{list}}
+                                    </mat-option> 
+                                  </mat-autocomplete>
+                                </mat-form-field>
+  
+                                <mat-form-field class="example-half-width example-third-width">
+                                  <input type="text"  class="arrow" [(ngModel)]="TechnicalManagementapprover.backup"  placeholder="Backup verifier" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                                  <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                    <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                        {{cont}}
+                                    </mat-option>
+                                  </mat-autocomplete>
+                                </mat-form-field>
+                            </div>
+                            <div class="verifier-box">
+                              <div class="verifier-text example-third-width">Checker</div>
+                              <mat-form-field class="example-half-width example-third-width">
+                                <input type="text" class="arrow" [(ngModel)]="TechnicalManagementchecker.primary" placeholder="Primary Checker" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                                <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                  <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                      {{list}}
+                                  </mat-option> 
+                                </mat-autocomplete>
+                              </mat-form-field>
+  
+                              <mat-form-field class="example-half-width example-third-width">
+                                <input type="text"  class="arrow" [(ngModel)]="TechnicalManagementchecker.backup" placeholder="Backup Checker" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                                <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                  <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                      {{cont}}
+                                  </mat-option>
+                                </mat-autocomplete>
+                              </mat-form-field>
+                          </div>
+                          <div class="verifier-box">
+                            <div class="verifier-text example-third-width">Approver</div>
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text" class="arrow" [(ngModel)]="TechnicalManagementverifier.primary" placeholder="Primary Approver" aria-label="String" matInput  [formControl]="dpControl"  [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option class="autocomplete" *ngFor="let list of filteredOptions| async" [value]="list" >
+                                    {{list}}
+                                </mat-option> 
+                              </mat-autocomplete>
+                            </mat-form-field>
+  
+                            <mat-form-field class="example-half-width example-third-width">
+                              <input type="text"  class="arrow" [(ngModel)]="TechnicalManagementverifier.backup" placeholder="Backup Approver" aria-label="String" matInput  [formControl]="dpControl" [matAutocomplete]="auto"><span></span>
+                              <mat-autocomplete #auto="matAutocomplete" class="autocomplete">
+                                <mat-option *ngFor="let cont of filteredOptions| async" [value]="cont" >
+                                    {{cont}}
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                          </mat-expansion-panel>
+                        </mat-accordion>
+            <button class="btn-orange btn-left">Submit</button>
+          </form>
+      </div>
+    </div>
+    </div>
+    </div>
+  </ng-template> -->
+  
+  
+  
+  <!-- <ng-template #successtemplate class="invite succesmodal">
+    <div class=" successpopup">
+      <div class="modal-header no-line">
+        <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold"></div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="successRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      </div>
+      <div class="modal-body center-box">
+        <img src="assets/images/inviteuser/success.svg">
+        <div class="sus-contant-box">
+          <p class="font24 khulaSemiBold success-message">Fusang Customer invited successfully</p>
+          <div>
+            <button class="invitemore khulaSemiBold" (click)="successRef.hide();inviteCustomer(invitetemplate)">Invitemore</button>
+             <button class="btn-orange khulaSemiBold" (click)="successRef.hide()">Done</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  
+  <ng-template #signupsuccess class="invite succesmodal">
+      <div class=" successpopup">
+        <div class="modal-header no-line">
+          <div class="modal-header-wrapper">
+              <div class="modal-header-box font24 khulaSemiBold"></div>
+              <button type="button" class="close font24 pull-right" aria-label="Close" (click)="signupsuccessRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        </div>
+        <div class="modal-body center-box">
+          <img src="assets/images/inviteuser/success.svg">
+          <div class="sus-contant-box">
+            <p class="font24 khulaSemiBold success-message">Your Registration <span class="c-orange">Completed Successfully !</span></p>
+            <p class=" khulaRegular c-s-text">Please wait for your account verification from Fusang Team</p>
+            <div>
+               <button class="btn-orange khulaSemiBold" (click)="signupsuccessRef.hide()">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  
+  
+  
+  
+  <ng-template #policyinsights class="invite succesmodal">
+  <div>
+    <div class="modal-header policyInsightsHeader">
+      <div class="modal-header-wrapper">
+          <div class="modal-header-box font24 khulaSemiBold">Policy Insights</div>
+          <button type="button" class="close font24 pull-right" aria-label="Close" (click)="policyRef.hide()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+    </div>
+    <div class="modal-body p-i-ul">
+      <div class="insights-desc  policy-desc-bg">
+         <div class="khulaSemiBold desc-inner"> Crossed Daily max limit</div><span class="khulaSemiBold denger-color">03</span>
+      </div>
+      <ul class="violation">
+        <li>
+           <div class="violation-headding khulaSemiBold font14"> Tried a Fourth transaction</div> 
+           <img src="assets/images/inviteuser/calendar.svg" class="m-calendar">
+           <span class="denger-color khulaSemiBold font14 date">20 June 2018</span>
+           <span class=" c-orange khulaSemiBold font14 time">12:24 PM</span>
+          <div class="khulaLite font12 violation-text">Few of the violation in crossing limit was done without proper knowledge on the limit details leading to this violation policy.</div>
+        </li>
+        <li>
+            <div class="violation-headding khulaSemiBold font14"> Tried a Fourth transaction</div> 
+            <img src="assets/images/inviteuser/calendar.svg" class="m-calendar">
+            <span class="denger-color khulaSemiBold font14 date">20 June 2018</span>
+            <span class=" c-orange khulaSemiBold font14 time">12:24 PM</span>
+           <div class="khulaLite font12 violation-text">Few of the violation in crossing limit was done without proper knowledge on the limit details leading to this violation policy.</div>
+         </li>
+         <li>
+            <div class="violation-headding khulaSemiBold font14"> Tried a Fourth transaction</div> 
+            <img src="assets/images/inviteuser/calendar.svg" class="m-calendar">
+            <span class="denger-color khulaSemiBold font14 date">20 June 2018</span>
+            <span class=" c-orange khulaSemiBold font14 time">12:24 PM</span>
+           <div class="khulaLite font12 violation-text">Few of the violation in crossing limit was done without proper knowledge on the limit details leading to this violation policy.</div>
+         </li>
+              <li>
+           <div class="violation-headding khulaSemiBold font14"> Tried a Fourth transaction</div> 
+           <img src="assets/images/inviteuser/calendar.svg" class="m-calendar">
+           <span class="denger-color khulaSemiBold font14 date">20 June 2018</span>
+           <span class=" c-orange khulaSemiBold font14 time">12:24 PM</span>
+          <div class="khulaLite font12 violation-text">Few of the violation in crossing limit was done without proper knowledge on the limit details leading to this violation policy.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </ng-template>
+  <ng-template #complianceinsights class="invite succesmodal">
+    <div>
+      <div class="modal-header complianceinsightsHeader">
+        <div class="modal-header-wrapper">
+            <div class="modal-header-box font24 khulaSemiBold">Compliance Insights</div>
+            <button type="button" class="close font24 pull-right" aria-label="Close" (click)="complianceRef.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+      </div>
+        <div class="modal-body c-i-ul">
+            <div class="insights-desc  compliance-desc-bg">
+               <div class="khulaSemiBold desc-inner"> Crossed Daily max limit</div><span class="khulaSemiBold denger-color">03</span>
+            </div>
+            <ul class="violation">
+              <li>
+                 <div class="violation-headding khulaSemiBold font14"> Tried a Fourth transaction</div> 
+                 <img src="assets/images/inviteuser/calendar.svg" class="m-calendar">
+                 <span class="denger-color khulaSemiBold font14 date">20 June 2018</span>
+                 <span class=" c-orange khulaSemiBold font14 time">12:24 PM</span>
+                <div class="khulaLite font12 violation-text">Few of the violation in crossing limit was done without proper knowledge on the limit details leading to this violation policy.</div>
+              </li>
+              <li>
+                  <div class="violation-headding khulaSemiBold font14"> Tried a Fourth transaction</div> 
+                  <img src="assets/images/inviteuser/calendar.svg" class="m-calendar">
+                  <span class="denger-color khulaSemiBold font14 date">20 June 2018</span>
+                  <span class=" c-orange khulaSemiBold font14 time">12:24 PM</span>
+                 <div class="khulaLite font12 violation-text">Few of the violation in crossing limit was done without proper knowledge on the limit details leading to this violation policy.</div>
+               </li>
+               <li>
+                  <div class="violation-headding khulaSemiBold font14"> Tried a Fourth transaction</div> 
+                  <img src="assets/images/inviteuser/calendar.svg" class="m-calendar">
+                  <span class="denger-color khulaSemiBold font14 date">20 June 2018</span>
+                  <span class=" c-orange khulaSemiBold font14 time">12:24 PM</span>
+                 <div class="khulaLite font12 violation-text">Few of the violation in crossing limit was done without proper knowledge on the limit details leading to this violation policy.</div>
+               </li>
+               <li>
+                  <div class="violation-headding khulaSemiBold font14"> Tried a Fourth transaction</div> 
+                  <img src="assets/images/inviteuser/calendar.svg" class="m-calendar">
+                  <span class="denger-color khulaSemiBold font14 date">20 June 2018</span>
+                  <span class=" c-orange khulaSemiBold font14 time">12:24 PM</span>
+                 <div class="khulaLite font12 violation-text">Few of the violation in crossing limit was done without proper knowledge on the limit details leading to this violation policy.</div>
+               </li>
+            </ul>
+          </div>
+    </div>
+  </ng-template>
+  
+  
+  <ng-template #confirmchecking class="invite succesmodal">
+      <div class="modal-header">
+          <div class="modal-header-wrapper">
+              <div class="modal-header-box font24 khulaSemiBold">Confirm Checking Process</div>
+              <button type="button" class="close font24 pull-right" aria-label="Close" (click)="confirmRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        </div>
+        <div class="modal-body invite">
+            <div class="conf-ckeck">
+              <div class="khulaSemiBold font12 conf-check-cont">
+                <p class="c-green-text" >By confirming checking process it is presumed that the following user is found be legitimate and no major violations has been commited.
+                </p>
+                <p class="c-gray-text">
+                    If you have any specfic information which needs to be passed to approver, mention it in the notes below. </p>
+              </div>
+                <mat-form-field class="example-full-width padd32">
+                    <textarea matInput placeholder="Enter the Note"></textarea>
+                </mat-form-field>
+            </div>
+            <button class="btn-orange marg32">Confirm</button>
+        </div>
+  </ng-template> -->
+  
+  
+<!--   
+  <ng-template #rejectverification class="invite succesmodal">
+      <div class="modal-header">
+          <div class="modal-header-wrapper">
+              <div class="modal-header-box font24 khulaSemiBold">Reject Verification</div>
+              <button type="button" class="close font24 pull-right" aria-label="Close" (click)="rejectRef.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        </div>
+        <div class="modal-body invite">
+            <div class="conf-ckeck rejectPadding">
+                  <mat-form-field class="example-full-width padd32">
+                      <textarea matInput placeholder="Enter the Note"></textarea>
+                  </mat-form-field>
+              </div>
+              <button class="btn-orange marg32">Reject</button>
+        </div>
+  </ng-template> -->

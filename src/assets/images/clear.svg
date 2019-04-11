@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Admin_desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="AdminsCompletedDropdown(Desktop)" transform="translate(-834.000000, -154.000000)">
+            <g id="Group-2" transform="translate(526.000000, 153.000000)">
+                <g id="Group-4" transform="translate(308.000000, 1.000000)">
+                    <rect id="Rectangle-3-Copy" fill="#F78C3D" fill-rule="nonzero" x="0" y="0" width="30" height="30" rx="4"></rect>
+                    <g id="clear-button" transform="translate(9.000000, 9.000000)" fill="#FFFFFF">
+                        <polygon id="Path" points="13 1.3 11.7 0 6.5 5.2 1.3 0 0 1.3 5.2 6.5 0 11.7 1.3 13 6.5 7.8 11.7 13 13 11.7 7.8 6.5"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

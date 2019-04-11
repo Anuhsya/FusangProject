@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="113px" height="113px" viewBox="0 0 113 113" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="57" cy="57" r="40"></circle>
+        <filter x="-8.8%" y="-6.2%" width="117.5%" height="117.5%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.0255038496 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Design-Phase-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Assects" transform="translate(-193.000000, -303.000000)" fill-rule="nonzero">
+            <g id="Group-4" transform="translate(193.000000, 303.000000)">
+                <g id="Group-16-Copy">
+                    <g id="Success">
+                        <circle id="Oval" fill="#D42E42" opacity="0.2" cx="56.5" cy="56.5" r="56.5"></circle>
+                        <circle id="Oval" fill="#D42E42" opacity="0.2" cx="56.5" cy="56.5" r="47.5"></circle>
+                        <g id="Oval">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                            <use fill="#D42E42" xlink:href="#path-1"></use>
+                        </g>
+                    </g>
+                </g>
+                <g id="noun_cancel_322202" transform="translate(41.000000, 41.000000)" fill="#FFFFFF">
+                    <path d="M19.7275441,16.3275441 C23.8075441,12.2475441 27.8875441,8.16754412 31.9675441,4.08754412 C34.1208775,1.93421079 30.7208775,-1.46578921 28.5675441,0.687544124 C24.4875441,4.76754412 20.4075441,8.84754412 16.3275441,12.9275441 C12.2475441,8.84754412 8.16754412,4.76754412 4.08754412,0.687544124 C1.93421079,-1.46578921 -1.46578921,1.93421079 0.687544124,4.08754412 C4.76754412,8.16754412 8.84754412,12.2475441 12.9275441,16.3275441 C8.84754412,20.4075441 4.76754412,24.4875441 0.687544124,28.5675441 C-1.46578921,30.7208775 1.93421079,34.1208775 4.08754412,31.9675441 C8.16754412,27.8875441 12.2475441,23.8075441 16.3275441,19.7275441 C20.4075441,23.8075441 24.4875441,27.8875441 28.5675441,31.9675441 C30.7208775,34.1208775 34.1208775,30.7208775 31.9675441,28.5675441 C27.8875441,24.4875441 23.8075441,20.4075441 19.7275441,16.3275441 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

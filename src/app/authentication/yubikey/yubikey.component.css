@@ -1,0 +1,29 @@
+.yubikey-form-content{
+    color: #4a4a4a;
+    font-size: 14px;
+    text-align: center;
+    padding: 15px 58px;
+}
+.yubikey-btn-info{
+    font-size: 14px;
+    border: 1px solid #c2c2c2;
+    background: #de792f;
+    color: #fff;
+    font-family: khula-lite, Arial, Helvetica, sans-serif;
+}
+.yubikey-wrapper{
+    text-align: center;
+}
+.yubi-msg{
+    color: #00416a;
+    font-size: 12px;
+    margin-top: 9px;
+}
+.yubi-issues-link{
+    font-family: khula-lite, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    color: #4a90e2;
+    margin-top: 60px;
+    margin-bottom: -26px;
+}

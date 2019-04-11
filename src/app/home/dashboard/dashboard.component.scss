@@ -1,0 +1,21 @@
+
+
+.dashboard{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f2f2f2;
+    font-family: khula-Regular , Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  span{
+    font-family: Khula-SemiBold , Arial, Helvetica, sans-serif;
+
+  }
+}
+.displaystyle{
+  position: relative;
+  top: 48px;
+  height: calc(100vh - 48px);
+    background: #f1f5f9;
+}

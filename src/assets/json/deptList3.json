@@ -1,0 +1,55 @@
+{
+    "data": {
+      "verifier": [
+        {
+          "id": 31,
+          "name": "account_verifer Saha",
+          "emailId": "account_verfier@gmail.com",
+          "userRole": "TRANSACTION_VERIFIER"
+        },
+        {
+          "id": 33,
+          "name": "bkup_Account_verifer Saha",
+          "emailId": "bkup_account_verfier@gmail.com",
+          "userRole": "TRANSACTION_VERIFIER"
+        }
+      ],
+      "checker": [
+        {
+          "id": 34,
+          "name": "account_checker Saha",
+          "emailId": "account_checker@gmail.com",
+          "userRole": "TRANSACTION_CHECKER"
+        },
+        {
+          "id": 35,
+          "name": "bkup_account_checker Saha",
+          "emailId": "bkup_account_checker@gmail.com",
+          "userRole": "TRANSACTION_CHECKER"
+        },
+        {
+          "id": 31,
+          "name": "account_verifer Saha",
+          "emailId": "account_verfier@gmail.com",
+          "userRole": "TRANSACTION_CHECKER"
+        }
+      ],
+      "approver": [
+        {
+          "id": 36,
+          "name": "account_approver Saha",
+          "emailId": "account_approver@gmail.com",
+          "userRole": "TRANSACTION_APPROVER"
+        },
+        {
+          "id": 37,
+          "name": "bkup_account_approver Saha",
+          "emailId": "bkup_account_approver@gmail.com",
+          "userRole": "TRANSACTION_APPROVER"
+        }
+      ],
+      "admin": []
+    },
+    "message": "Details fetched successfully!!",
+    "status": "success"
+  }

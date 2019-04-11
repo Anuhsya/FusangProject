@@ -1,0 +1,172 @@
+{
+  "data": {
+    "highfrequency": {
+      "policyDetail": [
+        {
+          "label": "Time Zone",
+          "img": "./assets/images/personalwallet/timezoneicon.svg",
+          "labelData": [
+            {
+              "columnName": "walletTimeZone",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Wallet Time Zone",
+              "autoComplete": "Y",
+              "autoCompleteValue": "auto"
+            }
+          ]
+        },
+        {
+          "label": "Transaction Hours Limit ( 24 hrs )",
+          "img": "./assets/images/userpolicy/transaction-hours.png",
+          "labelData": [
+            {
+              "columnName": "transactionTimeStart",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Start Time",
+              "autoComplete": "N",
+              "Time": "StartTime"
+            },
+            {
+              "columnName": "transactionTimeEnd",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "End Time",
+              "autoComplete": "N",
+              "Time": "StartTime"
+            }
+          ]
+        },
+        {
+          "label": "Wallet Address Config",
+          "img": "./assets/images/userpolicy/wallet-address.png",
+          "labelData": [
+            {
+              "columnName": "maximumAllowedWallets",
+              "isEditable": "N",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Maximum Allowed Wallet Address",
+              "autoComplete": "N",
+              "pattern": "^[1-9]\\d*$",
+              "maxLength": 2,
+              "patterError": "Please enter numerical values (1 to 99)"
+            }
+          ]
+        }
+      ]
+    },
+    "secureStorage": {
+      "policyDetail": [
+        {
+          "label": "Time Zone",
+          "img": "./assets/images/personalwallet/timezoneicon.svg",
+          "labelData": [
+            {
+              "columnName": "walletTimeZone",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Wallet Time Zone",
+              "autoComplete": "Y",
+              "autoCompleteValue": "auto"
+            }
+          ]
+        },
+        {
+          "label": "Transaction Hours Limit ( 24 hrs )",
+          "img": "./assets/images/userpolicy/transaction-hours.png",
+          "labelData": [
+            {
+              "columnName": "transactionTimeStart",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Start Time",
+              "autoComplete": "N",
+              "Time": "StartTime"
+            },
+            {
+              "columnName": "transactionTimeEnd",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "End Time",
+              "autoComplete": "N",
+              "Time": "StartTime"
+            }
+          ]
+        },
+        {
+          "label": "Wallet Address Config",
+          "img": "./assets/images/userpolicy/wallet-address.png",
+          "labelData": [
+            {
+              "columnName": "maximumAllowedWallets",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Maximum Allowed Wallet Address",
+              "autoComplete": "N",
+              "pattern": "^[1-9]\\d*$",
+              "maxLength": 2,
+              "patterError": "Please enter numerical values (1 to 99)"
+            }
+          ]
+        }
+      ]
+    },
+    "deepStorage": {
+      "policyDetail": [
+        {
+          "label": "Time Zone",
+          "img": "./assets/images/personalwallet/timezoneicon.svg",
+          "labelData": [
+            {
+              "columnName": "walletTimeZone",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Wallet Time Zone",
+              "autoComplete": "Y",
+              "autoCompleteValue": "auto"
+            }
+          ]
+        },
+        {
+          "label": "Transaction Hours Limit ( 24 hrs )",
+          "img": "./assets/images/userpolicy/transaction-hours.png",
+          "labelData": [
+            {
+              "columnName": "transactionTimeStart",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Start Time",
+              "autoComplete": "N",
+              "Time": "StartTime"
+            },
+            {
+              "columnName": "transactionTimeEnd",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "End Time",
+              "autoComplete": "N",
+              "Time": "StartTime"
+            }
+          ]
+        },
+        {
+          "label": "Wallet Address Config",
+          "img": "./assets/images/userpolicy/wallet-address.png",
+          "labelData": [
+            {
+              "columnName": "maximumAllowedWallets",
+              "isEditable": "Y",
+              "fieldType": "TEXTBOX",
+              "columnTitle": "Maximum Allowed Wallet Address",
+              "autoComplete": "N",
+              "pattern": "^[1-9]\\d*$",
+              "maxLength": 2,
+              "patterError": "Please enter numerical values (1 to 99)"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
